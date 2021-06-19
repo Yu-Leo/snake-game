@@ -106,19 +106,41 @@ private:
     }
 };
 
+class Apple {
+public:
+    Apple() {
+        coordinates = Point(this->generate_random_coord(),
+            this->generate_random_coord());
+    }
+
+    Apple(int x, int y) {
+        coordinates = Point(x, y);
+    }
+
+    Point get_coordinates() {
+        return coordinates;
+    }
+
+private:
+    Point coordinates;
+
+    int generate_random_coord() {
+        return rand() % (GAME_FIELD_SIZE + 1);
+    }
+};
+
 class GameField {
 public:
     GameField() {
         this->init_field();
+        this->render_snake();
+        this->render_apple();
     }
 
-    void render_snake() {
+    void update() {
         this->init_field(); // Clear matrix
-        // Draw snake
-        for (int i = 0; i < this->snake.get_size(); i++) {
-            Point dot = this->snake.get_point_by_index(i);
-            this->field[dot.y][dot.x] = this->SNAKE_SYMBOL;
-        }
+        this->render_snake();
+        this->render_apple();
     }
 
     void move_snake() {
@@ -141,9 +163,11 @@ public:
 private:
     static const int SNAKE_SYMBOL = 1;
     static const int VOID_SYMBOL = 0;
+    static const int APPLE_SYMBOL = 2;
 
     int field[GAME_FIELD_SIZE][GAME_FIELD_SIZE]; // Matrix of game field
     Snake snake;
+    Apple apple;
 
     void init_field() { // Fill the matrix with VOID_SYMBOLs
         for (int i = 0; i < GAME_FIELD_SIZE; i++) {
@@ -152,13 +176,26 @@ private:
             }
         }
     }
+
+    void render_snake() {
+        for (int i = 0; i < this->snake.get_size(); i++) {
+            Point dot = this->snake.get_point_by_index(i);
+            this->field[dot.y][dot.x] = this->SNAKE_SYMBOL;
+        }
+    }
+
+    void render_apple() {
+        Point dot = this->apple.get_coordinates();
+        this->field[dot.y][dot.x] = this->APPLE_SYMBOL;
+    }
 };
 
 int main() {
+    srand(0);
+
     GameField game_field;
     bool game = true;
 
-    game_field.render_snake();
     game_field.print_field();
     std::cout << "\n";
 
@@ -184,7 +221,7 @@ int main() {
                 break;
         }
         game_field.move_snake();
-        game_field.render_snake();
+        game_field.update();
         game_field.print_field();
         std::cout << "\n";
     }
