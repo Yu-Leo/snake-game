@@ -151,21 +151,12 @@ public:
         this->snake.change_direction(direction);
     }
 
-    void print_field() { // Print matrix to console (std::cout)
-        for (int i = 0; i < GAME_FIELD_SIZE; i++) {
-            for (int j = 0; j < GAME_FIELD_SIZE; j++) {
-                std::cout << this->field[i][j] << ' ';
-            }
-            std::cout << '\n';
-        }
-    }
-
 private:
-    static const int SNAKE_SYMBOL = 1;
-    static const int VOID_SYMBOL = 0;
-    static const int APPLE_SYMBOL = 2;
+    static const char SNAKE_SYMBOL = '#';
+    static const char VOID_SYMBOL = '-';
+    static const char APPLE_SYMBOL = '*';
 
-    int field[GAME_FIELD_SIZE][GAME_FIELD_SIZE]; // Matrix of game field
+    char field[GAME_FIELD_SIZE][GAME_FIELD_SIZE]; // Matrix of game field
     Snake snake;
     Apple apple;
 
@@ -188,7 +179,19 @@ private:
         Point dot = this->apple.get_coordinates();
         this->field[dot.y][dot.x] = this->APPLE_SYMBOL;
     }
+
+    friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
+
+std::ostream& operator<< (std::ostream& out, const GameField& game_field) {
+    for (int i = 0; i < GAME_FIELD_SIZE; i++) {
+        for (int j = 0; j < GAME_FIELD_SIZE; j++) {
+            out << game_field.field[i][j] << ' ';
+        }
+        out << '\n';
+    }
+    return out;
+}
 
 int main() {
     srand(0);
@@ -196,9 +199,7 @@ int main() {
     GameField game_field;
     bool game = true;
 
-    game_field.print_field();
-    std::cout << "\n";
-
+    std::cout << game_field << '\n';
     while (game) {
         char command;
         std::cin >> command;
@@ -222,8 +223,7 @@ int main() {
         }
         game_field.move_snake();
         game_field.update();
-        game_field.print_field();
-        std::cout << "\n";
+        std::cout << game_field << '\n';
     }
     return 0;
 }
