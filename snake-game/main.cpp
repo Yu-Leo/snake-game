@@ -14,6 +14,11 @@ struct Point {
         this->x = x;
         this->y = y;
     }
+
+    bool operator==(const Point& other) {
+        return this->x == other.x && this->y == other.y;
+    }
+
 };
 
 class Snake {
@@ -69,6 +74,10 @@ public:
         }
 
         this->direction = new_direction;
+    }
+
+    void increase_size() {
+        this->size++;
     }
 
 private:
@@ -132,6 +141,7 @@ private:
 class GameField {
 public:
     GameField() {
+        this->apple = Apple(3, 3);
         this->init_field();
         this->render_snake();
         this->render_apple();
@@ -139,12 +149,19 @@ public:
 
     void update() {
         this->init_field(); // Clear matrix
-        this->render_snake();
         this->render_apple();
+        this->render_snake();
     }
 
     void move_snake() {
         this->snake.move();
+    }
+
+    void check_collision_with_apple() {
+        if (this->snake.get_point_by_index(0) == this->apple.get_coordinates()) {
+            this->snake.increase_size();
+        }
+
     }
 
     void turn_snake(int direction) {
@@ -222,6 +239,7 @@ int main() {
                 break;
         }
         game_field.move_snake();
+        game_field.check_collision_with_apple();
         game_field.update();
         std::cout << game_field << '\n';
     }
