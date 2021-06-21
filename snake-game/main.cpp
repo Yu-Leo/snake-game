@@ -18,8 +18,12 @@ struct Point {
     bool operator==(const Point& other) {
         return this->x == other.x && this->y == other.y;
     }
-
 };
+
+std::ostream& operator<< (std::ostream& out, const Point& point) {
+    out << '(' << point.x << ", " << point.y << ')';
+    return out;
+}
 
 class Snake {
 public:
@@ -74,6 +78,15 @@ public:
         }
 
         this->direction = new_direction;
+    }
+
+    bool check_collision_with_body() { // It's snake eating itself
+        for (int i = 0; i < this->size; i++) {
+            if (i > 3 && dots[i] == dots[0]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void increase_size() {
@@ -164,6 +177,16 @@ public:
         }
     }
 
+    bool check_collision_with_snake_body() {
+        return this->snake.check_collision_with_body();
+    }
+
+    bool check_collision_with_borders() {
+        Point head = this->snake.get_point_by_index(0);
+        return (head.x < 0 || head.x > GAME_FIELD_SIZE ||
+            head.y < 0 || head.y > GAME_FIELD_SIZE);
+    }
+
     void turn_snake(int direction) {
         this->snake.change_direction(direction);
     }
@@ -240,8 +263,18 @@ int main() {
         }
         game_field.move_snake();
         game_field.check_collision_with_apple();
-        game_field.update();
-        std::cout << game_field << '\n';
+
+        if (game_field.check_collision_with_snake_body() ||
+            game_field.check_collision_with_borders()) {
+
+            std::cout << "Game over!\n";
+            game = false;
+        }
+        else {
+            game_field.update();
+            std::cout << game_field << '\n';
+        }
+
     }
     return 0;
 }
