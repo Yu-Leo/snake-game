@@ -177,14 +177,9 @@ public:
         }
     }
 
-    bool check_collision_with_snake_body() {
-        return this->snake.check_collision_with_body();
-    }
-
-    bool check_collision_with_borders() {
-        Point head = this->snake.get_point_by_index(0);
-        return (head.x < 0 || head.x > GAME_FIELD_SIZE ||
-            head.y < 0 || head.y > GAME_FIELD_SIZE);
+    bool is_game_over() {
+        return this->check_collision_with_snake_body() ||
+            this->check_collision_with_borders();
     }
 
     void turn_snake(int direction) {
@@ -206,6 +201,16 @@ private:
                 this->field[i][j] = this->VOID_SYMBOL;
             }
         }
+    }
+
+    bool check_collision_with_snake_body() {
+        return this->snake.check_collision_with_body();
+    }
+
+    bool check_collision_with_borders() {
+        Point head = this->snake.get_point_by_index(0);
+        return (head.x < 0 || head.x > GAME_FIELD_SIZE ||
+            head.y < 0 || head.y > GAME_FIELD_SIZE);
     }
 
     void render_snake() {
@@ -264,17 +269,13 @@ int main() {
         game_field.move_snake();
         game_field.check_collision_with_apple();
 
-        if (game_field.check_collision_with_snake_body() ||
-            game_field.check_collision_with_borders()) {
-
+        if (game_field.is_game_over()) {
             std::cout << "Game over!\n";
             game = false;
-        }
-        else {
+        } else {
             game_field.update();
             std::cout << game_field << '\n';
         }
-
     }
     return 0;
 }
