@@ -141,7 +141,7 @@ private:
 class GameField {
 public:
     GameField() {
-        this->apple = Apple(3, 3);
+        this->apple = Apple();
         this->init_field();
         this->render_snake();
         this->render_apple();
@@ -160,8 +160,8 @@ public:
     void check_collision_with_apple() {
         if (this->snake.get_point_by_index(0) == this->apple.get_coordinates()) {
             this->snake.increase_size();
+            this->apple = Apple();
         }
-
     }
 
     void turn_snake(int direction) {
