@@ -4,14 +4,13 @@
 
 class Apple {
 public:
+
     Apple();
 
-    Apple(int x, int y);
+    Apple(const Point& point);
 
     Point get_coordinates();
 
 private:
     Point coordinates;
-
-    int generate_random_coord();
 };

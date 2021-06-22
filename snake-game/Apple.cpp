@@ -3,19 +3,12 @@
 #include "constants.h"
 #include "Point.h"
 
-Apple::Apple() {
-    coordinates = Point(this->generate_random_coord(),
-        this->generate_random_coord());
-}
+Apple::Apple() {}
 
-Apple::Apple(int x, int y) {
-    coordinates = Point(x, y);
+Apple::Apple(const Point& point) {
+    this->coordinates = point;
 }
 
 Point Apple::get_coordinates() {
-    return coordinates;
-}
-
-int Apple::generate_random_coord() {
-    return rand() % (GAME_FIELD_SIZE + 1);
+    return this->coordinates;
 }

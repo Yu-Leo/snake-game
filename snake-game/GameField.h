@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+
 #include "constants.h"
 #include "Apple.h"
 #include "Snake.h"
@@ -37,6 +39,8 @@ private:
     void render_snake();
 
     void render_apple();
+
+    std::vector<Point> generate_acceptable_points_for_new_apple();
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };

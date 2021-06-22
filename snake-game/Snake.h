@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Point.h"
+#include <vector>
 
+#include "Point.h"
 #include "constants.h"
 
 class Snake {
@@ -20,6 +21,8 @@ public:
     bool check_collision_with_body(); // It's snake eating itself
 
     void increase_size();
+
+    std::vector<Point> get_points();
 
 private:
     static const int DEFAULT_SIZE = 3;
