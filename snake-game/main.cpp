@@ -7,6 +7,7 @@ int main() {
     srand(0);
 
     GameField game_field;
+
     bool game = true;
 
     std::cout << game_field << '\n';

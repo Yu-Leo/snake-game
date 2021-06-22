@@ -1,10 +1,14 @@
 #include "GameField.h"
 
+#include <algorithm>
+
 #include "Apple.h"
 #include "Snake.h"
+#include "RandomPoint.h"
 
 GameField::GameField() {
-    this->apple = Apple();
+    RandomPoint rp(this->generate_acceptable_points_for_new_apple());
+    this->apple = Apple(rp);
     this->init_field();
     this->render_snake();
     this->render_apple();
@@ -23,7 +27,9 @@ void GameField::move_snake() {
 void GameField::check_collision_with_apple() {
     if (this->snake.get_point_by_index(0) == this->apple.get_coordinates()) {
         this->snake.increase_size();
-        this->apple = Apple();
+
+        RandomPoint rp(this->generate_acceptable_points_for_new_apple());
+        this->apple = Apple(rp);
     }
 }
 
@@ -64,6 +70,25 @@ void GameField::render_snake() {
 void GameField::render_apple() {
     Point dot = this->apple.get_coordinates();
     this->field[dot.y][dot.x] = this->APPLE_SYMBOL;
+}
+
+std::vector<Point> GameField::generate_acceptable_points_for_new_apple() {
+    std::vector<Point> unacceptable_points = this->snake.get_points();
+    std::vector<int> unacceptable_nums;
+    for (Point p : unacceptable_points) {
+        unacceptable_nums.push_back(p.y * GAME_FIELD_SIZE + p.x);
+    }
+    unacceptable_nums.push_back(-1);
+    unacceptable_nums.push_back((GAME_FIELD_SIZE - 1) * (GAME_FIELD_SIZE - 1) + 1);
+    std::sort(unacceptable_nums.begin(), unacceptable_nums.end());
+
+    std::vector<Point> acceptable_points;
+    for (int i = 0; i < unacceptable_nums.size() - 1; i++) {
+        for (int j = unacceptable_nums[i]; j < unacceptable_nums[i + 1]; j++) {
+            acceptable_points.push_back(Point(j % GAME_FIELD_SIZE, j / GAME_FIELD_SIZE));
+        }
+    }
+    return acceptable_points;
 }
 
 std::ostream& operator<< (std::ostream& out, const GameField& game_field) {
