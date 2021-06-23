@@ -26,7 +26,8 @@ private:
     static const char VOID_SYMBOL = '-';
     static const char APPLE_SYMBOL = '*';
 
-    const int size = GAME_FIELD_SIZE;
+    static const int DEFAULT_SIZE = 20;
+    const int size = this->DEFAULT_SIZE; // Length of side of field
 
     std::vector<std::vector<char>> field;
     Snake snake;
