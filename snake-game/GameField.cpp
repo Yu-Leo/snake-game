@@ -87,18 +87,21 @@ void GameField::render_apple() {
 
 std::vector<Point> GameField::generate_acceptable_points_for_new_apple() {
     std::vector<Point> unacceptable_points = this->snake.get_points();
-    std::vector<int> unacceptable_nums;
-    for (Point p : unacceptable_points) {
-        unacceptable_nums.push_back(p.y * this->size + p.x);
-    }
-    unacceptable_nums.push_back(-1);
-    unacceptable_nums.push_back((this->size - 1) * (this->size - 1) + 1);
-    std::sort(unacceptable_nums.begin(), unacceptable_nums.end());
+
+    unacceptable_points.push_back(Point(0, -1));
+    unacceptable_points.push_back(Point(this->size - 1, this->size));
+
+    std::sort(unacceptable_points.begin(), unacceptable_points.end());
 
     std::vector<Point> acceptable_points;
-    for (int i = 0; i < unacceptable_nums.size() - 1; i++) {
-        for (int j = unacceptable_nums[i]; j < unacceptable_nums[i + 1]; j++) {
-            acceptable_points.push_back(Point(j % this->size, j / this->size));
+    for (int i = 0; i < unacceptable_points.size() - 1; i++) {
+        int start_num = unacceptable_points[i].y * this->size +
+            unacceptable_points[i].x;
+        int finish_num = unacceptable_points[i + 1].y * this->size +
+            unacceptable_points[i + 1].x;
+
+        for (int num = start_num; num < finish_num; num++) {
+            acceptable_points.push_back(Point(num % this->size, num / this->size));
         }
     }
     return acceptable_points;
