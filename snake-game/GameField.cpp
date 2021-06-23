@@ -42,7 +42,16 @@ void GameField::turn_snake(int direction) {
     this->snake.change_direction(direction);
 }
 
+void GameField::resize_matrix() {
+    this->field.resize(this->size);
+    for (int i = 0; i < this->size; i++) {
+        this->field[i].resize(this->size);
+    }
+}
+
 void GameField::init_field() { // Fill the matrix with VOID_SYMBOLs
+    this->resize_matrix();
+
     for (int i = 0; i < GAME_FIELD_SIZE; i++) {
         for (int j = 0; j < GAME_FIELD_SIZE; j++) {
             this->field[i][j] = this->VOID_SYMBOL;

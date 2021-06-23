@@ -26,9 +26,13 @@ private:
     static const char VOID_SYMBOL = '-';
     static const char APPLE_SYMBOL = '*';
 
-    char field[GAME_FIELD_SIZE][GAME_FIELD_SIZE]; // Matrix of game field
+    const int size = GAME_FIELD_SIZE;
+
+    std::vector<std::vector<char>> field;
     Snake snake;
     Apple apple;
+
+    void resize_matrix();
 
     void init_field(); // Fill the matrix with VOID_SYMBOLs
 
