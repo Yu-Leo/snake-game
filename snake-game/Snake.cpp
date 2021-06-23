@@ -5,7 +5,7 @@
 Snake::Snake() {
     this->init_snake_dots();
     this->size = this->DEFAULT_SIZE;
-    this->direction = Directions::RIGHT;
+    this->direction = this->DEFAULT_DIRECTION;
 }
 
 Point Snake::get_point_by_index(int index) { // Get point by it's index in dots list
