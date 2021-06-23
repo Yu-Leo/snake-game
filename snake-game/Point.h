@@ -11,6 +11,8 @@ struct Point {
     Point(int x, int y);
 
     bool operator==(const Point& other);
+
+    bool operator<(const Point& other);
 };
 
 std::ostream& operator<< (std::ostream& out, const Point& point);
