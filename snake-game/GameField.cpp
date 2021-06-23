@@ -70,9 +70,9 @@ bool GameField::check_collision_with_borders() {
 }
 
 void GameField::render_snake() {
-    for (int i = 0; i < this->snake.get_size(); i++) {
-        Point dot = this->snake.get_point_by_index(i);
-        this->field[dot.y][dot.x] = this->SNAKE_SYMBOL;
+    std::vector<Point> snake_points = this->snake.get_points();
+    for (Point point : snake_points) {
+        this->field[point.y][point.x] = this->SNAKE_SYMBOL;
     }
 }
 
