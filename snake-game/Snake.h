@@ -27,7 +27,7 @@ public:
 private:
     static const int DEFAULT_SIZE = 3;
 
-    Point dots[GAME_FIELD_SIZE * GAME_FIELD_SIZE];
+    std::vector<Point> dots;
     int size;
     int direction;
 
