@@ -26,6 +26,7 @@ public:
 
 private:
     static const int DEFAULT_SIZE = 3;
+    static const int DEFAULT_DIRECTION = Directions::RIGHT;
 
     std::vector<Point> dots;
     int size;
