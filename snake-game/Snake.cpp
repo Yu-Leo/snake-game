@@ -59,19 +59,16 @@ bool Snake::check_collision_with_body() { // It's snake eating itself
 
 void Snake::increase_size() {
     this->size++;
+    dots.push_back(dots.back());
 }
 
 std::vector<Point> Snake::get_points() {
-    std::vector<Point> points;
-    for (int i = 0; i < this->size; i++) {
-        points.push_back(this->dots[i]);
-    }
-    return points;
+    return this->dots;
 }
 
-void Snake::init_snake_dots() { // Init snake in (0, 0), (1, 0), (2, 0)
+void Snake::init_snake_dots() { // Init snake horizontal in top left corner
     for (int i = 0; i < this->DEFAULT_SIZE; i++) {
-        dots[i] = Point(this->DEFAULT_SIZE - i - 1, 0);
+        dots.push_back(Point(this->DEFAULT_SIZE - i - 1, 0));
     }
 }
 
