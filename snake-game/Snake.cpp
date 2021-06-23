@@ -9,6 +9,10 @@ Snake::Snake() {
 }
 
 Point Snake::get_point_by_index(int index) { // Get point by it's index in dots list
+    if (index >= this->size) {
+        std::cout << "error\n";
+        return Point(999, 999);
+    }
     return this->dots[index];
 }
 
