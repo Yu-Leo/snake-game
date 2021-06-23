@@ -34,8 +34,8 @@ void GameField::check_collision_with_apple() {
 }
 
 bool GameField::is_game_over() {
-    return this->check_collision_with_snake_body() ||
-        this->check_collision_with_borders();
+    return this->is_collision_with_snake_body() ||
+        this->is_collision_with_borders();
 }
 
 void GameField::turn_snake(int direction) {
@@ -59,11 +59,15 @@ void GameField::init_field() { // Fill the matrix with VOID_SYMBOLs
     }
 }
 
-bool GameField::check_collision_with_snake_body() {
+bool GameField::is_collision_with_apple() {
+    return this->snake.get_point_by_index(0) == this->apple.get_coordinates();
+}
+
+bool GameField::is_collision_with_snake_body() {
     return this->snake.check_collision_with_body();
 }
 
-bool GameField::check_collision_with_borders() {
+bool GameField::is_collision_with_borders() {
     Point head = this->snake.get_point_by_index(0);
     return (head.x < 0 || head.x > this->size ||
         head.y < 0 || head.y > this->size);

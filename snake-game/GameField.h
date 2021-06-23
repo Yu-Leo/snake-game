@@ -37,9 +37,11 @@ private:
 
     void init_field(); // Fill the matrix with VOID_SYMBOLs
 
-    bool check_collision_with_snake_body();
+    bool is_collision_with_apple();
 
-    bool check_collision_with_borders();
+    bool is_collision_with_snake_body();
+
+    bool is_collision_with_borders();
 
     void render_snake();
 
