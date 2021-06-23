@@ -4,10 +4,6 @@
 
 #include "constants.h"
 
-RandomPoint::RandomPoint() {
-    this->x = rand() % GAME_FIELD_SIZE;
-    this->y = rand() % GAME_FIELD_SIZE;
-}
 
 RandomPoint::RandomPoint(const std::vector<Point>& acceptable_points) {
     int number_of_points = acceptable_points.size();
