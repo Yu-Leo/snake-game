@@ -69,8 +69,8 @@ bool GameField::is_collision_with_snake_body() {
 
 bool GameField::is_collision_with_borders() {
     Point head = this->snake.get_point_by_index(0);
-    return (head.x < 0 || head.x > this->size ||
-        head.y < 0 || head.y > this->size);
+    return (head.x < 0 || head.x >= this->size ||
+        head.y < 0 || head.y >= this->size);
 }
 
 void GameField::render_snake() {
