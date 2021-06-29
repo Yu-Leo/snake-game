@@ -35,3 +35,23 @@ void Snake::move_head() {
             break;
     }
 }
+
+void Snake::set_field_size(int field_size) {
+    this->field_size = field_size;
+}
+
+Point Snake::get_head_pos() const {
+    return this->head_position;
+}
+
+int Snake::get_length() const {
+    return this->length;
+}
+
+void Snake::increase_length() {
+    this->length++;
+}
+
+void Snake::change_direction(int new_direction) {
+    this->direction = new_direction;
+}

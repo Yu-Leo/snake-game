@@ -11,7 +11,7 @@ GameField::GameField() {
 
     int dot = this->get_random_empty_cell();
     this->apple = Apple(Point(dot % this->size, dot / this->size));
-    this->snake.field_size = this->size;
+    this->snake.set_field_size(this->size);
     this->render_snake();
     this->render_apple();
 }
@@ -19,17 +19,19 @@ GameField::GameField() {
 void GameField::move_snake() {
     this->snake.move_head();
     this->check_collisions();
-    field[snake.head_position.y][snake.head_position.x] = snake.length + 1;
+    Point hp = snake.get_head_pos();
+    field[hp.y][hp.x] = snake.get_length() + 1;
     this->decrease_snake_cells();
 }
 
 void GameField::check_collisions() {
     int dot;
-    if (field[snake.head_position.y][snake.head_position.x] != this->FIELD_CELL_TYPE_NONE) {
-        switch (field[snake.head_position.y][snake.head_position.x]) {
+    Point hp = snake.get_head_pos();
+    if (field[hp.y][hp.x] != this->FIELD_CELL_TYPE_NONE) {
+        switch (field[hp.y][hp.x]) {
             
             case FIELD_CELL_TYPE_APPLE:
-                snake.length++;
+                snake.increase_length();
                 this->grow_snake();
                 dot = this->get_random_empty_cell();
                 this->apple = Apple(Point(dot % this->size, dot / this->size));
@@ -63,7 +65,7 @@ void GameField::decrease_snake_cells() {
 }
 
 void GameField::turn_snake(int direction) {
-    this->snake.direction = direction;
+    this->snake.change_direction(direction);
 }
 
 void GameField::resize_matrix() {
@@ -84,8 +86,10 @@ void GameField::init_field() { // Fill the matrix with FIELD_CELL_TYPE_NONE
 }
 
 void GameField::render_snake() {
-    for (int i = 0; i < snake.length; i++) {
-        field[snake.head_position.y][snake.head_position.x - i] = snake.length - i;
+    int snake_len = snake.get_length();
+    for (int i = 0; i < snake_len; i++) {
+        Point hp = snake.get_head_pos();
+        field[hp.y][hp.x - i] = snake_len - i;
     }
 }
 
