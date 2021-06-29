@@ -14,7 +14,7 @@ int main() {
     while (game) {
         char command;
         std::cin >> command;
-
+        
         switch (command) {
             case 'w':
                 game_field.turn_snake(Directions::UP);
@@ -32,9 +32,11 @@ int main() {
                 game = false;
                 break;
         }
+        
         game_field.move_snake();
+        /*
         game_field.check_collision_with_apple();
-
+        
         if (game_field.is_game_over()) {
             std::cout << "Game over!\n";
             game = false;
@@ -42,6 +44,8 @@ int main() {
             game_field.update();
             std::cout << game_field << '\n';
         }
+        */
+        std::cout << game_field << '\n';
     }
     return 0;
 }

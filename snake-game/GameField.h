@@ -10,26 +10,31 @@
 class GameField {
 public:
     GameField();
-
+    /*
     void update();
-
+    */
     void move_snake();
 
+    /*
     void check_collision_with_apple();
 
     bool is_game_over();
-
+    */
     void turn_snake(int direction);
-
+    
 private:
     static const char SNAKE_SYMBOL = '#';
     static const char VOID_SYMBOL = '-';
     static const char APPLE_SYMBOL = '*';
 
+    static const int FIELD_CELL_TYPE_NONE = 0;
+    static const int FIELD_CELL_TYPE_APPLE = -1;
+
     static const int DEFAULT_SIZE = 20;
+
     const int size = this->DEFAULT_SIZE; // Length of side of field
 
-    std::vector<std::vector<char>> field;
+    std::vector<std::vector<int>> field;
     Snake snake;
     Apple apple;
 
@@ -37,17 +42,24 @@ private:
 
     void init_field(); // Fill the matrix with VOID_SYMBOLs
 
+    void check_collisions();
+
+    void decrease_snake_cells();
+
+    /*
     bool is_collision_with_apple();
 
     bool is_collision_with_snake_body();
 
     bool is_collision_with_borders();
-
+    */
     void render_snake();
 
     void render_apple();
 
+    /*
     std::vector<Point> generate_acceptable_points_for_new_apple();
+    */
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };

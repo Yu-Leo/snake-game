@@ -3,11 +3,17 @@
 #include "constants.h"
 
 Snake::Snake() {
+    this->length = this->DEFAULT_LENGTH;
+    this->head_position = Point(5, 5);
+    this->direction = this->DEFAULT_DIRECTION;
+    /*
     this->init_snake_dots();
     this->size = this->DEFAULT_SIZE;
-    this->direction = this->DEFAULT_DIRECTION;
+    
+    */
 }
 
+/*
 Point Snake::get_point_by_index(int index) { // Get point by it's index in dots list
     if (index >= this->size) {
         std::cout << "error\n";
@@ -19,30 +25,35 @@ Point Snake::get_point_by_index(int index) { // Get point by it's index in dots 
 int Snake::get_size() {
     return this->size;
 }
-
-void Snake::move() {
-    for (int i = this->size; i > 0; i--) {
-        this->dots[i] = this->dots[i - 1];
-    }
-
+*/
+void Snake::move_head() {
     switch (this->direction) {
-    case Directions::RIGHT:
-        dots[0].x++;
-        break;
-    case Directions::DOWN:
-        dots[0].y++;
-        break;
-    case Directions::LEFT:
-        dots[0].x--;
-        break;
-    case Directions::UP:
-        dots[0].y--;
-        break;
-    default:
-        break;
+        case Directions::RIGHT:
+            this->head_position.x++;
+            if (this->head_position.x >= this->field_size)
+                this->head_position.x = 0;
+            break;
+        case Directions::DOWN:
+            this->head_position.y++;
+            if (this->head_position.y >= this->field_size)
+                this->head_position.y = 0;
+            break;
+        case Directions::LEFT:
+            this->head_position.x--;
+            if (this->head_position.x < 0)
+                this->head_position.x = this->field_size - 1;
+            break;
+        case Directions::UP:
+            this->head_position.y--;
+            if (this->head_position.y < 0)
+                this->head_position.y = this->field_size - 1;
+            break;
+        default:
+            break;
     }
 }
 
+/*
 void Snake::change_direction(int new_direction) {
     if (!this->is_change_of_direction_correct(new_direction)) {
         std::cout << "error\n";
@@ -96,3 +107,4 @@ bool Snake::is_change_of_direction_correct(int new_direction) {
     return (correct_value && (check_from_left || check_from_right ||
         check_from_up || check_from_down));
 }
+*/
