@@ -24,21 +24,20 @@ void GameField::move_snake() {
 }
 
 void GameField::check_collisions() {
+    int dot;
     if (field[snake.head_position.y][snake.head_position.x] != this->FIELD_CELL_TYPE_NONE) {
         switch (field[snake.head_position.y][snake.head_position.x]) {
             
             case FIELD_CELL_TYPE_APPLE:
                 snake.length++;
                 this->grow_snake();
-                int dot = this->get_random_empty_cell();
+                dot = this->get_random_empty_cell();
                 this->apple = Apple(Point(dot % this->size, dot / this->size));
                 this->render_apple();
                 break;
-            /*
             default:
-                game_over = true;
+                throw 1;
                 break;
-            */
         }
     }
 }

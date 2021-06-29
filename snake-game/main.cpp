@@ -32,9 +32,13 @@ int main() {
                 game = false;
                 break;
         }
-        
-        game_field.move_snake();
-        std::cout << game_field << '\n';
+        try {
+            game_field.move_snake();
+            std::cout << game_field << '\n';
+        } catch (const int& e) {
+            game = false;
+            std::cout << "Game over!\n";
+        }
     }
     return 0;
 }
