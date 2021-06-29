@@ -44,6 +44,8 @@ private:
 
     void check_collisions();
 
+    void grow_snake();
+
     void decrease_snake_cells();
 
     /*
@@ -56,6 +58,8 @@ private:
     void render_snake();
 
     void render_apple();
+
+    int get_random_empty_cell();
 
     /*
     std::vector<Point> generate_acceptable_points_for_new_apple();
