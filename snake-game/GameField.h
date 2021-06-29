@@ -9,17 +9,11 @@
 
 class GameField {
 public:
+
     GameField();
-    /*
-    void update();
-    */
+
     void move_snake();
 
-    /*
-    void check_collision_with_apple();
-
-    bool is_game_over();
-    */
     void turn_snake(int direction);
     
 private:
@@ -48,22 +42,11 @@ private:
 
     void decrease_snake_cells();
 
-    /*
-    bool is_collision_with_apple();
-
-    bool is_collision_with_snake_body();
-
-    bool is_collision_with_borders();
-    */
     void render_snake();
 
     void render_apple();
 
     int get_random_empty_cell();
-
-    /*
-    std::vector<Point> generate_acceptable_points_for_new_apple();
-    */
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
