@@ -24,6 +24,14 @@ void GameField::move_snake() {
     this->decrease_snake_cells();
 }
 
+void GameField::turn_snake(int direction) {
+    this->snake.change_direction(direction);
+}
+
+int GameField::get_snake_direction() const {
+    return this->snake.get_direction();
+}
+
 void GameField::check_collisions() {
     int dot;
     Point hp = snake.get_head_pos();
@@ -62,10 +70,6 @@ void GameField::decrease_snake_cells() {
             }
         }
     }
-}
-
-void GameField::turn_snake(int direction) {
-    this->snake.change_direction(direction);
 }
 
 void GameField::resize_matrix() {

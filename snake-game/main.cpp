@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 #include "constants.h"
 #include "GameField.h"
@@ -10,28 +11,45 @@ int main() {
 
     bool game = true;
 
+    std::queue<int> snake_directions;
     std::cout << game_field << '\n';
     while (game) {
         char command;
         std::cin >> command;
+        int last_snake_direction = (snake_directions.empty() ?
+            game_field.get_snake_direction() : snake_directions.front());
         
         switch (command) {
             case 'w':
-                game_field.turn_snake(Directions::UP);
+                if (last_snake_direction != Directions::DOWN && snake_directions.size() < 2) {
+                    snake_directions.push(Directions::UP);
+                }
                 break;
             case 'a':
-                game_field.turn_snake(Directions::LEFT);
+                if (last_snake_direction != Directions::RIGHT && snake_directions.size() < 2) {
+                    snake_directions.push(Directions::LEFT);
+                }
                 break;
             case 's':
-                game_field.turn_snake(Directions::DOWN);
+                if (last_snake_direction != Directions::UP && snake_directions.size() < 2) {
+                    snake_directions.push(Directions::DOWN);
+                }
                 break;
             case 'd':
-                game_field.turn_snake(Directions::RIGHT);
+                if (last_snake_direction != Directions::LEFT && snake_directions.size() < 2) {
+                    snake_directions.push(Directions::RIGHT);
+                }
                 break;
             default:
                 game = false;
                 break;
         }
+
+        if (!snake_directions.empty()) {
+            game_field.turn_snake(snake_directions.front());
+            snake_directions.pop();
+        }
+
         try {
             game_field.move_snake();
             std::cout << game_field << '\n';

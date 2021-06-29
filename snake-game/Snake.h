@@ -17,6 +17,8 @@ public:
 
     int get_length() const;
 
+    int get_direction() const;
+
     void increase_length();
 
     void change_direction(int new_direction);

@@ -15,6 +15,8 @@ public:
     void move_snake();
 
     void turn_snake(int direction);
+
+    int get_snake_direction() const;
     
 private:
     static const char SNAKE_SYMBOL = '#';
