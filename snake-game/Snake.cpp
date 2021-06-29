@@ -48,6 +48,10 @@ int Snake::get_length() const {
     return this->length;
 }
 
+int Snake::get_direction() const {
+    return this->direction;
+}
+
 void Snake::increase_length() {
     this->length++;
 }
