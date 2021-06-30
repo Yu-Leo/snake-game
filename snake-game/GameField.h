@@ -3,53 +3,64 @@
 #include <iostream>
 #include <vector>
 
-#include "constants.h"
 #include "Apple.h"
 #include "Snake.h"
 
 class GameField {
 public:
-    GameField();
 
-    void update();
+    GameField();
 
     void move_snake();
 
-    void check_collision_with_apple();
+    void turn_snake(int direction); // Change snake direction
 
-    bool is_game_over();
-
-    void turn_snake(int direction);
-
+    int get_snake_direction() const;
+    
 private:
-    static const char SNAKE_SYMBOL = '#';
-    static const char VOID_SYMBOL = '-';
-    static const char APPLE_SYMBOL = '*';
+
+    enum Symbols { // Symbols for console display
+        SNAKE = '#', // Cell with snake
+        NONE = '-', // Empty cell
+        APPLE = '*' // Cell with apple
+    };
+
+    static const int FIELD_CELL_TYPE_NONE = 0;
+    static const int FIELD_CELL_TYPE_APPLE = -1;
 
     static const int DEFAULT_SIZE = 20;
+
     const int size = this->DEFAULT_SIZE; // Length of side of field
 
-    std::vector<std::vector<char>> field;
+    std::vector<std::vector<int>> field;
     Snake snake;
     Apple apple;
 
-    void resize_matrix();
+    void resize_matrix(); // Change sizes of field vectors
 
-    void init_field(); // Fill the matrix with VOID_SYMBOLs
+    void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
 
-    bool is_collision_with_apple();
+    void check_collisions(); // Check collisions snake head with other cells
 
-    bool is_collision_with_snake_body();
+    void grow_snake(); // Grow snake, if it eat apple
 
-    bool is_collision_with_borders();
+    void decrease_snake_cells(); // Decrease values of all snake's cells
 
-    void render_snake();
+    void render_snake(); // Fill snake's cells
 
-    void render_apple();
+    void render_apple(); // Fill apple's cell
 
-    std::vector<Point> generate_acceptable_points_for_new_apple();
+    bool is_cell_empty(const Point& cell); // Is cell is empty
+
+    int count_empty_cells();
+
+    Point get_random_empty_cell();
+
+    friend void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
+
+void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 
 std::ostream& operator<< (std::ostream& out, const GameField& game_field);
