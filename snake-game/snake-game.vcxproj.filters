@@ -47,9 +47,6 @@
     <ClInclude Include="GameField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RandomPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>

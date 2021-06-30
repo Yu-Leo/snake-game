@@ -148,7 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
-    <ClInclude Include="constants.h" />
     <ClInclude Include="GameField.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="RandomPoint.h" />

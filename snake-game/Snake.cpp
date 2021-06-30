@@ -1,7 +1,5 @@
 #include "Snake.h"
 
-#include "constants.h"
-
 Snake::Snake() {
     this->length = this->DEFAULT_LENGTH;
     this->head_position = Point(5, 5);

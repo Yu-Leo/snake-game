@@ -3,10 +3,17 @@
 #include <vector>
 
 #include "Point.h"
-#include "constants.h"
 
 class Snake {
 public:
+
+    enum Directions {
+        RIGHT,
+        DOWN,
+        LEFT,
+        UP
+    };
+
     Snake();
 
     void move_head();

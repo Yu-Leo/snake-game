@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-#include "constants.h"
 #include "Apple.h"
 #include "Snake.h"
 
