@@ -1,11 +1,6 @@
 #include "Snake.h"
 
-Snake::Snake() {
-    this->length = this->DEFAULT_LENGTH;
-    this->head_position = Point(5, 5);
-    this->direction = this->DEFAULT_DIRECTION;
-    this->field_size = 0;
-}
+Snake::Snake() {}
 
 void Snake::move_head() {
     switch (this->direction) {

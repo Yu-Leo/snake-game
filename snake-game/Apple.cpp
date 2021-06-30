@@ -1,8 +1,5 @@
 #include "Apple.h"
 
-#include "constants.h"
-#include "Point.h"
-
 Apple::Apple() {}
 
 Apple::Apple(const Point& point) {

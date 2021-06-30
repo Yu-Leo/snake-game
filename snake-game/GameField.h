@@ -13,16 +13,16 @@ public:
 
     void move_snake();
 
-    void turn_snake(int direction);
+    void turn_snake(int direction); // Change snake direction
 
     int get_snake_direction() const;
     
 private:
 
-    enum Symbols {
-        SNAKE = '#',
-        NONE = '-',
-        APPLE = '*'
+    enum Symbols { // Symbols for console display
+        SNAKE = '#', // Cell with snake
+        NONE = '-', // Empty cell
+        APPLE = '*' // Cell with apple
     };
 
     static const int FIELD_CELL_TYPE_NONE = 0;
@@ -36,27 +36,31 @@ private:
     Snake snake;
     Apple apple;
 
-    void resize_matrix();
+    void resize_matrix(); // Change sizes of field vectors
 
-    void init_field(); // Fill the matrix with VOID_SYMBOLs
+    void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
 
-    void check_collisions();
+    void check_collisions(); // Check collisions snake head with other cells
 
-    void grow_snake();
+    void grow_snake(); // Grow snake, if it eat apple
 
-    void decrease_snake_cells();
+    void decrease_snake_cells(); // Decrease values of all snake's cells
 
-    void render_snake();
+    void render_snake(); // Fill snake's cells
 
-    void render_apple();
+    void render_apple(); // Fill apple's cell
 
-    bool is_cell_empty(const Point& cell);
+    bool is_cell_empty(const Point& cell); // Is cell is empty
 
     int count_empty_cells();
 
     Point get_random_empty_cell();
 
+    friend void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
+
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
+
+void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 
 std::ostream& operator<< (std::ostream& out, const GameField& game_field);
