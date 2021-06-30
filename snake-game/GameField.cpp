@@ -132,13 +132,13 @@ std::ostream& operator<< (std::ostream& out, const GameField& game_field) {
         for (int j = 0; j < game_field.size; j++) {
             switch (game_field.field[i][j]) {
                 case game_field.FIELD_CELL_TYPE_NONE:
-                    out << game_field.VOID_SYMBOL;
+                    out << (char)GameField::Symbols::NONE;
                     break;
                 case game_field.FIELD_CELL_TYPE_APPLE:
-                    out << game_field.APPLE_SYMBOL;
+                    out << (char)GameField::Symbols::APPLE;
                     break;
                 default:
-                    out << game_field.field[i][j];
+                    out << (char)GameField::Symbols::SNAKE;
                     break;
             }
             out << ' ';

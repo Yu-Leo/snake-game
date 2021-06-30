@@ -18,9 +18,12 @@ public:
     int get_snake_direction() const;
     
 private:
-    static const char SNAKE_SYMBOL = '#';
-    static const char VOID_SYMBOL = '-';
-    static const char APPLE_SYMBOL = '*';
+
+    enum Symbols {
+        SNAKE = '#',
+        NONE = '-',
+        APPLE = '*'
+    };
 
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
