@@ -1,7 +1,6 @@
 #include <iostream>
 #include <queue>
 
-#include "constants.h"
 #include "GameField.h"
 
 int main() {
@@ -21,23 +20,23 @@ int main() {
         
         switch (command) {
             case 'w':
-                if (last_snake_direction != Directions::DOWN && snake_directions.size() < 2) {
-                    snake_directions.push(Directions::UP);
+                if (last_snake_direction != Snake::Directions::DOWN && snake_directions.size() < 2) {
+                    snake_directions.push(Snake::Directions::UP);
                 }
                 break;
             case 'a':
-                if (last_snake_direction != Directions::RIGHT && snake_directions.size() < 2) {
-                    snake_directions.push(Directions::LEFT);
+                if (last_snake_direction != Snake::Directions::RIGHT && snake_directions.size() < 2) {
+                    snake_directions.push(Snake::Directions::LEFT);
                 }
                 break;
             case 's':
-                if (last_snake_direction != Directions::UP && snake_directions.size() < 2) {
-                    snake_directions.push(Directions::DOWN);
+                if (last_snake_direction != Snake::Directions::UP && snake_directions.size() < 2) {
+                    snake_directions.push(Snake::Directions::DOWN);
                 }
                 break;
             case 'd':
-                if (last_snake_direction != Directions::LEFT && snake_directions.size() < 2) {
-                    snake_directions.push(Directions::RIGHT);
+                if (last_snake_direction != Snake::Directions::LEFT && snake_directions.size() < 2) {
+                    snake_directions.push(Snake::Directions::RIGHT);
                 }
                 break;
             default:
