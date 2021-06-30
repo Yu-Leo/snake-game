@@ -3,37 +3,40 @@
 #include <vector>
 
 #include "Point.h"
-#include "constants.h"
 
 class Snake {
 public:
 
+    enum Directions { // Directions of snake's movement
+        RIGHT,
+        DOWN,
+        LEFT,
+        UP
+    };
+
     Snake();
 
-    Point get_point_by_index(int index); // Get point by it's index in dots list
-       
-    int get_size();
+    void move_head();
 
-    void move();
+    void set_field_size(int field_size); // Init field size
+
+    Point get_head_pos() const;
+
+    int get_length() const;
+
+    int get_direction() const;
+
+    void increase_length(); // Increase snake length by one cell
 
     void change_direction(int new_direction);
 
-    bool check_collision_with_body(); // It's snake eating itself
-
-    void increase_size();
-
-    std::vector<Point> get_points();
-
 private:
-    static const int DEFAULT_SIZE = 3;
-    static const int DEFAULT_DIRECTION = Directions::RIGHT;
 
-    std::vector<Point> dots;
-    int size;
-    int direction;
+    int length = 3;
+    Point head_position = Point(this->length - 1, 0);
+    int direction = Directions::RIGHT;
 
-    void init_snake_dots(); // Init snake in starts coordinates
-
-    bool is_change_of_direction_correct(int new_direction);
+    // Size of fields on which it is used snake. Needs initialization real value!
+    int field_size = 0;
 };
 
