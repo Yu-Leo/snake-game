@@ -50,7 +50,11 @@ private:
 
     void render_apple();
 
-    int get_random_empty_cell();
+    bool is_cell_empty(const Point& cell);
+
+    int count_empty_cells();
+
+    Point get_random_empty_cell();
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
