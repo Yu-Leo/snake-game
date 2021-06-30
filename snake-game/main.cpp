@@ -1,10 +1,18 @@
 #include <iostream>
+#include <ctime>
 #include <queue>
 
 #include "GameField.h"
 
+// #define RANDOM_GENERATING
+
 int main() {
-    srand(0);
+
+#ifdef RANDOM_GENERATING
+    srand(std::time(NULL)); // Set current time as seed for png
+#else
+    srand(0); // Set seed for pseudorandom number generator
+#endif
 
     GameField game_field;
 
