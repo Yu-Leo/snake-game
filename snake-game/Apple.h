@@ -7,10 +7,11 @@ public:
 
     Apple();
 
-    Apple(const Point& point);
+    Apple(const Point& point); // Init apple in point coordinates
 
     Point get_coordinates();
 
 private:
+
     Point coordinates;
 };

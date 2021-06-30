@@ -7,7 +7,7 @@
 class Snake {
 public:
 
-    enum Directions {
+    enum Directions { // Directions of snake's movement
         RIGHT,
         DOWN,
         LEFT,
@@ -18,7 +18,7 @@ public:
 
     void move_head();
 
-    void set_field_size(int field_size);
+    void set_field_size(int field_size); // Init field size
 
     Point get_head_pos() const;
 
@@ -26,17 +26,17 @@ public:
 
     int get_direction() const;
 
-    void increase_length();
+    void increase_length(); // Increase snake length by one cell
 
     void change_direction(int new_direction);
 
 private:
-    static const int DEFAULT_LENGTH = 3;
-    static const int DEFAULT_DIRECTION = Directions::RIGHT;
 
-    int length;
-    Point head_position;
-    int direction;
-    int field_size;
+    int length = 3;
+    Point head_position = Point(this->length - 1, 0);
+    int direction = Directions::RIGHT;
+
+    // Size of fields on which it is used snake. Needs initialization real value!
+    int field_size = 0;
 };
 
