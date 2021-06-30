@@ -4,7 +4,6 @@
 
 #include "Apple.h"
 #include "Snake.h"
-#include "RandomPoint.h"
 
 GameField::GameField() {
     this->init_field();
