@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Point.h"
+#include "Size.h"
 
 class Snake {
 public:
@@ -18,7 +19,7 @@ public:
 
     void move_head();
 
-    void set_field_size(int field_size); // Init field size
+    void set_field_size(Size field_size); // Init field size
 
     Point get_head_pos() const;
 
@@ -37,6 +38,6 @@ private:
     int direction = Directions::RIGHT;
 
     // Size of fields on which it is used snake. Needs initialization real value!
-    int field_size = 0;
+    Size field_size;
 };
 
