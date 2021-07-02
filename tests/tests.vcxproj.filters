@@ -18,5 +18,8 @@
     <ClCompile Include="testSize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
