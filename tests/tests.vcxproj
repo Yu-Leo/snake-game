@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="testPoint.cpp" />
     <ClCompile Include="testSize.cpp" />
   </ItemGroup>
   <ItemGroup>
