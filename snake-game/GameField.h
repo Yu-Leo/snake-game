@@ -5,6 +5,7 @@
 
 #include "Apple.h"
 #include "Snake.h"
+#include "Size.h"
 
 class GameField {
 public:
@@ -28,10 +29,7 @@ private:
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
 
-    static const int DEFAULT_SIZE = 20;
-
-    const int size = this->DEFAULT_SIZE; // Length of side of field
-
+    Size size = Size(35, 20);
     std::vector<std::vector<int>> field;
     Snake snake;
     Apple apple;
@@ -60,6 +58,7 @@ private:
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
+
 
 void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 

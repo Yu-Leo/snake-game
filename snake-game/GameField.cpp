@@ -2,9 +2,11 @@
 
 GameField::GameField() {
     this->init_field();
-    this->apple = Apple(this->get_random_empty_cell());
+
     this->snake.set_field_size(this->size);
     this->render_snake();
+
+    this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 }
 
@@ -25,17 +27,17 @@ int GameField::get_snake_direction() const {
 }
 
 void GameField::resize_matrix() {
-    this->field.resize(this->size);
-    for (int i = 0; i < this->size; i++) {
-        this->field[i].resize(this->size);
+    this->field.resize(this->size.height);
+    for (int i = 0; i < this->size.height; i++) {
+        this->field[i].resize(this->size.width);
     }
 }
 
 void GameField::init_field() {
     this->resize_matrix();
 
-    for (int i = 0; i < this->size; i++) {
-        for (int j = 0; j < this->size; j++) {
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
             this->field[i][j] = this->FIELD_CELL_TYPE_NONE;
         }
     }
@@ -59,8 +61,8 @@ void GameField::check_collisions() {
 }
 
 void GameField::grow_snake() {
-    for (int i = 0; i < this->size; i++) {
-        for (int j = 0; j < this->size; j++) {
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
             if (this->field[i][j] > FIELD_CELL_TYPE_NONE) {
                 this->field[i][j]++;
             }
@@ -69,8 +71,8 @@ void GameField::grow_snake() {
 }
 
 void GameField::decrease_snake_cells() {
-    for (int i = 0; i < this->size; i++) {
-        for (int j = 0; j < this->size; j++) {
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
             if (this->field[i][j] > this->FIELD_CELL_TYPE_NONE) {
                 this->field[i][j]--;
             }
@@ -92,13 +94,13 @@ void GameField::render_apple() {
 }
 
 bool GameField::is_cell_empty(const Point& cell) {
-    return this->field[cell.x][cell.y] == this->FIELD_CELL_TYPE_NONE;
+    return this->field[cell.y][cell.x] == this->FIELD_CELL_TYPE_NONE;
 }
 
 int GameField::count_empty_cells() {
     int count = 0;
-    for (int i = 0; i < this->size; i++) {
-        for (int j = 0; j < this->size; j++) {
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
             count += int(this->is_cell_empty(Point(j, i)));
         }
     }
@@ -109,8 +111,8 @@ Point GameField::get_random_empty_cell() {
     int empty_cells = this->count_empty_cells();
     int target_empty_cell_index = rand() % empty_cells;
     int empty_cell_index = 0;
-    for (int i = 0; i < this->size; i++) {
-        for (int j = 0; j < this->size; j++) {
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
             if (this->field[i][j] == FIELD_CELL_TYPE_NONE) {
                 if (empty_cell_index == target_empty_cell_index) {
                     return Point(j, i);
@@ -137,8 +139,8 @@ void print_cell(std::ostream& out, const GameField& game_field, const Point &cel
 }
 
 std::ostream& operator<<(std::ostream& out, const GameField& game_field) {
-    for (int i = 0; i < game_field.size; i++) {
-        for (int j = 0; j < game_field.size; j++) {
+    for (int i = 0; i < game_field.size.height; i++) {
+        for (int j = 0; j < game_field.size.width; j++) {
             print_cell(out, game_field, Point(j, i));
             out << ' ';
         }
