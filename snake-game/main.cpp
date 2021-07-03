@@ -1,3 +1,5 @@
+#include <SFML/Graphics.hpp>
+
 #include <iostream>
 #include <ctime>
 #include <queue>
