@@ -26,6 +26,10 @@ int GameField::get_snake_direction() const {
     return this->snake.get_direction();
 }
 
+Size GameField::get_size() const{
+    return this->size;
+}
+
 void GameField::resize_matrix() {
     this->field.resize(this->size.height);
     for (int i = 0; i < this->size.height; i++) {
