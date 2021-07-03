@@ -10,6 +10,11 @@
 class GameField {
 public:
 
+    static const int FIELD_CELL_TYPE_NONE = 0;
+    static const int FIELD_CELL_TYPE_APPLE = -1;
+
+    std::vector<std::vector<int>> field;
+
     GameField();
 
     void move_snake();
@@ -17,6 +22,8 @@ public:
     void turn_snake(int direction); // Change snake direction
 
     int get_snake_direction() const;
+
+    Size get_size() const;
     
 private:
 
@@ -26,11 +33,8 @@ private:
         APPLE = '*' // Cell with apple
     };
 
-    static const int FIELD_CELL_TYPE_NONE = 0;
-    static const int FIELD_CELL_TYPE_APPLE = -1;
-
     Size size = Size(35, 20);
-    std::vector<std::vector<int>> field;
+    
     Snake snake;
     Apple apple;
 
