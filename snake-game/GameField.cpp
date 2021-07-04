@@ -14,6 +14,8 @@ GameField::GameField(const Size& size) {
     this->game_status = true;
 }
 
+GameField::GameField() : GameField(Size(20, 20)) {}
+
 void GameField::one_iteration() {
     this->turn_snake();
     this->move_snake();
