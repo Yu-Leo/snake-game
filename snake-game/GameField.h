@@ -14,25 +14,23 @@ public:
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
 
-    GameField(const Size& size);
+    GameField(const Size& size); // Constructor with settable size
 
-    GameField();
+    GameField(); // Constructor with default size
 
     void one_iteration(); // Processing snake movement
 
-    void key_pressed(); // Needs to call before changing snake direction
+    void key_pressed(); // Update last snake direction. Needs to call before changing snake direction
 
     void insert_command(int direction); // Processing new changing direction command 
 
-    void finish_game();
+    void finish_game(); // Exit frome game (game over)
 
-    int get_snake_direction() const;
+    Size get_size() const; // Getter for game_field size
 
-    Size get_size() const;
+    bool get_game_status() const; // Getter for game status
 
-    bool get_game_status() const;
-
-    int get_cell_at(const Point& point) const;
+    int get_cell_at(const Point& point) const; // Get type of specified cell
     
 private:
 
@@ -42,13 +40,13 @@ private:
         APPLE = '*' // Cell with apple
     };
 
-    Size size;
-    std::vector<std::vector<int>> field;
+    Size size; // Size of game field
+    std::vector<std::vector<int>> field; // Raw field
 
     Snake snake;
     Apple apple;
 
-    std::queue<int> snake_directions;
+    std::queue<int> snake_directions; // Queue of controlling commands
     int last_snake_direction;
 
     bool game_status; // Is player in gameplay
@@ -57,7 +55,7 @@ private:
 
     void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
 
-    void move_snake();
+    void move_snake(); // Move the snake by one cell
 
     void turn_snake(); // Change snake direction
 
@@ -81,7 +79,6 @@ private:
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
-
 
 void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 
