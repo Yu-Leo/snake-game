@@ -45,7 +45,7 @@ int main() {
     srand(0); // Set seed for pseudorandom number generator
 #endif
 
-    GameField game_field;
+    GameField game_field(Size(35, 20));
     bool game = true; // Is player in gameplay
     std::queue<int> snake_directions;
     
