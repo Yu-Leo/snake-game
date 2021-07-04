@@ -14,16 +14,9 @@ GameField::GameField(const Size& size) {
     this->game_status = true;
 }
 
-void GameField::move_snake() {
-    this->snake.move_head();
-
-    this->check_collisions();
-    if (!game_status)
-        return;
-
-    Point hp = this->snake.get_head_pos();
-    this->field[hp.y][hp.x] = this->snake.get_length() + 1;
-    this->decrease_snake_cells();
+void GameField::one_iteration() {
+    this->turn_snake();
+    this->move_snake();
 }
 
 void GameField::key_pressed() {
@@ -70,13 +63,6 @@ void GameField::finish_game() {
     this->game_status = false;
 }
 
-void GameField::turn_snake() {
-    if (!this->snake_directions.empty()) {
-        this->snake.change_direction(this->snake_directions.front());
-        this->snake_directions.pop();
-    }
-}
-
 int GameField::get_snake_direction() const {
     return this->snake.get_direction();
 }
@@ -103,6 +89,25 @@ void GameField::init_field() {
         for (int j = 0; j < this->size.width; j++) {
             this->field[i][j] = this->FIELD_CELL_TYPE_NONE;
         }
+    }
+}
+
+void GameField::move_snake() {
+    this->snake.move_head();
+
+    this->check_collisions();
+    if (!game_status)
+        return;
+
+    Point hp = this->snake.get_head_pos();
+    this->field[hp.y][hp.x] = this->snake.get_length() + 1;
+    this->decrease_snake_cells();
+}
+
+void GameField::turn_snake() {
+    if (!this->snake_directions.empty()) {
+        this->snake.change_direction(this->snake_directions.front());
+        this->snake_directions.pop();
     }
 }
 

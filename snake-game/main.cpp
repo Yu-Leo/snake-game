@@ -47,7 +47,6 @@ int main() {
 
     GameField game_field(Size(35, 20));
     
-    
     int window_width = game_field.get_size().width * CELL_SIZE;
     int window_height = game_field.get_size().height * CELL_SIZE;
 
@@ -83,8 +82,7 @@ int main() {
                 }
             }
         }
-        game_field.turn_snake();
-        game_field.move_snake();
+        game_field.one_iteration();
 
         if (game_field.get_game_status()) {
             main_window.clear(sf::Color(183, 212, 168));

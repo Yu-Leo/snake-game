@@ -18,15 +18,13 @@ public:
 
     GameField(const Size& size);
 
-    void move_snake();
+    void one_iteration(); // Processing snake movement
 
     void key_pressed(); // Needs to call before changing snake direction
 
     void insert_command(int direction); // Processing new changing direction command 
 
     void finish_game();
-
-    void turn_snake(); // Change snake direction
 
     int get_snake_direction() const;
 
@@ -55,6 +53,10 @@ private:
     void resize_matrix(); // Change sizes of field vectors
 
     void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
+
+    void move_snake();
+
+    void turn_snake(); // Change snake direction
 
     void check_collisions(); // Check collisions snake head with other cells
 
