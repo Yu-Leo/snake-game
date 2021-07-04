@@ -42,10 +42,11 @@ void MainWindow::one_iteration() {
 }
 
 void MainWindow::redraw() {
-    if (this->game_field.get_game_status()) {
+    GameField::GameStatus game_status = this->game_field.get_game_status();
+    if (game_status == GameField::GameStatus::ON) {
         this->draw_field();
         this->display();
-    } else {
+    } else if (game_status == GameField::GameStatus::OFF) {
         this->close();
     }
 }

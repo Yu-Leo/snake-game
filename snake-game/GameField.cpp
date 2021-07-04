@@ -12,7 +12,7 @@ GameField::GameField(const Size& size) {
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 
-    this->game_status = true;
+    this->game_status = GameField::GameStatus::ON;
 }
 
 GameField::GameField() : GameField(Size(20, 20)) {}
@@ -63,14 +63,14 @@ void GameField::insert_command(int direction) {
 }
 
 void GameField::finish_game() {
-    this->game_status = false;
+    this->game_status = GameStatus::OFF;
 }
 
 Size GameField::get_size() const {
     return this->size;
 }
 
-bool GameField::get_game_status() const{
+GameField::GameStatus GameField::get_game_status() const{
     return this->game_status;
 }
 
@@ -105,7 +105,7 @@ void GameField::move_snake() {
     this->snake.move_head();
 
     this->check_collisions();
-    if (!this->game_status)
+    if (this->game_status == GameStatus::OFF)
         return;
 
     Point hp = this->snake.get_head_pos();
