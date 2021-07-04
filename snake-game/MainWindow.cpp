@@ -52,14 +52,14 @@ void MainWindow::redraw() {
 
 void MainWindow::draw_cell(const Point& point, sf::RectangleShape& cell) {
     cell.setPosition(float(point.x * CELL_SIZE), float(point.y * CELL_SIZE));
-    switch (this->game_field.get_cell_at(point)) {
-    case GameField::FIELD_CELL_TYPE_NONE:
+    switch (this->game_field.get_cell_type(point)) {
+    case GameField::CellTypes::NONE:
         cell.setFillColor(sf::Color::Black);
         break;
-    case GameField::FIELD_CELL_TYPE_APPLE:
+    case GameField::CellTypes::APPLE:
         cell.setFillColor(sf::Color::Red);
         break;
-    default:
+    case GameField::CellTypes::SNAKE:
         cell.setFillColor(sf::Color::Green);
         break;
     }

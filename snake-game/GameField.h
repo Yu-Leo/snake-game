@@ -11,8 +11,11 @@
 class GameField {
 public:
 
-    static const int FIELD_CELL_TYPE_NONE = 0;
-    static const int FIELD_CELL_TYPE_APPLE = -1;
+    enum class CellTypes {
+        NONE,
+        APPLE,
+        SNAKE
+    };
 
     GameField(const Size& size); // Constructor with settable size
 
@@ -30,11 +33,14 @@ public:
 
     bool get_game_status() const; // Getter for game status
 
-    int get_cell_at(const Point& point) const; // Get type of specified cell
+    CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
     
 private:
 
-    enum Symbols { // Symbols for console display
+    static const int FIELD_CELL_TYPE_NONE = 0;
+    static const int FIELD_CELL_TYPE_APPLE = -1;
+
+    enum class Symbols { // Symbols for console display
         SNAKE = '#', // Cell with snake
         NONE = '-', // Empty cell
         APPLE = '*' // Cell with apple
