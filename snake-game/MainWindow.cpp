@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 
-MainWindow::MainWindow(const Size& size) : sf::RenderWindow (
+MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE),
     "Snake game",
     sf::Style::Close) {
@@ -43,7 +43,6 @@ void MainWindow::one_iteration() {
 
 void MainWindow::redraw() {
     if (this->game_field.get_game_status()) {
-        this->clear(sf::Color(183, 212, 168));
         this->draw_field();
         this->display();
     }
@@ -54,7 +53,7 @@ void MainWindow::redraw() {
 
 void MainWindow::draw_cell(const Point& point, sf::RectangleShape& cell) {
     cell.setPosition(float(point.x * CELL_SIZE), float(point.y * CELL_SIZE));
-    switch (this->game_field.field[point.y][point.x]) {
+    switch (this->game_field.get_cell_at(point)) {
         case GameField::FIELD_CELL_TYPE_NONE:
             cell.setFillColor(sf::Color::Black);
             break;

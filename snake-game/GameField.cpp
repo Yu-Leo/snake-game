@@ -77,6 +77,10 @@ bool GameField::get_game_status() const{
     return this->game_status;
 }
 
+int GameField::get_cell_at(const Point& point) const {
+    return this->field[point.y][point.x];
+}
+
 void GameField::resize_matrix() {
     this->field.resize(this->size.height);
     for (int i = 0; i < this->size.height; i++) {

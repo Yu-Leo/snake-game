@@ -14,8 +14,6 @@ public:
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
 
-    std::vector<std::vector<int>> field;
-
     GameField(const Size& size);
 
     GameField();
@@ -33,6 +31,8 @@ public:
     Size get_size() const;
 
     bool get_game_status() const;
+
+    int get_cell_at(const Point& point) const;
     
 private:
 
@@ -43,7 +43,8 @@ private:
     };
 
     Size size;
-    
+    std::vector<std::vector<int>> field;
+
     Snake snake;
     Apple apple;
 
