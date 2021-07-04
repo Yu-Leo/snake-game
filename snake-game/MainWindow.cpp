@@ -13,7 +13,7 @@ void MainWindow::event_handling() {
     while (this->pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             this->close();
-        if (event.type == sf::Event::KeyPressed) {
+        if (event.type == sf::Event::KeyPressed) { // Controlling
             this->game_field.key_pressed();
             switch (event.key.code) {
             case sf::Keyboard::Up:
@@ -45,8 +45,7 @@ void MainWindow::redraw() {
     if (this->game_field.get_game_status()) {
         this->draw_field();
         this->display();
-    }
-    else {
+    } else {
         this->close();
     }
 }
@@ -54,15 +53,15 @@ void MainWindow::redraw() {
 void MainWindow::draw_cell(const Point& point, sf::RectangleShape& cell) {
     cell.setPosition(float(point.x * CELL_SIZE), float(point.y * CELL_SIZE));
     switch (this->game_field.get_cell_at(point)) {
-        case GameField::FIELD_CELL_TYPE_NONE:
-            cell.setFillColor(sf::Color::Black);
-            break;
-        case GameField::FIELD_CELL_TYPE_APPLE:
-            cell.setFillColor(sf::Color::Red);
-            break;
-        default:
-            cell.setFillColor(sf::Color::Green);
-            break;
+    case GameField::FIELD_CELL_TYPE_NONE:
+        cell.setFillColor(sf::Color::Black);
+        break;
+    case GameField::FIELD_CELL_TYPE_APPLE:
+        cell.setFillColor(sf::Color::Red);
+        break;
+    default:
+        cell.setFillColor(sf::Color::Green);
+        break;
     }
     this->draw(cell);
 }

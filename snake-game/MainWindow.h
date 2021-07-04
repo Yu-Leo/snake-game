@@ -6,15 +6,16 @@
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 
-class MainWindow : public sf::RenderWindow {
+class MainWindow : public sf::RenderWindow { // Class of main game window
 public:
-    MainWindow(const Size& size);
 
-    void event_handling();
+    MainWindow(const Size& size); // Constructor with settable size
 
-    void one_iteration();
+    void event_handling(); // Processing window's events 
 
-    void redraw();
+    void one_iteration(); // One game iteration
+
+    void redraw(); // Redraw game window
     
 private:
 

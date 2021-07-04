@@ -2,12 +2,13 @@
 
 GameField::GameField(const Size& size) {
     this->size = size;
-
     this->init_field();
 
+    // Create snake
     this->snake.set_field_size(this->size);
     this->render_snake();
 
+    // Create apple
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 
@@ -17,13 +18,13 @@ GameField::GameField(const Size& size) {
 GameField::GameField() : GameField(Size(20, 20)) {}
 
 void GameField::one_iteration() {
-    this->turn_snake();
+    this->turn_snake(); // Analyze queue of controlling commands
     this->move_snake();
 }
 
 void GameField::key_pressed() {
     this->last_snake_direction = (this->snake_directions.empty() ?
-        this->get_snake_direction() : this->snake_directions.front());
+        this->snake.get_direction() : this->snake_directions.front());
 }
 
 void GameField::insert_command(int direction) {
@@ -65,10 +66,6 @@ void GameField::finish_game() {
     this->game_status = false;
 }
 
-int GameField::get_snake_direction() const {
-    return this->snake.get_direction();
-}
-
 Size GameField::get_size() const {
     return this->size;
 }
@@ -90,7 +87,6 @@ void GameField::resize_matrix() {
 
 void GameField::init_field() {
     this->resize_matrix();
-
     for (int i = 0; i < this->size.height; i++) {
         for (int j = 0; j < this->size.width; j++) {
             this->field[i][j] = this->FIELD_CELL_TYPE_NONE;
@@ -102,7 +98,7 @@ void GameField::move_snake() {
     this->snake.move_head();
 
     this->check_collisions();
-    if (!game_status)
+    if (!this->game_status)
         return;
 
     Point hp = this->snake.get_head_pos();
