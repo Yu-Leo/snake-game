@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #include "Apple.h"
 #include "Snake.h"
@@ -17,15 +18,21 @@ public:
 
     GameField(const Size& size);
 
-    GameField();
-
     void move_snake();
 
-    void turn_snake(int direction); // Change snake direction
+    void key_pressed(); // Needs to call before changing snake direction
+
+    void insert_command(int direction); // Processing new changing direction command 
+
+    void finish_game();
+
+    void turn_snake(); // Change snake direction
 
     int get_snake_direction() const;
 
     Size get_size() const;
+
+    bool get_game_status() const;
     
 private:
 
@@ -39,6 +46,11 @@ private:
     
     Snake snake;
     Apple apple;
+
+    std::queue<int> snake_directions;
+    int last_snake_direction;
+
+    bool game_status; // Is player in gameplay
 
     void resize_matrix(); // Change sizes of field vectors
 

@@ -10,26 +10,83 @@ GameField::GameField(const Size& size) {
 
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
+
+    this->game_status = true;
 }
 
 void GameField::move_snake() {
     this->snake.move_head();
+
     this->check_collisions();
+    if (!game_status)
+        return;
+
     Point hp = this->snake.get_head_pos();
     this->field[hp.y][hp.x] = this->snake.get_length() + 1;
     this->decrease_snake_cells();
 }
 
-void GameField::turn_snake(int direction) {
-    this->snake.change_direction(direction);
+void GameField::key_pressed() {
+    this->last_snake_direction = (this->snake_directions.empty() ?
+        this->get_snake_direction() : this->snake_directions.front());
+}
+
+void GameField::insert_command(int direction) {
+    if (this->snake_directions.size() >= 2) {
+        return;
+    }
+
+    switch (direction) {
+    case Snake::Directions::UP:
+        if (this->last_snake_direction != Snake::Directions::DOWN) {
+            this->snake_directions.push(Snake::Directions::UP);
+        }
+        break;
+
+    case Snake::Directions::RIGHT:
+        if (this->last_snake_direction != Snake::Directions::LEFT) {
+            this->snake_directions.push(Snake::Directions::RIGHT);
+        }
+        break;
+
+    case Snake::Directions::DOWN:
+        if (this->last_snake_direction != Snake::Directions::UP) {
+            this->snake_directions.push(Snake::Directions::DOWN);
+        }
+        break;
+
+    case Snake::Directions::LEFT:
+        if (this->last_snake_direction != Snake::Directions::RIGHT) {
+            this->snake_directions.push(Snake::Directions::LEFT);
+        }
+        break;
+
+    default:
+        break;
+    }
+}
+
+void GameField::finish_game() {
+    this->game_status = false;
+}
+
+void GameField::turn_snake() {
+    if (!this->snake_directions.empty()) {
+        this->snake.change_direction(this->snake_directions.front());
+        this->snake_directions.pop();
+    }
 }
 
 int GameField::get_snake_direction() const {
     return this->snake.get_direction();
 }
 
-Size GameField::get_size() const{
+Size GameField::get_size() const {
     return this->size;
+}
+
+bool GameField::get_game_status() const{
+    return this->game_status;
 }
 
 void GameField::resize_matrix() {
@@ -60,7 +117,7 @@ void GameField::check_collisions() {
                 this->render_apple();
                 break;
             default:
-                throw 1;
+                this->finish_game();
                 break;
         }
     }
