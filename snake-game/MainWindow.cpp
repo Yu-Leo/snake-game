@@ -52,28 +52,28 @@ void MainWindow::redraw() {
     }
 }
 
+void MainWindow::draw_cell(const Point& point, sf::RectangleShape& cell) {
+    cell.setPosition(float(point.x * CELL_SIZE), float(point.y * CELL_SIZE));
+    switch (this->game_field.field[point.y][point.x]) {
+        case GameField::FIELD_CELL_TYPE_NONE:
+            cell.setFillColor(sf::Color::Black);
+            break;
+        case GameField::FIELD_CELL_TYPE_APPLE:
+            cell.setFillColor(sf::Color::Red);
+            break;
+        default:
+            cell.setFillColor(sf::Color::Green);
+            break;
+    }
+    this->draw(cell);
+}
+
 void MainWindow::draw_field() {
     sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 
     for (int i = 0; i < this->game_field.get_size().height; i++) {
         for (int j = 0; j < this->game_field.get_size().width; j++) {
-            switch (this->game_field.field[i][j]) {
-            case GameField::FIELD_CELL_TYPE_NONE:
-                cell.setPosition(float(j * CELL_SIZE), float(i * CELL_SIZE));
-                cell.setFillColor(sf::Color::Black);
-                this->draw(cell);
-                break;
-            case GameField::FIELD_CELL_TYPE_APPLE:
-                cell.setPosition(float(j * CELL_SIZE), float(i * CELL_SIZE));
-                cell.setFillColor(sf::Color::Red);
-                this->draw(cell);
-                break;
-            default:
-                cell.setPosition(float(j * CELL_SIZE), float(i * CELL_SIZE));
-                cell.setFillColor(sf::Color::Green);
-                this->draw(cell);
-                break;
-            }
+            this->draw_cell(Point(j, i), cell);
         }
     }
 }

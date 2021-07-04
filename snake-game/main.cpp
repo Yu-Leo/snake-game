@@ -4,7 +4,6 @@
 #include <ctime>
 
 #include "MainWindow.h"
-#include "GameField.h"
 
 #define RANDOM_GENERATING false // (true/false)
 

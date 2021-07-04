@@ -20,6 +20,8 @@ private:
 
     GameField game_field;
 
+    void draw_cell(const Point& point, sf::RectangleShape& cell);
+
     void draw_field();
 };
 
