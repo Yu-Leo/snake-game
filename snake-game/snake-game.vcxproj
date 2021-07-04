@@ -154,11 +154,13 @@
     <ClCompile Include="Apple.cpp" />
     <ClCompile Include="GameField.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="GameField.h" />
+    <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="Snake.h" />

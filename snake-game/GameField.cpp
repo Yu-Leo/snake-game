@@ -1,33 +1,88 @@
 #include "GameField.h"
 
-GameField::GameField() {
+GameField::GameField(const Size& size) {
+    this->size = size;
     this->init_field();
 
+    // Create snake
     this->snake.set_field_size(this->size);
     this->render_snake();
 
+    // Create apple
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
+
+    this->game_status = GameField::GameStatus::ON;
 }
 
-void GameField::move_snake() {
-    this->snake.move_head();
-    this->check_collisions();
-    Point hp = this->snake.get_head_pos();
-    this->field[hp.y][hp.x] = this->snake.get_length() + 1;
-    this->decrease_snake_cells();
+GameField::GameField() : GameField(Size(20, 20)) {}
+
+void GameField::one_iteration() {
+    this->turn_snake(); // Analyze queue of controlling commands
+    this->move_snake();
 }
 
-void GameField::turn_snake(int direction) {
-    this->snake.change_direction(direction);
+void GameField::key_pressed() {
+    this->last_snake_direction = (this->snake_directions.empty() ?
+        this->snake.get_direction() : this->snake_directions.front());
 }
 
-int GameField::get_snake_direction() const {
-    return this->snake.get_direction();
+void GameField::insert_command(int direction) {
+    if (this->snake_directions.size() >= 2) {
+        return;
+    }
+
+    switch (direction) {
+    case Snake::Directions::UP:
+        if (this->last_snake_direction != Snake::Directions::DOWN) {
+            this->snake_directions.push(Snake::Directions::UP);
+        }
+        break;
+
+    case Snake::Directions::RIGHT:
+        if (this->last_snake_direction != Snake::Directions::LEFT) {
+            this->snake_directions.push(Snake::Directions::RIGHT);
+        }
+        break;
+
+    case Snake::Directions::DOWN:
+        if (this->last_snake_direction != Snake::Directions::UP) {
+            this->snake_directions.push(Snake::Directions::DOWN);
+        }
+        break;
+
+    case Snake::Directions::LEFT:
+        if (this->last_snake_direction != Snake::Directions::RIGHT) {
+            this->snake_directions.push(Snake::Directions::LEFT);
+        }
+        break;
+
+    default:
+        break;
+    }
 }
 
-Size GameField::get_size() const{
+void GameField::finish_game() {
+    this->game_status = GameStatus::OFF;
+}
+
+Size GameField::get_size() const {
     return this->size;
+}
+
+GameField::GameStatus GameField::get_game_status() const{
+    return this->game_status;
+}
+
+GameField::CellTypes GameField::get_cell_type(const Point& point) const {
+    switch (this->field[point.y][point.x]) {
+    case this->FIELD_CELL_TYPE_NONE:
+        return CellTypes::NONE;
+    case this->FIELD_CELL_TYPE_APPLE:
+        return CellTypes::APPLE;
+    default:
+        return CellTypes::SNAKE;
+    }
 }
 
 void GameField::resize_matrix() {
@@ -39,11 +94,29 @@ void GameField::resize_matrix() {
 
 void GameField::init_field() {
     this->resize_matrix();
-
     for (int i = 0; i < this->size.height; i++) {
         for (int j = 0; j < this->size.width; j++) {
             this->field[i][j] = this->FIELD_CELL_TYPE_NONE;
         }
+    }
+}
+
+void GameField::move_snake() {
+    this->snake.move_head();
+
+    this->check_collisions();
+    if (this->game_status == GameStatus::OFF)
+        return;
+
+    Point hp = this->snake.get_head_pos();
+    this->field[hp.y][hp.x] = this->snake.get_length() + 1;
+    this->decrease_snake_cells();
+}
+
+void GameField::turn_snake() {
+    if (!this->snake_directions.empty()) {
+        this->snake.change_direction(this->snake_directions.front());
+        this->snake_directions.pop();
     }
 }
 
@@ -58,7 +131,7 @@ void GameField::check_collisions() {
                 this->render_apple();
                 break;
             default:
-                throw 1;
+                this->finish_game();
                 break;
         }
     }
