@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #include "Apple.h"
 #include "Snake.h"
@@ -10,33 +11,64 @@
 class GameField {
 public:
 
-    GameField();
+    enum class GameStatus {
+        ON,
+        OFF
+    };
 
-    void move_snake();
+    enum class CellTypes {
+        NONE,
+        APPLE,
+        SNAKE
+    };
 
-    void turn_snake(int direction); // Change snake direction
+    GameField(const Size& size); // Constructor with settable size
 
-    int get_snake_direction() const;
+    GameField(); // Constructor with default size
+
+    void one_iteration(); // Processing snake movement
+
+    void key_pressed(); // Update last snake direction. Needs to call before changing snake direction
+
+    void insert_command(int direction); // Processing new changing direction command 
+
+    void finish_game(); // Exit frome game (game over)
+
+    Size get_size() const; // Getter for game_field size
+
+    GameStatus get_game_status() const; // Getter for game status
+
+    CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
     
 private:
 
-    enum Symbols { // Symbols for console display
+    static const int FIELD_CELL_TYPE_NONE = 0;
+    static const int FIELD_CELL_TYPE_APPLE = -1;
+
+    enum class Symbols { // Symbols for console display
         SNAKE = '#', // Cell with snake
         NONE = '-', // Empty cell
         APPLE = '*' // Cell with apple
     };
 
-    static const int FIELD_CELL_TYPE_NONE = 0;
-    static const int FIELD_CELL_TYPE_APPLE = -1;
+    Size size; // Size of game field
+    std::vector<std::vector<int>> field; // Raw field
 
-    Size size = Size(35, 20);
-    std::vector<std::vector<int>> field;
     Snake snake;
     Apple apple;
+
+    std::queue<int> snake_directions; // Queue of controlling commands
+    int last_snake_direction;
+
+    GameStatus game_status; // Is player in gameplay
 
     void resize_matrix(); // Change sizes of field vectors
 
     void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
+
+    void move_snake(); // Move the snake by one cell
+
+    void turn_snake(); // Change snake direction
 
     void check_collisions(); // Check collisions snake head with other cells
 
@@ -58,7 +90,6 @@ private:
 
     friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
-
 
 void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 
