@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <ctime>
-#include <queue>
+
 
 #include "GameField.h"
 
@@ -46,8 +46,7 @@ int main() {
 #endif
 
     GameField game_field(Size(35, 20));
-    bool game = true; // Is player in gameplay
-    std::queue<int> snake_directions;
+    
     
     int window_width = game_field.get_size().width * CELL_SIZE;
     int window_height = game_field.get_size().height * CELL_SIZE;
@@ -63,54 +62,38 @@ int main() {
             if (event.type == sf::Event::Closed)
                 main_window.close();
             if (event.type == sf::Event::KeyPressed) {
-                int last_snake_direction = (snake_directions.empty() ?
-                    game_field.get_snake_direction() : snake_directions.front());
-
+                game_field.key_pressed();
                 switch (event.key.code) {
                 case sf::Keyboard::Up:
-                    if (last_snake_direction != Snake::Directions::DOWN && snake_directions.size() < 2) {
-                        snake_directions.push(Snake::Directions::UP);
-                    }
+                    game_field.insert_command(Snake::Directions::UP);
                     break;
                 case sf::Keyboard::Right:
-                    if (last_snake_direction != Snake::Directions::LEFT && snake_directions.size() < 2) {
-                        snake_directions.push(Snake::Directions::RIGHT);
-                    }
+                    game_field.insert_command(Snake::Directions::RIGHT);
                     break;
                 case sf::Keyboard::Down:
-                    if (last_snake_direction != Snake::Directions::UP && snake_directions.size() < 2) {
-                        snake_directions.push(Snake::Directions::DOWN);
-                    }
+                    game_field.insert_command(Snake::Directions::DOWN);
                     break;
                 case sf::Keyboard::Left:
-                    if (last_snake_direction != Snake::Directions::RIGHT && snake_directions.size() < 2) {
-                        snake_directions.push(Snake::Directions::LEFT);
-                    }
+                    game_field.insert_command(Snake::Directions::LEFT);
                     break;
                 case sf::Keyboard::Escape:
-                    game = false;
+                    game_field.finish_game();
                 default:
                     break;
                 }
             }
         }
-        // Processing changing direction
-        if (!snake_directions.empty()) {
-            game_field.turn_snake(snake_directions.front());
-            snake_directions.pop();
-        }
+        game_field.turn_snake();
+        game_field.move_snake();
 
-        // Snake movement
-        try {
-            game_field.move_snake();
-
+        if (game_field.get_game_status()) {
             main_window.clear(sf::Color(183, 212, 168));
             draw_field(main_window, game_field);
             main_window.display();
-        } catch (const int& e) {
-            game = false;
+        } else {
             main_window.close();
         }
+
         sf::sleep(sf::milliseconds(100));
     }
     return 0;
