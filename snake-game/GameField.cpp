@@ -74,8 +74,15 @@ bool GameField::get_game_status() const{
     return this->game_status;
 }
 
-int GameField::get_cell_at(const Point& point) const {
-    return this->field[point.y][point.x];
+GameField::CellTypes GameField::get_cell_type(const Point& point) const {
+    switch (this->field[point.y][point.x]) {
+    case this->FIELD_CELL_TYPE_NONE:
+        return CellTypes::NONE;
+    case this->FIELD_CELL_TYPE_APPLE:
+        return CellTypes::APPLE;
+    default:
+        return CellTypes::SNAKE;
+    }
 }
 
 void GameField::resize_matrix() {
