@@ -11,6 +11,11 @@
 class GameField {
 public:
 
+    enum class GameStatus {
+        ON,
+        OFF
+    };
+
     enum class CellTypes {
         NONE,
         APPLE,
@@ -31,7 +36,7 @@ public:
 
     Size get_size() const; // Getter for game_field size
 
-    bool get_game_status() const; // Getter for game status
+    GameStatus get_game_status() const; // Getter for game status
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
     
@@ -55,7 +60,7 @@ private:
     std::queue<int> snake_directions; // Queue of controlling commands
     int last_snake_direction;
 
-    bool game_status; // Is player in gameplay
+    GameStatus game_status; // Is player in gameplay
 
     void resize_matrix(); // Change sizes of field vectors
 
