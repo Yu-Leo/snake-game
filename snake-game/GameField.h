@@ -15,6 +15,8 @@ public:
 
     std::vector<std::vector<int>> field;
 
+    GameField(const Size& size);
+
     GameField();
 
     void move_snake();
@@ -33,7 +35,7 @@ private:
         APPLE = '*' // Cell with apple
     };
 
-    Size size = Size(35, 20);
+    Size size;
     
     Snake snake;
     Apple apple;

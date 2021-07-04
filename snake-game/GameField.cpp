@@ -1,6 +1,8 @@
 #include "GameField.h"
 
-GameField::GameField() {
+GameField::GameField(const Size& size) {
+    this->size = size;
+
     this->init_field();
 
     this->snake.set_field_size(this->size);
