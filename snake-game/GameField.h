@@ -18,6 +18,8 @@ public:
 
     GameField(const Size& size);
 
+    GameField();
+
     void one_iteration(); // Processing snake movement
 
     void key_pressed(); // Needs to call before changing snake direction
