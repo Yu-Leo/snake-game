@@ -6,6 +6,9 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     sf::Style::Close) {
 
     this->game_field = GameField(size);
+
+    this->load_textures();
+    this->set_textures();
 }
 
 void MainWindow::event_handling() {
@@ -44,6 +47,7 @@ void MainWindow::one_iteration() {
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
     if (game_status == GameField::GameStatus::ON) {
+        this->clear(sf::Color(0, 0, 0));
         this->draw_field();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {
@@ -51,28 +55,43 @@ void MainWindow::redraw() {
     }
 }
 
-void MainWindow::draw_cell(const Point& point, sf::RectangleShape& cell) {
-    cell.setPosition(float(point.x * CELL_SIZE), float(point.y * CELL_SIZE));
+void MainWindow::load_textures() {
+    this->textures.none.loadFromFile("./img/textures/none.png");
+    this->textures.apple.loadFromFile("./img/textures/apple.png");
+    this->textures.snake.loadFromFile("./img/textures/snake.png");
+}
+
+void MainWindow::set_textures() {
+    this->sprites.none.setTexture(this->textures.none);
+    this->sprites.apple.setTexture(this->textures.apple);
+    this->sprites.snake.setTexture(this->textures.snake);
+}
+
+void MainWindow::draw_cell(const Point& point) {
+    float x_pos = float(point.x * CELL_SIZE);
+    float y_pos = float(point.y * CELL_SIZE);
     switch (this->game_field.get_cell_type(point)) {
     case GameField::CellTypes::NONE:
-        cell.setFillColor(sf::Color::Black);
+        this->sprites.none.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.none);
         break;
+
     case GameField::CellTypes::APPLE:
-        cell.setFillColor(sf::Color::Red);
+        this->sprites.apple.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.apple);
         break;
+
     case GameField::CellTypes::SNAKE:
-        cell.setFillColor(sf::Color::Green);
+        this->sprites.snake.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.snake);
         break;
     }
-    this->draw(cell);
 }
 
 void MainWindow::draw_field() {
-    sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-
     for (int i = 0; i < this->game_field.get_size().height; i++) {
         for (int j = 0; j < this->game_field.get_size().width; j++) {
-            this->draw_cell(Point(j, i), cell);
+            this->draw_cell(Point(j, i));
         }
     }
 }

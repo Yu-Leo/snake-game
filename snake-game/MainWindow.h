@@ -21,7 +21,23 @@ private:
 
     GameField game_field;
 
-    void draw_cell(const Point& point, sf::RectangleShape& cell);
+    struct Textures {
+        sf::Texture none, apple, snake;
+    };
+
+    struct Sprites {
+        sf::Sprite none, apple, snake;
+    };
+
+    Textures textures;
+
+    Sprites sprites;
+    
+    void load_textures(); // Load textures images from files
+
+    void set_textures(); // Set textures on sprites
+
+    void draw_cell(const Point& point);
 
     void draw_field();
 };
