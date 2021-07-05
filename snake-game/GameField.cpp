@@ -28,7 +28,7 @@ void GameField::key_pressed() {
 }
 
 void GameField::insert_command(int direction) {
-    if (this->snake_directions.size() >= 2) {
+    if (this->snake_directions.size() >= 3) {
         return;
     }
 
