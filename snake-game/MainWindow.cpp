@@ -9,6 +9,9 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
 
     this->load_textures();
     this->set_textures();
+    
+    this->load_sound_buffers();
+    this->set_sound_buffers();
 }
 
 void MainWindow::event_handling() {
@@ -67,6 +70,14 @@ void MainWindow::set_textures() {
     this->sprites.apple.setTexture(this->textures.apple);
     this->sprites.snake.setTexture(this->textures.snake);
     this->sprites.wall.setTexture(this->textures.wall);
+}
+
+void MainWindow::load_sound_buffers() {
+    this->sound_buffers.ate_apple.loadFromFile("./sounds/ate_apple.wav");
+}
+
+void MainWindow::set_sound_buffers() {
+    this->sounds.ate_apple.setBuffer(this->sound_buffers.ate_apple);
 }
 
 void MainWindow::draw_cell(const Point& point) {
