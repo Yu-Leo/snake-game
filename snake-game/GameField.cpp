@@ -89,6 +89,15 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
     }
 }
 
+GameField::Collisions GameField::get_collision() const {
+    return this->collision;
+}
+
+void GameField::clear_collision() {
+    this->collision = Collisions::NONE;
+}
+
+
 void GameField::resize_matrix() {
     this->field.resize(this->size.height);
     for (int i = 0; i < this->size.height; i++) {
@@ -133,9 +142,14 @@ void GameField::check_collisions() {
                 this->grow_snake();
                 this->apple = Apple(this->get_random_empty_cell());
                 this->render_apple();
+                this->collision = Collisions::APPLE;
                 break;
+            case FIELD_CELL_TYPE_WALL:
+                this->finish_game();
+                this->collision = Collisions::WALL;
             default:
                 this->finish_game();
+                this->collision = Collisions::BODY;
                 break;
         }
     }

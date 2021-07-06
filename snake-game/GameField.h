@@ -23,6 +23,13 @@ public:
         WALL
     };
 
+    enum class Collisions {
+        APPLE,
+        BODY,
+        WALL,
+        NONE
+    };
+
     GameField(const Size& size); // Constructor with settable size
 
     GameField(); // Constructor with default size
@@ -41,6 +48,10 @@ public:
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
     
+    Collisions get_collision() const;
+
+    void clear_collision();
+
 private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
@@ -64,6 +75,8 @@ private:
     int last_snake_direction;
 
     GameStatus game_status; // Is player in gameplay
+
+    Collisions collision = Collisions::NONE;
 
     void resize_matrix(); // Change sizes of field vectors
 
