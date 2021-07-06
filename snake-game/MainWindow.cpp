@@ -75,10 +75,14 @@ void MainWindow::set_textures() {
 
 void MainWindow::load_sound_buffers() {
     this->sound_buffers.ate_apple.loadFromFile("./sounds/ate_apple.wav");
+    this->sound_buffers.collision_with_wall.loadFromFile("./sounds/collision_with_wall.wav");
+    this->sound_buffers.collision_with_body.loadFromFile("./sounds/collision_with_body.wav");
 }
 
 void MainWindow::set_sound_buffers() {
     this->sounds.ate_apple.setBuffer(this->sound_buffers.ate_apple);
+    this->sounds.collision_with_wall.setBuffer(this->sound_buffers.collision_with_wall);
+    this->sounds.collision_with_body.setBuffer(this->sound_buffers.collision_with_body);
 }
 
 void MainWindow::play_sounds() {
@@ -87,10 +91,10 @@ void MainWindow::play_sounds() {
         this->sounds.ate_apple.play();
         break;
     case GameField::Collisions::BODY:
-        //this->sounds.ate_apple.play();
+        this->sounds.collision_with_body.play();
         break;
     case GameField::Collisions::WALL:
-        //this->sounds.ate_apple.play();
+        this->sounds.collision_with_wall.play();
         break;
     default:
         break;

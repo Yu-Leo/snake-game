@@ -31,11 +31,11 @@ private:
     };
 
     struct SoundBuffers {
-        sf::SoundBuffer ate_apple;
+        sf::SoundBuffer ate_apple, collision_with_wall, collision_with_body;
     };
 
     struct Sounds {
-        sf::Sound ate_apple;
+        sf::Sound ate_apple, collision_with_wall, collision_with_body;
     };
 
     Textures textures;
@@ -52,7 +52,7 @@ private:
     
     void set_sound_buffers(); // Set sound buffers on sounds
 
-    void play_sounds();
+    void play_sounds(); // Check snake head collisions and play sounds 
 
     void draw_cell(const Point& point);
 
