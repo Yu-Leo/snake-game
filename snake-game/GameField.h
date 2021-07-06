@@ -19,7 +19,8 @@ public:
     enum class CellTypes {
         NONE,
         APPLE,
-        SNAKE
+        SNAKE,
+        WALL
     };
 
     GameField(const Size& size); // Constructor with settable size
@@ -44,11 +45,13 @@ private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
+    static const int FIELD_CELL_TYPE_WALL = -2;
 
     enum class Symbols { // Symbols for console display
         SNAKE = '#', // Cell with snake
         NONE = '-', // Empty cell
-        APPLE = '*' // Cell with apple
+        APPLE = '*', // Cell with apple
+        WALL = '$' // Cell with wall
     };
 
     Size size; // Size of game field
@@ -75,6 +78,8 @@ private:
     void grow_snake(); // Grow snake, if it eat apple
 
     void decrease_snake_cells(); // Decrease values of all snake's cells
+
+    void set_walls(); // Add walls to field
 
     void render_snake(); // Fill snake's cells
 

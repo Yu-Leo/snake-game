@@ -34,7 +34,7 @@ public:
 private:
 
     int length = 3;
-    Point head_position = Point(this->length - 1, 0);
+    Point head_position = Point(this->length - 1 + 3, 3);
     int direction = Directions::RIGHT;
 
     // Size of fields on which it is used snake. Needs initialization real value!

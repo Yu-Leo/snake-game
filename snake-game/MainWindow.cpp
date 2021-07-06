@@ -59,12 +59,14 @@ void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");
     this->textures.snake.loadFromFile("./img/textures/snake.png");
+    this->textures.wall.loadFromFile("./img/textures/wall.png");
 }
 
 void MainWindow::set_textures() {
     this->sprites.none.setTexture(this->textures.none);
     this->sprites.apple.setTexture(this->textures.apple);
     this->sprites.snake.setTexture(this->textures.snake);
+    this->sprites.wall.setTexture(this->textures.wall);
 }
 
 void MainWindow::draw_cell(const Point& point) {
@@ -84,6 +86,11 @@ void MainWindow::draw_cell(const Point& point) {
     case GameField::CellTypes::SNAKE:
         this->sprites.snake.setPosition(x_pos, y_pos);
         this->draw(this->sprites.snake);
+        break;
+
+    case GameField::CellTypes::WALL:
+        this->sprites.wall.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.wall);
         break;
     }
 }
