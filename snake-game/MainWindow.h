@@ -52,6 +52,8 @@ private:
     
     void set_sound_buffers(); // Set sound buffers on sounds
 
+    void play_sounds();
+
     void draw_cell(const Point& point);
 
     void draw_field();

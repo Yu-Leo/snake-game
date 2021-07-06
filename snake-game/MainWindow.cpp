@@ -45,6 +45,7 @@ void MainWindow::event_handling() {
 
 void MainWindow::one_iteration() {
     this->game_field.one_iteration();
+    this->play_sounds();
 }
 
 void MainWindow::redraw() {
@@ -78,6 +79,23 @@ void MainWindow::load_sound_buffers() {
 
 void MainWindow::set_sound_buffers() {
     this->sounds.ate_apple.setBuffer(this->sound_buffers.ate_apple);
+}
+
+void MainWindow::play_sounds() {
+    switch (this->game_field.get_collision()) {
+    case GameField::Collisions::APPLE:
+        this->sounds.ate_apple.play();
+        break;
+    case GameField::Collisions::BODY:
+        //this->sounds.ate_apple.play();
+        break;
+    case GameField::Collisions::WALL:
+        //this->sounds.ate_apple.play();
+        break;
+    default:
+        break;
+    }
+    this->game_field.clear_collision();
 }
 
 void MainWindow::draw_cell(const Point& point) {
