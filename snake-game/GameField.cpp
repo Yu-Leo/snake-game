@@ -4,6 +4,8 @@ GameField::GameField(const Size& size) {
     this->size = size;
     this->init_field();
 
+    this->set_walls();
+
     // Create snake
     this->snake.set_field_size(this->size);
     this->render_snake();
@@ -80,6 +82,8 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
         return CellTypes::NONE;
     case this->FIELD_CELL_TYPE_APPLE:
         return CellTypes::APPLE;
+    case this->FIELD_CELL_TYPE_WALL:
+        return CellTypes::WALL;
     default:
         return CellTypes::SNAKE;
     }
@@ -157,6 +161,24 @@ void GameField::decrease_snake_cells() {
     }
 }
 
+void GameField::set_walls() {
+    for (int i = 0; i < this->size.width; i++) {
+        this->field[this->size.height - 1][i] = FIELD_CELL_TYPE_WALL;
+    }
+
+    for (int i = 0; i < this->size.width; i++) {
+        this->field[0][i] = FIELD_CELL_TYPE_WALL;
+    }
+
+    for (int i = 0; i < this->size.height; i++) {
+        this->field[i][0] = FIELD_CELL_TYPE_WALL;
+    }
+
+    for (int i = 0; i < this->size.height; i++) {
+        this->field[i][this->size.width - 1] = FIELD_CELL_TYPE_WALL;
+    }
+}
+
 void GameField::render_snake() {
     int snake_len = this->snake.get_length();
     for (int i = 0; i < snake_len; i++) {
@@ -208,6 +230,9 @@ void print_cell(std::ostream& out, const GameField& game_field, const Point &cel
             break;
         case game_field.FIELD_CELL_TYPE_APPLE:
             out << (char)GameField::Symbols::APPLE;
+            break;
+        case game_field.FIELD_CELL_TYPE_WALL:
+            out << (char)GameField::Symbols::WALL;
             break;
         default:
             out << (char)GameField::Symbols::SNAKE;

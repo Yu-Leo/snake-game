@@ -22,11 +22,11 @@ private:
     GameField game_field;
 
     struct Textures {
-        sf::Texture none, apple, snake;
+        sf::Texture none, apple, snake, wall;
     };
 
     struct Sprites {
-        sf::Sprite none, apple, snake;
+        sf::Sprite none, apple, snake, wall;
     };
 
     Textures textures;
