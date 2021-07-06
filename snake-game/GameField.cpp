@@ -224,17 +224,17 @@ Point GameField::get_random_empty_cell() {
 }
 
 void print_cell(std::ostream& out, const GameField& game_field, const Point &cell) {
-    switch (game_field.field[cell.y][cell.x]) {
-        case game_field.FIELD_CELL_TYPE_NONE:
+    switch (game_field.get_cell_type(cell)) {
+        case GameField::CellTypes::NONE:
             out << (char)GameField::Symbols::NONE;
             break;
-        case game_field.FIELD_CELL_TYPE_APPLE:
+        case GameField::CellTypes::APPLE:
             out << (char)GameField::Symbols::APPLE;
             break;
-        case game_field.FIELD_CELL_TYPE_WALL:
+        case GameField::CellTypes::WALL:
             out << (char)GameField::Symbols::WALL;
             break;
-        default:
+        case GameField::CellTypes::SNAKE:
             out << (char)GameField::Symbols::SNAKE;
             break;
     }
