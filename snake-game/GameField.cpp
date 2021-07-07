@@ -68,6 +68,10 @@ void GameField::finish_game() {
     this->game_status = GameStatus::OFF;
 }
 
+int GameField::get_score() const {
+    return this->score;
+}
+
 Size GameField::get_size() const {
     return this->size;
 }
@@ -138,6 +142,7 @@ void GameField::check_collisions() {
     if (this->field[hp.y][hp.x] != this->FIELD_CELL_TYPE_NONE) {
         switch (this->field[hp.y][hp.x]) {
             case FIELD_CELL_TYPE_APPLE:
+                this->score++;
                 this->snake.increase_length();
                 this->grow_snake();
                 this->apple = Apple(this->get_random_empty_cell());

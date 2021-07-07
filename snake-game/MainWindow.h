@@ -7,6 +7,8 @@
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 
+#define TOP_PADDING 55
+
 class MainWindow : public sf::RenderWindow { // Class of main game window
 public:
 
@@ -19,6 +21,8 @@ public:
     void redraw(); // Redraw game window
     
 private:
+
+    Size size;
 
     GameField game_field;
 
@@ -44,6 +48,10 @@ private:
     SoundBuffers sound_buffers;
     Sounds sounds;
 
+    sf::Font font;
+
+    sf::Text score_text;
+
     void load_textures(); // Load textures images from files
 
     void set_textures(); // Set textures on sprites
@@ -57,5 +65,7 @@ private:
     void draw_cell(const Point& point);
 
     void draw_field();
+
+    void draw_score_bar();
 };
 

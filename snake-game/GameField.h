@@ -42,6 +42,8 @@ public:
 
     void finish_game(); // Exit frome game (game over)
 
+    int get_score() const; // Getter for score
+
     Size get_size() const; // Getter for game_field size
 
     GameStatus get_game_status() const; // Getter for game status
@@ -64,6 +66,8 @@ private:
         APPLE = '*', // Cell with apple
         WALL = '$' // Cell with wall
     };
+
+    int score = 0;
 
     Size size; // Size of game field
     std::vector<std::vector<int>> field; // Raw field
