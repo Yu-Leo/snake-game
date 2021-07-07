@@ -5,7 +5,7 @@
 
 #include "MainWindow.h"
 
-#define RANDOM_GENERATING false // (true/false)
+#define RANDOM_GENERATING true // (true/false)
 
 int main() {
 

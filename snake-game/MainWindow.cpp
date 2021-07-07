@@ -1,9 +1,12 @@
 #include "MainWindow.h"
 
 MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
-    sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE),
+    sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE + TOP_PADDING),
     "Snake game",
     sf::Style::Close) {
+
+    this->size.width = size.width * CELL_SIZE;
+    this->size.height = size.height * CELL_SIZE + TOP_PADDING;
 
     this->game_field = GameField(size);
 
@@ -12,6 +15,11 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     
     this->load_sound_buffers();
     this->set_sound_buffers();
+
+    this->font.loadFromFile("./fonts/pixel_font.ttf");
+    this->score_text.setFont(this->font);
+    this->score_text.setCharacterSize(35);
+    this->score_text.setFillColor(sf::Color::White);
 }
 
 void MainWindow::event_handling() {
@@ -52,9 +60,11 @@ void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
     if (game_status == GameField::GameStatus::ON) {
         this->clear(sf::Color(0, 0, 0));
+        this->draw_score_bar();
         this->draw_field();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {
+        sf::sleep(sf::seconds(1));
         this->close();
     }
 }
@@ -104,7 +114,7 @@ void MainWindow::play_sounds() {
 
 void MainWindow::draw_cell(const Point& point) {
     float x_pos = float(point.x * CELL_SIZE);
-    float y_pos = float(point.y * CELL_SIZE);
+    float y_pos = float(point.y * CELL_SIZE + TOP_PADDING);
     switch (this->game_field.get_cell_type(point)) {
     case GameField::CellTypes::NONE:
         this->sprites.none.setPosition(x_pos, y_pos);
@@ -134,4 +144,11 @@ void MainWindow::draw_field() {
             this->draw_cell(Point(j, i));
         }
     }
+}
+
+void MainWindow::draw_score_bar() {
+    this->score_text.setString("Score: " + std::to_string(this->game_field.get_score()));
+    this->score_text.setPosition(
+        this->size.width - this->score_text.getLocalBounds().width - 20, 7);
+    this->draw(this->score_text);
 }
