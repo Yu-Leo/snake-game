@@ -51,6 +51,7 @@ private:
     sf::Font font;
 
     sf::Text score_text;
+    sf::Text game_over_text;
 
     void load_textures(); // Load textures images from files
 
@@ -59,6 +60,8 @@ private:
     void load_sound_buffers(); // Load sound buffers from files
     
     void set_sound_buffers(); // Set sound buffers on sounds
+
+    void set_text_settings();
 
     void play_sounds(); // Check snake head collisions and play sounds 
 

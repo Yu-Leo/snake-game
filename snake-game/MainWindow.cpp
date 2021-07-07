@@ -16,10 +16,8 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     this->load_sound_buffers();
     this->set_sound_buffers();
 
-    this->font.loadFromFile("./fonts/pixel_font.ttf");
-    this->score_text.setFont(this->font);
-    this->score_text.setCharacterSize(35);
-    this->score_text.setFillColor(sf::Color::White);
+    this->set_text_settings();
+
 }
 
 void MainWindow::event_handling() {
@@ -64,7 +62,10 @@ void MainWindow::redraw() {
         this->draw_field();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {
-        sf::sleep(sf::seconds(1));
+        this->draw(this->game_over_text);
+        this->display();
+        sf::sleep(sf::seconds(2));
+        
         this->close();
     }
 }
@@ -93,6 +94,22 @@ void MainWindow::set_sound_buffers() {
     this->sounds.ate_apple.setBuffer(this->sound_buffers.ate_apple);
     this->sounds.collision_with_wall.setBuffer(this->sound_buffers.collision_with_wall);
     this->sounds.collision_with_body.setBuffer(this->sound_buffers.collision_with_body);
+}
+
+void MainWindow::set_text_settings() {
+    this->font.loadFromFile("./fonts/pixel_font.ttf");
+
+    this->score_text.setFont(this->font);
+    this->score_text.setCharacterSize(35);
+    this->score_text.setFillColor(sf::Color::White);
+
+    this->game_over_text.setFont(this->font);
+    this->game_over_text.setString("GAME OVER");
+    this->game_over_text.setCharacterSize(120);
+    this->game_over_text.setFillColor(sf::Color::White);
+    this->game_over_text.setPosition(
+        (this->size.width - this->game_over_text.getLocalBounds().width) / 2,
+        (this->size.height - this->game_over_text.getLocalBounds().height) / 2);
 }
 
 void MainWindow::play_sounds() {
