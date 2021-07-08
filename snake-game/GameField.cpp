@@ -125,9 +125,9 @@ void GameField::move_snake() {
     if (this->game_status == GameStatus::OFF)
         return;
 
-    Point hp = this->snake.get_head_pos();
-    this->field[hp.y][hp.x] = this->snake.get_length() + 1;
     this->decrease_snake_cells();
+    Point hp = this->snake.get_head_pos();
+    this->field[hp.y][hp.x] = this->snake.get_length();
 }
 
 void GameField::turn_snake() {
@@ -139,24 +139,26 @@ void GameField::turn_snake() {
 
 void GameField::check_collisions() {
     Point hp = this->snake.get_head_pos();
-    if (this->field[hp.y][hp.x] != this->FIELD_CELL_TYPE_NONE) {
-        switch (this->field[hp.y][hp.x]) {
-            case FIELD_CELL_TYPE_APPLE:
-                this->score++;
-                this->snake.increase_length();
-                this->grow_snake();
-                this->apple = Apple(this->get_random_empty_cell());
-                this->render_apple();
-                this->collision = Collisions::APPLE;
-                break;
-            case FIELD_CELL_TYPE_WALL:
-                this->finish_game();
-                this->collision = Collisions::WALL;
-            default:
+    if (this->field[hp.y][hp.x] == this->FIELD_CELL_TYPE_NONE)
+        return;
+    switch (this->field[hp.y][hp.x]) {
+        case FIELD_CELL_TYPE_APPLE:
+            this->score++;
+            this->snake.increase_length();
+            this->grow_snake();
+            this->apple = Apple(this->get_random_empty_cell());
+            this->render_apple();
+            this->collision = Collisions::APPLE;
+            break;
+        case FIELD_CELL_TYPE_WALL:
+            this->finish_game();
+            this->collision = Collisions::WALL;
+        default:
+            if (this->field[hp.y][hp.x] > 1) {
                 this->finish_game();
                 this->collision = Collisions::BODY;
-                break;
-        }
+            }
+            break;
     }
 }
 
