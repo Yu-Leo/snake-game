@@ -1,10 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-//#include <SFML/Audio.hpp>
 
 #include "GameField.h"
 #include "Sounds.h"
+#include "Menu.h"
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 
@@ -24,7 +24,7 @@ public:
     void delay();
 
 private:
-    int speed = 0; // 0 - low, 4 - fast
+    int speed = 2; // 0 - low, 4 - fast
 
     Size size;
 
@@ -44,15 +44,13 @@ private:
     Sounds sounds;
     
     sf::Font font;
-    sf::Font menu_font;
-
+    
     sf::Text score_text;
     sf::Text game_over_text;
 
-    const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
+    Menu menu;
 
-    std::vector<sf::Text> main_menu_items;
-    std::vector<std::string> main_menu_items_text = {"Start new game", "Settings", "Quit"};
+    const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
     
     void load_textures(); // Load textures images from files
 
@@ -69,7 +67,5 @@ private:
     void draw_score_bar();
 
     void draw_screen();
-
-    void draw_menu();
 };
 
