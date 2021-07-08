@@ -12,9 +12,6 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
 
     this->load_textures();
     this->set_textures();
-    
-    this->load_sound_buffers();
-    this->set_sound_buffers();
 
     this->set_text_settings();
 
@@ -98,18 +95,6 @@ void MainWindow::set_textures() {
     this->sprites.wall.setTexture(this->textures.wall);
 }
 
-void MainWindow::load_sound_buffers() {
-    this->sound_buffers.ate_apple.loadFromFile("./sounds/ate_apple.wav");
-    this->sound_buffers.collision_with_wall.loadFromFile("./sounds/collision_with_wall.wav");
-    this->sound_buffers.collision_with_body.loadFromFile("./sounds/collision_with_body.wav");
-}
-
-void MainWindow::set_sound_buffers() {
-    this->sounds.ate_apple.setBuffer(this->sound_buffers.ate_apple);
-    this->sounds.collision_with_wall.setBuffer(this->sound_buffers.collision_with_wall);
-    this->sounds.collision_with_body.setBuffer(this->sound_buffers.collision_with_body);
-}
-
 void MainWindow::set_text_settings() {
     this->font.loadFromFile("./fonts/pixel_font.ttf");
     this->menu_font.loadFromFile("./fonts/menu_font.ttf");
@@ -139,13 +124,13 @@ void MainWindow::set_text_settings() {
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
     case GameField::Collisions::APPLE:
-        this->sounds.ate_apple.play();
+        this->sounds.play(Sounds::ATE_APPLE);
         break;
     case GameField::Collisions::BODY:
-        this->sounds.collision_with_body.play();
+        this->sounds.play(Sounds::COLLISION_WITH_BODY);
         break;
     case GameField::Collisions::WALL:
-        this->sounds.collision_with_wall.play();
+        this->sounds.play(Sounds::COLLISION_WITH_WALL);
         break;
     default:
         break;

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+//#include <SFML/Audio.hpp>
 
 #include "GameField.h"
+#include "Sounds.h"
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 
@@ -23,7 +24,7 @@ public:
     void delay();
 
 private:
-    int speed = 4; // 0 - low, 4 - fast
+    int speed = 0; // 0 - low, 4 - fast
 
     Size size;
 
@@ -37,20 +38,11 @@ private:
         sf::Sprite none, apple, snake, wall;
     };
 
-    struct SoundBuffers {
-        sf::SoundBuffer ate_apple, collision_with_wall, collision_with_body;
-    };
-
-    struct Sounds {
-        sf::Sound ate_apple, collision_with_wall, collision_with_body;
-    };
-
     Textures textures;
     Sprites sprites;
 
-    SoundBuffers sound_buffers;
     Sounds sounds;
-
+    
     sf::Font font;
     sf::Font menu_font;
 
@@ -65,10 +57,6 @@ private:
     void load_textures(); // Load textures images from files
 
     void set_textures(); // Set textures on sprites
-
-    void load_sound_buffers(); // Load sound buffers from files
-    
-    void set_sound_buffers(); // Set sound buffers on sounds
 
     void set_text_settings();
 

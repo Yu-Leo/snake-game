@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="Sounds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="Sounds.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
