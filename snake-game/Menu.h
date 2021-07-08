@@ -12,6 +12,10 @@ public:
 
 	void draw_main_menu(sf::RenderWindow &window);
 
+	void next_item();
+	
+	void previous_item();
+
 private:
 
 	struct Position {
@@ -39,7 +43,7 @@ private:
 	std::vector<sf::Text> main_menu_items;
 	std::vector<std::string> main_menu_items_text = { "Start new game", "Settings", "Quit" };
 	
-	int current_item_index = 0;
+	int active_item_index = 0;
 
 	void set_font_settings();
 

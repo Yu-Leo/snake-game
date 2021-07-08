@@ -17,6 +17,10 @@ public:
 
     void event_handling(); // Processing window's events 
 
+    void handling_control(const sf::Event& event); // Processing controlling
+
+    void handling_menu_navigation(const sf::Event& event);
+
     void one_iteration(); // One game iteration
 
     void redraw(); // Redraw game window
