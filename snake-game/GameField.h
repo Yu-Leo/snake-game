@@ -13,7 +13,8 @@ public:
 
     enum class GameStatus {
         ON,
-        OFF
+        OFF,
+        PAUSE
     };
 
     enum class CellTypes {
@@ -41,6 +42,10 @@ public:
     void insert_command(int direction); // Processing new changing direction command 
 
     void finish_game(); // Exit frome game (game over)
+
+    void pause();
+
+    void unpause();
 
     int get_score() const; // Getter for score
 
