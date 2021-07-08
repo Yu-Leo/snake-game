@@ -53,6 +53,8 @@ private:
     sf::Text score_text;
     sf::Text game_over_text;
 
+    const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
+
     void load_textures(); // Load textures images from files
 
     void set_textures(); // Set textures on sprites
@@ -70,5 +72,7 @@ private:
     void draw_field();
 
     void draw_score_bar();
+
+    void draw_screen();
 };
 
