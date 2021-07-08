@@ -41,7 +41,11 @@ void MainWindow::event_handling() {
                 this->game_field.insert_command(Snake::Directions::LEFT);
                 break;
             case sf::Keyboard::Escape:
-                this->game_field.finish_game();
+                if (game_field.get_game_status() == GameField::GameStatus::ON) {
+                    this->game_field.pause();
+                } else {
+                    this->game_field.unpause();
+                }
             default:
                 break;
             }
@@ -50,13 +54,15 @@ void MainWindow::event_handling() {
 }
 
 void MainWindow::one_iteration() {
-    this->game_field.one_iteration();
-    this->play_sounds();
+    if (game_field.get_game_status() == GameField::GameStatus::ON) {
+        this->game_field.one_iteration();
+        this->play_sounds();
+    }
 }
 
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
-    if (game_status == GameField::GameStatus::ON) {
+    if (game_status == GameField::GameStatus::ON || game_status == GameField::GameStatus::PAUSE) {
         this->draw_screen();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {

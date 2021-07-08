@@ -68,6 +68,14 @@ void GameField::finish_game() {
     this->game_status = GameStatus::OFF;
 }
 
+void GameField::pause() {
+    this->game_status = GameStatus::PAUSE;
+}
+
+void GameField::unpause() {
+    this->game_status = GameStatus::ON;
+}
+
 int GameField::get_score() const {
     return this->score;
 }
