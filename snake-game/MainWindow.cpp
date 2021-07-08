@@ -22,31 +22,52 @@ void MainWindow::event_handling() {
     while (this->pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             this->close();
-        if (event.type == sf::Event::KeyPressed) { // Controlling
-            this->game_field.key_pressed();
-            switch (event.key.code) {
-            case sf::Keyboard::Up:
-                this->game_field.insert_command(Snake::Directions::UP);
-                break;
-            case sf::Keyboard::Right:
-                this->game_field.insert_command(Snake::Directions::RIGHT);
-                break;
-            case sf::Keyboard::Down:
-                this->game_field.insert_command(Snake::Directions::DOWN);
-                break;
-            case sf::Keyboard::Left:
-                this->game_field.insert_command(Snake::Directions::LEFT);
-                break;
-            case sf::Keyboard::Escape:
-                if (game_field.get_game_status() == GameField::GameStatus::ON) {
-                    this->game_field.pause();
-                } else {
-                    this->game_field.unpause();
-                }
-            default:
-                break;
+        if (event.type == sf::Event::KeyPressed) { 
+            switch (this->game_field.get_game_status()) {
+                case GameField::GameStatus::ON: // Controlling
+                    this->handling_control(event);
+                    break;
+
+                case GameField::GameStatus::PAUSE: // Menu navigation
+                    this->handling_menu_navigation(event);
+                    break;
             }
         }
+
+    }
+}
+
+void MainWindow::handling_control(const sf::Event &event) {
+    this->game_field.key_pressed();
+    switch (event.key.code) {
+        case sf::Keyboard::Up:
+            this->game_field.insert_command(Snake::Directions::UP);
+            break;
+        case sf::Keyboard::Right:
+            this->game_field.insert_command(Snake::Directions::RIGHT);
+            break;
+        case sf::Keyboard::Down:
+            this->game_field.insert_command(Snake::Directions::DOWN);
+            break;
+        case sf::Keyboard::Left:
+            this->game_field.insert_command(Snake::Directions::LEFT);
+            break;
+        case sf::Keyboard::Escape:
+            this->game_field.pause();
+    }
+}
+
+void MainWindow::handling_menu_navigation(const sf::Event &event) {
+    switch (event.key.code) {
+        case sf::Keyboard::Up:
+            this->menu.previous_item();
+            break;
+        case sf::Keyboard::Down:
+            this->menu.next_item();
+            break;
+        case sf::Keyboard::Escape:
+            this->game_field.unpause();
+
     }
 }
 
