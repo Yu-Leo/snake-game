@@ -21,7 +21,7 @@ int main() {
         window.event_handling();
         window.one_iteration();
         window.redraw();
-        sf::sleep(sf::milliseconds(90));
+        sf::sleep(sf::milliseconds(110));
     }
 
     return 0;

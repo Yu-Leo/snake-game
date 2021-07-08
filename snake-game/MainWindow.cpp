@@ -57,14 +57,13 @@ void MainWindow::one_iteration() {
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
     if (game_status == GameField::GameStatus::ON) {
-        this->clear(sf::Color(0, 0, 0));
-        this->draw_score_bar();
-        this->draw_field();
+        this->draw_screen();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {
+        this->draw_screen();
         this->draw(this->game_over_text);
         this->display();
-        sf::sleep(sf::seconds(2));
+        sf::sleep(sf::seconds(1));
         
         this->close();
     }
@@ -168,4 +167,10 @@ void MainWindow::draw_score_bar() {
     this->score_text.setPosition(
         this->size.width - this->score_text.getLocalBounds().width - 20, 7);
     this->draw(this->score_text);
+}
+
+void MainWindow::draw_screen() {
+    this->clear(this->BACKGROUND_COLOR);
+    this->draw_score_bar();
+    this->draw_field();
 }
