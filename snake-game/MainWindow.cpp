@@ -75,6 +75,11 @@ void MainWindow::redraw() {
     }
 }
 
+void MainWindow::delay() {
+    int ms[] = { 150, 130, 110, 90, 70 };
+    sf::sleep(sf::milliseconds(ms[this->speed]));
+}
+
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");

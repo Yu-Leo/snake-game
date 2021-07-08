@@ -20,7 +20,10 @@ public:
 
     void redraw(); // Redraw game window
     
+    void delay();
+
 private:
+    int speed = 4; // 0 - low, 4 - fast
 
     Size size;
 
