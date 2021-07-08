@@ -52,12 +52,16 @@ private:
     Sounds sounds;
 
     sf::Font font;
+    sf::Font menu_font;
 
     sf::Text score_text;
     sf::Text game_over_text;
 
     const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
 
+    std::vector<sf::Text> main_menu_items;
+    std::vector<std::string> main_menu_items_text = {"Start new game", "Settings", "Quit"};
+    
     void load_textures(); // Load textures images from files
 
     void set_textures(); // Set textures on sprites
@@ -77,5 +81,7 @@ private:
     void draw_score_bar();
 
     void draw_screen();
+
+    void draw_menu();
 };
 

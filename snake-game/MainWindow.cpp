@@ -62,8 +62,12 @@ void MainWindow::one_iteration() {
 
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
-    if (game_status == GameField::GameStatus::ON || game_status == GameField::GameStatus::PAUSE) {
+    if (game_status == GameField::GameStatus::ON) {
         this->draw_screen();
+        this->display();
+    } else if (game_status == GameField::GameStatus::PAUSE) {
+        this->draw_screen();
+        this->draw_menu();
         this->display();
     } else if (game_status == GameField::GameStatus::OFF) {
         this->draw_screen();
@@ -108,6 +112,7 @@ void MainWindow::set_sound_buffers() {
 
 void MainWindow::set_text_settings() {
     this->font.loadFromFile("./fonts/pixel_font.ttf");
+    this->menu_font.loadFromFile("./fonts/menu_font.ttf");
 
     this->score_text.setFont(this->font);
     this->score_text.setCharacterSize(35);
@@ -120,6 +125,15 @@ void MainWindow::set_text_settings() {
     this->game_over_text.setPosition(
         (this->size.width - this->game_over_text.getLocalBounds().width) / 2,
         (this->size.height - this->game_over_text.getLocalBounds().height) / 2);
+
+    for (int i = 0; i < this->main_menu_items_text.size(); i++) {
+        this->main_menu_items.push_back(sf::Text());
+        this->main_menu_items.back().setString(this->main_menu_items_text[i]);
+        this->main_menu_items.back().setFont(this->menu_font);
+        //this->main_menu_items.back().setFont(this->font);
+        this->main_menu_items.back().setCharacterSize(40);
+        this->main_menu_items.back().setFillColor(sf::Color::Black);
+    }
 }
 
 void MainWindow::play_sounds() {
@@ -184,4 +198,32 @@ void MainWindow::draw_screen() {
     this->clear(this->BACKGROUND_COLOR);
     this->draw_score_bar();
     this->draw_field();
+}
+
+void MainWindow::draw_menu() {
+    const float menu_item_interval = 20;
+
+    float current_munu_item_y = 0;
+    float menu_item_max_width = 0;
+
+    for (int i = 0; i < this->main_menu_items.size(); i++) {
+        this->main_menu_items[i].setPosition(0, current_munu_item_y);
+        current_munu_item_y += this->main_menu_items[i].getLocalBounds().height + menu_item_interval;
+        menu_item_max_width = std::max(menu_item_max_width, this->main_menu_items[i].getLocalBounds().width);
+    }
+    const Size menu(menu_item_max_width, current_munu_item_y);
+
+    const int menu_pos_x = (this->size.width - menu.width) / 2;
+    const int menu_pos_y = (this->size.height - menu.height) / 2;
+
+    sf::RectangleShape menu_rect(sf::Vector2f(menu.width, menu.height));
+    menu_rect.setPosition(menu_pos_x, menu_pos_y);
+    menu_rect.setFillColor(sf::Color(255, 255, 255, 220));
+    this->draw(menu_rect);
+
+    for (int i = 0; i < this->main_menu_items.size(); i++) {
+        this->main_menu_items[i].move(menu_pos_x, menu_pos_y);
+        this->draw(this->main_menu_items[i]);
+    }
+
 }
