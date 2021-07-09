@@ -27,6 +27,8 @@ private:
 
     int speed = 2; // 0 - low, 4 - fast
 
+    bool first_field_generation = true;
+
     Size window_size;
 
     GameField game_field;
