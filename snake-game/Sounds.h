@@ -12,10 +12,7 @@ public:
         MENU_NAVIGATE
     };
 
-    Sounds() {
-        this->load_sound_buffers();
-        this->set_sound_buffers();
-    }
+    Sounds();
 
     void play(int sound_name); // Play sound by it's name
     
@@ -38,5 +35,7 @@ private:
     void load_sound_buffers(); // Load sound buffers from files
 
     void set_sound_buffers(); // Set sound buffers on sounds
+
+    void set_volume();
 };
 

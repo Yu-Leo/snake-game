@@ -1,5 +1,11 @@
 #include "Sounds.h"
 
+Sounds::Sounds() {
+    this->load_sound_buffers();
+    this->set_sound_buffers();
+    this->set_volume();
+}
+
 void Sounds::play(int sound_name) {
     switch (sound_name) {
         case this->ATE_APPLE:
@@ -30,5 +36,12 @@ void Sounds::set_sound_buffers() {
     this->collision_with_wall.setBuffer(this->sound_buffers.collision_with_wall);
     this->collision_with_body.setBuffer(this->sound_buffers.collision_with_body);
     this->menu_navigate.setBuffer(this->sound_buffers.menu_navigate);
+}
 
+void Sounds::set_volume() {
+    float volume = 10;
+    this->ate_apple.setVolume(volume);
+    this->collision_with_wall.setVolume(volume);
+    this->collision_with_body.setVolume(volume);
+    this->menu_navigate.setVolume(volume);
 }
