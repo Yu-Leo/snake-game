@@ -16,7 +16,6 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     this->set_textures();
 
     this->set_text_settings();
-
 }
 
 void MainWindow::event_handling() {
@@ -29,56 +28,21 @@ void MainWindow::event_handling() {
                 case GameField::GameStatus::ACTIVE: // Controlling
                     this->handling_control(event);
                     break;
-
                 case GameField::GameStatus::STARTED: // Menu navigation
-                case GameField::GameStatus::FINISHED: 
+                    this->active_menu = ActiveMenu::MAIN;
+                    this->handling_menu_navigation(event);
+                    break;
+                case GameField::GameStatus::FINISHED:
+                    this->active_menu = ActiveMenu::MAIN;
+                    this->handling_menu_navigation(event);
+                    break;
                 case GameField::GameStatus::PAUSE:
+                    this->active_menu = ActiveMenu::PAUSE;
                     this->handling_menu_navigation(event);
                     break;
             }
         }
 
-    }
-}
-
-void MainWindow::handling_control(const sf::Event &event) {
-    this->game_field.key_pressed();
-    switch (event.key.code) {
-        case sf::Keyboard::Up:
-            this->game_field.insert_command(Snake::Directions::UP);
-            break;
-        case sf::Keyboard::Right:
-            this->game_field.insert_command(Snake::Directions::RIGHT);
-            break;
-        case sf::Keyboard::Down:
-            this->game_field.insert_command(Snake::Directions::DOWN);
-            break;
-        case sf::Keyboard::Left:
-            this->game_field.insert_command(Snake::Directions::LEFT);
-            break;
-        case sf::Keyboard::Escape:
-            this->game_field.pause();
-    }
-}
-
-void MainWindow::handling_menu_navigation(const sf::Event &event) {
-    switch (event.key.code) {
-        case sf::Keyboard::Up:
-            this->menu.previous_item();
-            this->sounds.play(Sounds::MENU_NAVIGATE);
-            break;
-        case sf::Keyboard::Down:
-            this->menu.next_item();
-            this->sounds.play(Sounds::MENU_NAVIGATE);
-            break;
-        case sf::Keyboard::Enter:
-            this->main_menu_operations();
-            this->sounds.play(Sounds::MENU_NAVIGATE);
-            break;
-        case sf::Keyboard::Escape:
-            if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
-                this->game_field.unpause();
-            }
     }
 }
 
@@ -94,7 +58,7 @@ void MainWindow::redraw() {
     switch (game_status) {
         case GameField::GameStatus::STARTED:
             this->draw_screen();
-            this->menu.draw_main_menu(*this);
+            this->main_menu.draw(*this);
             this->display();
             break;
         case GameField::GameStatus::ACTIVE:
@@ -103,7 +67,7 @@ void MainWindow::redraw() {
             break;
         case GameField::GameStatus::PAUSE:
             this->draw_screen();
-            this->menu.draw_pause_menu(*this);
+            this->pause_menu.draw(*this);
             this->display();
             break;
         case GameField::GameStatus::FINISHED:
@@ -214,18 +178,115 @@ void MainWindow::draw_screen() {
     this->draw_field();
 }
 
-void MainWindow::main_menu_operations() {
+void MainWindow::handling_control(const sf::Event& event) {
+    this->game_field.key_pressed();
+    switch (event.key.code) {
+    case sf::Keyboard::Up:
+        this->game_field.insert_command(Snake::Directions::UP);
+        break;
+    case sf::Keyboard::Right:
+        this->game_field.insert_command(Snake::Directions::RIGHT);
+        break;
+    case sf::Keyboard::Down:
+        this->game_field.insert_command(Snake::Directions::DOWN);
+        break;
+    case sf::Keyboard::Left:
+        this->game_field.insert_command(Snake::Directions::LEFT);
+        break;
+    case sf::Keyboard::Escape:
+        this->game_field.pause();
+    }
+}
 
-    switch (this->menu.get_active_item_index()) {
-        case 0: // First item
-            if (this->game_field.get_game_status() != GameField::GameStatus::PAUSE)
-                this->game_field = GameField(game_field_size);
-            this->game_field.unpause();     
-            break;
-        case 1: // Second item
-            break;
-        case 2: // Third item
-            this->close();
-            break;
+void MainWindow::handling_menu_navigation(const sf::Event& event) {
+    switch (event.key.code) {
+    case sf::Keyboard::Up:
+        this->previous_menu_item();
+        this->sounds.play(Sounds::MENU_NAVIGATE);
+        break;
+    case sf::Keyboard::Down:
+        this->next_menu_item();
+        this->sounds.play(Sounds::MENU_NAVIGATE);
+        break;
+    case sf::Keyboard::Enter:
+        this->menu_operations();
+        this->sounds.play(Sounds::MENU_NAVIGATE);
+        break;
+    case sf::Keyboard::Escape:
+        if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
+            this->game_field.unpause();
+        }
+    }
+}
+
+void MainWindow::menu_operations() {
+    switch (this->active_menu) {
+    case ActiveMenu::MAIN:
+        this->main_menu_operations();
+        break;
+
+    case ActiveMenu::PAUSE:
+        this->pause_menu_operations();
+        break;
+
+    case ActiveMenu::SETTINGS:
+        break;
+    }
+}
+
+void MainWindow::main_menu_operations() {
+    switch (this->main_menu.get_active_item_index()) {
+    case 0: // First item
+        this->game_field = GameField(game_field_size);
+        this->game_field.unpause();     
+        break;
+    case 1: // Second item
+        break;
+    case 2: // Third item
+        this->close();
+        break;
+    }
+}
+
+void MainWindow::pause_menu_operations() {
+    switch (this->pause_menu.get_active_item_index()) {
+    case 0: // First item
+        this->game_field.unpause();
+        break;
+    case 1: // Second item
+        break;
+    case 2: // Third item
+        this->close();
+        break;
+    }
+}
+
+void MainWindow::next_menu_item() {
+    switch (this->active_menu) {
+    case ActiveMenu::MAIN:
+        this->main_menu.next_item();
+        break;
+
+    case ActiveMenu::PAUSE:
+        this->pause_menu.next_item();
+        break;
+
+    case ActiveMenu::SETTINGS:
+        break;
+    }
+
+}
+
+void MainWindow::previous_menu_item() {
+    switch (this->active_menu) {
+    case ActiveMenu::MAIN:
+        this->main_menu.previous_item();
+        break;
+    case ActiveMenu::PAUSE:
+        this->pause_menu.previous_item();
+        break;
+
+    case ActiveMenu::SETTINGS:
+        break;
     }
 }

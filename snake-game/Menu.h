@@ -2,17 +2,15 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
+
 #include "Size.h"
 
 class Menu {
 public:
-	Menu() {
-		this->set_font_settings();
-	}
+	Menu(const std::vector<std::string>& items);
 
-	void draw_main_menu(sf::RenderWindow &window);
-
-	void draw_pause_menu(sf::RenderWindow& window);
+	void draw(sf::RenderWindow &window);
 
 	void next_item();
 	
@@ -44,8 +42,8 @@ private:
 	const sf::Color INACTIVE_TEXT_COLOR = sf::Color(128, 128, 128);
 	const sf::Color ACTIVE_TEXT_COLOR = sf::Color::Black;
 
-	std::vector<sf::Text> main_menu_items;
-	std::vector<std::string> main_menu_items_text = { "Start new game", "Settings", "Quit" };
+	std::vector<sf::Text> menu_items;
+	std::vector<std::string> menu_items_text;
 	
 	int active_item_index = 0;
 
