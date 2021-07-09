@@ -23,6 +23,24 @@ void Sounds::play(int sound_name) {
     }
 }
 
+int Sounds::get_volume() {
+    return this->volume;
+}
+
+void Sounds::turn_up_volume() {
+    this->volume += 5;
+    if (this->volume > this->MAX_VOLUME)
+        this->volume = this->MAX_VOLUME;
+    this->set_volume();
+}
+
+void Sounds::turn_down_volume() {
+    this->volume -= 5;
+    if (this->volume < this->MIN_VOLUME)
+        this->volume = this->MIN_VOLUME;
+    this->set_volume();
+}
+
 void Sounds::load_sound_buffers() {
     this->sound_buffers.ate_apple.loadFromFile("./sounds/ate_apple.wav");
     this->sound_buffers.collision_with_wall.loadFromFile("./sounds/collision_with_wall.wav");
@@ -39,9 +57,8 @@ void Sounds::set_sound_buffers() {
 }
 
 void Sounds::set_volume() {
-    float volume = 10;
-    this->ate_apple.setVolume(volume);
-    this->collision_with_wall.setVolume(volume);
-    this->collision_with_body.setVolume(volume);
-    this->menu_navigate.setVolume(volume);
+    this->ate_apple.setVolume(this->volume);
+    this->collision_with_wall.setVolume(this->volume);
+    this->collision_with_body.setVolume(this->volume);
+    this->menu_navigate.setVolume(this->volume);
 }
