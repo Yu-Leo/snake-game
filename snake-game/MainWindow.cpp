@@ -65,12 +65,15 @@ void MainWindow::handling_menu_navigation(const sf::Event &event) {
     switch (event.key.code) {
         case sf::Keyboard::Up:
             this->menu.previous_item();
+            this->sounds.play(Sounds::MENU_NAVIGATE);
             break;
         case sf::Keyboard::Down:
             this->menu.next_item();
+            this->sounds.play(Sounds::MENU_NAVIGATE);
             break;
         case sf::Keyboard::Enter:
             this->main_menu_operations();
+            this->sounds.play(Sounds::MENU_NAVIGATE);
             break;
         case sf::Keyboard::Escape:
             if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {

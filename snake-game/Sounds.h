@@ -8,7 +8,8 @@ public:
     enum SoundNames {
         ATE_APPLE,
         COLLISION_WITH_BODY,
-        COLLISION_WITH_WALL
+        COLLISION_WITH_WALL,
+        MENU_NAVIGATE
     };
 
     Sounds() {
@@ -21,12 +22,18 @@ public:
 
 private:
     struct SoundBuffers {
-        sf::SoundBuffer ate_apple, collision_with_wall, collision_with_body;
+        sf::SoundBuffer ate_apple;
+        sf::SoundBuffer collision_with_wall;
+        sf::SoundBuffer collision_with_body;
+        sf::SoundBuffer menu_navigate;
     };
 
     SoundBuffers sound_buffers;
 
-    sf::Sound ate_apple, collision_with_wall, collision_with_body;
+    sf::Sound ate_apple; 
+    sf::Sound collision_with_wall;
+    sf::Sound collision_with_body;
+    sf::Sound menu_navigate;
 
     void load_sound_buffers(); // Load sound buffers from files
 
