@@ -46,7 +46,7 @@ void Menu::load_font() {
 }
 
 void Menu::set_font_settings() {
-    for (int i = 0; i < this->menu_items_text.size(); i++) {
+    for (unsigned int i = 0; i < this->menu_items_text.size(); i++) {
         this->menu_items.push_back(sf::Text());
         this->menu_items.back().setFont(this->font);
         this->menu_items.back().setCharacterSize(40);
@@ -55,7 +55,7 @@ void Menu::set_font_settings() {
 }
 
 void Menu::set_texts() {
-    for (int i = 0; i < this->menu_items_text.size(); i++) {
+    for (unsigned int i = 0; i < this->menu_items_text.size(); i++) {
         this->menu_items[i].setString(this->menu_items_text[i]);
     }
 }
@@ -64,14 +64,13 @@ Size Menu::get_background_size() {
     float current_menu_item_y = 0;
     float menu_item_max_width = 0;
 
-    for (int i = 0; i < this->menu_items.size(); i++) {
+    for (unsigned int i = 0; i < this->menu_items.size(); i++) {
         current_menu_item_y += this->menu_items[i].getLocalBounds().height + this->ITEM_PADDING;
         menu_item_max_width = std::max(menu_item_max_width, this->menu_items[i].getLocalBounds().width);
     }
 
     return Size(menu_item_max_width + this->HORIZONTAL_PADDING * 2,
         current_menu_item_y - this->ITEM_PADDING + this->VERTICAL_PADDING * 2);
-
 }
 
 void Menu::draw_background(sf::RenderWindow& window, const Size& size, const Position& pos) {
@@ -82,9 +81,8 @@ void Menu::draw_background(sf::RenderWindow& window, const Size& size, const Pos
 }
 
 void Menu::draw_items(sf::RenderWindow& window, const Position& bg_pos) {
-
     float current_y_pos = 0.0;
-    for (int i = 0; i < this->menu_items.size(); i++) {
+    for (unsigned int i = 0; i < this->menu_items.size(); i++) {
         sf::Color fill_color = (this->active_item_index == i ?
             this->ACTIVE_TEXT_COLOR : this->INACTIVE_TEXT_COLOR);
 

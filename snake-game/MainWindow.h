@@ -21,18 +21,18 @@ public:
 
     void redraw(); // Redraw game window
     
-    void delay();
+    void delay(); // Delay after one game iteration
 
 private:
 
     int speed = 2; // 0 - low, 4 - fast
 
-    bool first_field_generation = true;
+    bool field_regeneration = false; // Should the field be regenerated
 
-    Size window_size;
+    Size window_size; // Size in ptx
 
-    GameField game_field;
-    Size game_field_size;
+    GameField game_field; // Mechanics of game
+    Size game_field_size; // Size of game field in cells
 
     struct Textures {
         sf::Texture none, apple, snake, wall;
@@ -47,7 +47,7 @@ private:
 
     Sounds sounds;
     
-    sf::Font font;
+    sf::Font font; // Font for titles
     
     sf::Text score_text;
     sf::Text game_over_text;
@@ -70,13 +70,13 @@ private:
 
         MenuList();
         
-        void draw(MainWindow& window);
+        void draw(MainWindow& window); // Draw menu at window
 
         void operations(MainWindow& window);
 
-        void next_item();
+        void next_item(); // Switch to next item in items list
 
-        void previous_item();
+        void previous_item(); // Switch to previous item in items list
 
     private:
 
@@ -95,20 +95,19 @@ private:
 
     void set_textures(); // Set textures on sprites
 
-    void set_text_settings();
+    void set_text_settings(); // Set settings of text
 
     void play_sounds(); // Check snake head collisions and play sounds 
 
     void draw_cell(const Point& point);
 
-    void draw_field();
+    void draw_field(); // Draw game field
 
-    void draw_score_bar();
+    void draw_score_bar(); // Draw title with score
 
-    void draw_screen();
+    void draw_screen(); // Draw game field and title with score
 
-    void handling_control(const sf::Event& event); // Processing controlling
+    void handling_control(const sf::Event& event); // Processing controlling snake
 
-    void handling_menu_navigation(const sf::Event& event);
+    void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
 };
-

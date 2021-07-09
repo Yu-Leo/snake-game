@@ -8,18 +8,18 @@ Sounds::Sounds() {
 
 void Sounds::play(int sound_name) {
     switch (sound_name) {
-        case this->ATE_APPLE:
-            this->ate_apple.play();
-            break;
-        case this->COLLISION_WITH_BODY:
-            this->collision_with_body.play();
-            break;
-        case this->COLLISION_WITH_WALL:
-            this->collision_with_wall.play();
-            break;
-        case this->MENU_NAVIGATE:
-            this->menu_navigate.play();
-            break;
+    case this->ATE_APPLE:
+        this->ate_apple.play();
+        break;
+    case this->COLLISION_WITH_BODY:
+        this->collision_with_body.play();
+        break;
+    case this->COLLISION_WITH_WALL:
+        this->collision_with_wall.play();
+        break;
+    case this->MENU_NAVIGATE:
+        this->menu_navigate.play();
+        break;
     }
 }
 

@@ -285,10 +285,10 @@ void MainWindow::MenuList::operations(MainWindow& window) {
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
     case 0: // First item
-        if (!window.first_field_generation) {
+        if (window.field_regeneration) {
             window.game_field = GameField(window.game_field_size);
-            window.first_field_generation = false;
         }
+        window.field_regeneration = true;
         
         window.game_field.unpause();     
         break;
