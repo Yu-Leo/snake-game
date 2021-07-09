@@ -18,6 +18,8 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     this->set_textures();
 
     this->set_text_settings();
+
+    MenuList menu = MainWindow::MenuList();
 }
 
 void MainWindow::event_handling() {
@@ -31,18 +33,18 @@ void MainWindow::event_handling() {
                     this->handling_control(event);
                     break;
                 case GameField::GameStatus::STARTED: // Menu navigation
-                    if (this->active_menu != ActiveMenu::SETTINGS)
-                        this->active_menu = ActiveMenu::MAIN;
+                    if (this->menu.active_menu != MenuList::SETTINGS)
+                        this->menu.active_menu = MenuList::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::FINISHED:
-                    if (this->active_menu != ActiveMenu::SETTINGS)
-                        this->active_menu = ActiveMenu::MAIN;
+                    if (this->menu.active_menu != MenuList::SETTINGS)
+                        this->menu.active_menu = MenuList::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::PAUSE:
-                    if (this->active_menu != ActiveMenu::SETTINGS)
-                        this->active_menu = ActiveMenu::PAUSE;
+                    if (this->menu.active_menu != MenuList::SETTINGS)
+                        this->menu.active_menu = MenuList::PAUSE;
                     this->handling_menu_navigation(event);
                     break;
             }
@@ -64,15 +66,15 @@ void MainWindow::redraw() {
     case GameField::GameStatus::STARTED:
         this->draw_screen();
 
-        switch (this->active_menu) {
-        case ActiveMenu::MAIN:
-            this->main_menu.draw(*this);
+        switch (this->menu.active_menu) {
+        case MenuList::MAIN:
+            this->menu.main_menu.draw(*this);
             break;
-        case ActiveMenu::PAUSE:
-            this->pause_menu.draw(*this);
+        case MenuList::PAUSE:
+            this->menu.pause_menu.draw(*this);
             break;
-        case ActiveMenu::SETTINGS:
-            this->settings_menu.draw(*this);
+        case MenuList::SETTINGS:
+            this->menu.settings_menu.draw(*this);
             break;
         }
 
@@ -85,15 +87,15 @@ void MainWindow::redraw() {
     case GameField::GameStatus::PAUSE:
         this->draw_screen();
 
-        switch (this->active_menu) {
-        case ActiveMenu::MAIN:
-            this->main_menu.draw(*this);
+        switch (this->menu.active_menu) {
+        case MenuList::MAIN:
+            this->menu.main_menu.draw(*this);
             break;
-        case ActiveMenu::PAUSE:
-            this->pause_menu.draw(*this);
+        case MenuList::PAUSE:
+            this->menu.pause_menu.draw(*this);
             break;
-        case ActiveMenu::SETTINGS:
-            this->settings_menu.draw(*this);
+        case MenuList::SETTINGS:
+            this->menu.settings_menu.draw(*this);
             break;
         }
 
@@ -223,7 +225,7 @@ void MainWindow::handling_control(const sf::Event& event) {
         this->game_field.insert_command(Snake::Directions::LEFT);
         break;
     case sf::Keyboard::Escape:
-        this->active_menu = ActiveMenu::PAUSE;
+        this->menu.active_menu = MenuList::PAUSE;
         this->game_field.pause();
     }
 }
@@ -231,15 +233,15 @@ void MainWindow::handling_control(const sf::Event& event) {
 void MainWindow::handling_menu_navigation(const sf::Event& event) {
     switch (event.key.code) {
     case sf::Keyboard::Up:
-        this->previous_menu_item();
+        this->menu.previous_item();
         this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Down:
-        this->next_menu_item();
+        this->menu.next_item();
         this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Enter:
-        this->menu_operations();
+        this->menu.operations(*this);
         this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Escape:
@@ -249,52 +251,53 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
     }
 }
 
-void MainWindow::menu_operations() {
+void MainWindow::MenuList::operations(MainWindow& window) {
     switch (this->active_menu) {
     case ActiveMenu::MAIN:
-        this->main_menu_operations();
+        this->main_menu_operations(window);
         break;
 
     case ActiveMenu::PAUSE:
-        this->pause_menu_operations();
+        this->pause_menu_operations(window);
         break;
 
     case ActiveMenu::SETTINGS:
-        this->settings_menu_operations();
+        this->settings_menu_operations(window);
         break;
     }
 }
 
-void MainWindow::main_menu_operations() {
+
+void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main_menu.get_active_item_index()) {
     case 0: // First item
-        this->game_field = GameField(game_field_size);
-        this->game_field.unpause();     
+        window.game_field = GameField(window.game_field_size);
+        window.game_field.unpause();     
         break;
     case 1: // Second item
         this->active_menu = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
-        this->close();
+        window.close();
         break;
     }
 }
 
-void MainWindow::pause_menu_operations() {
+void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
     switch (this->pause_menu.get_active_item_index()) {
     case 0: // First item
-        this->game_field.unpause();
+        window.game_field.unpause();
         break;
     case 1: // Second item
         this->active_menu = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
-        this->close();
+        window.close();
         break;
     }
 }
 
-void MainWindow::settings_menu_operations() {
+void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
     switch (this->settings_menu.get_active_item_index()) {
     case 0: // First item
         std::cout << "BACK\n";
@@ -305,7 +308,7 @@ void MainWindow::settings_menu_operations() {
     }
 }
 
-void MainWindow::next_menu_item() {
+void MainWindow::MenuList::next_item() {
     switch (this->active_menu) {
     case ActiveMenu::MAIN:
         this->main_menu.next_item();
@@ -322,7 +325,7 @@ void MainWindow::next_menu_item() {
 
 }
 
-void MainWindow::previous_menu_item() {
+void MainWindow::MenuList::previous_item() {
     switch (this->active_menu) {
     case ActiveMenu::MAIN:
         this->main_menu.previous_item();

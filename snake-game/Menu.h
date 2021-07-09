@@ -8,7 +8,10 @@
 
 class Menu {
 public:
-	Menu(const std::vector<std::string>& items);
+
+	Menu() {}
+
+	void set_text_to_items(const std::vector<std::string>& items);
 
 	void draw(sf::RenderWindow &window);
 

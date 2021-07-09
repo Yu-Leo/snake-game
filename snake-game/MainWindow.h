@@ -24,12 +24,6 @@ public:
     void delay();
 
 private:
-    
-    enum class ActiveMenu {
-        MAIN,
-        PAUSE,
-        SETTINGS
-    };
 
     int speed = 2; // 0 - low, 4 - fast
 
@@ -56,16 +50,47 @@ private:
     sf::Text score_text;
     sf::Text game_over_text;
     
-    std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
-    Menu main_menu = Menu(this->main_menu_items);
+    struct MenuList {
+    public:
 
-    std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
-    Menu pause_menu = Menu(this->pause_menu_items);
+        enum ActiveMenu {
+            MAIN,
+            PAUSE,
+            SETTINGS
+        };
 
-    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume" };
-    Menu settings_menu = Menu(this->settings_menu_items);
+        int active_menu = MAIN;
 
-    ActiveMenu active_menu = ActiveMenu::MAIN;
+        Menu main_menu;
+        Menu pause_menu;
+        Menu settings_menu;
+
+        MenuList() {
+            std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
+            std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
+            std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume" };
+            
+            this->main_menu.set_text_to_items(main_menu_items);
+            this->pause_menu.set_text_to_items(pause_menu_items);
+            this->settings_menu.set_text_to_items(settings_menu_items);
+        }
+        
+        void operations(MainWindow& window);
+
+        void next_item();
+
+        void previous_item();
+
+    private:
+
+        void main_menu_operations(MainWindow& window);
+
+        void pause_menu_operations(MainWindow& window);
+
+        void settings_menu_operations(MainWindow& window);
+    };
+
+    MenuList menu;
 
     const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
     
@@ -88,17 +113,5 @@ private:
     void handling_control(const sf::Event& event); // Processing controlling
 
     void handling_menu_navigation(const sf::Event& event);
-
-    void menu_operations();
-
-    void main_menu_operations();
-
-    void pause_menu_operations();
-
-    void settings_menu_operations();
-
-    void next_menu_item();
-
-    void previous_menu_item();
 };
 
