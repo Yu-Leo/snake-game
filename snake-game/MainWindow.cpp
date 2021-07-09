@@ -293,7 +293,11 @@ void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
 void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
     switch (this->settings_menu.get_active_item_index()) {
     case 0: // First item
-        std::cout << "BACK\n";
+        if (window.game_field.get_game_status() == GameField::GameStatus::PAUSE)
+            this->active = PAUSE;
+        else
+            this->active = MAIN;
+        //std::cout << "BACK\n";
         break;
     case 1: // Second item
         std::cout << "volume\n";
