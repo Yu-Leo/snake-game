@@ -215,7 +215,6 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         break;
     case sf::Keyboard::Down:
         this->menu.next_item();
-        //this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Left:
         if (this->menu.active == MenuList::SETTINGS &&
@@ -232,7 +231,6 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         break;
     case sf::Keyboard::Enter:
         this->menu.operations(*this);
-        //this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Escape:
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
@@ -287,7 +285,11 @@ void MainWindow::MenuList::operations(MainWindow& window) {
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
     case 0: // First item
-        window.game_field = GameField(window.game_field_size);
+        if (!window.first_field_generation) {
+            window.game_field = GameField(window.game_field_size);
+            window.first_field_generation = false;
+        }
+        
         window.game_field.unpause();     
         break;
     case 1: // Second item
