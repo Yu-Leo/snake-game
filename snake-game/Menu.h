@@ -12,6 +12,8 @@ public:
 
 	void draw_main_menu(sf::RenderWindow &window);
 
+	void draw_pause_menu(sf::RenderWindow& window);
+
 	void next_item();
 	
 	void previous_item();

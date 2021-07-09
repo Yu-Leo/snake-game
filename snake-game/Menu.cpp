@@ -10,6 +10,12 @@ void Menu::draw_main_menu(sf::RenderWindow& window) {
     this->draw_items(window, background_pos);
 }
 
+void Menu::draw_pause_menu(sf::RenderWindow& window) {
+    this->main_menu_items[0].setString("Resume game");
+    this->draw_main_menu(window);
+    this->main_menu_items[0].setString(this->main_menu_items_text[0]);
+}
+
 void Menu::next_item() {
     this->active_item_index += 1;
     this->active_item_index %= this->main_menu_items_text.size();
