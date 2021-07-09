@@ -33,18 +33,18 @@ void MainWindow::event_handling() {
                     this->handling_control(event);
                     break;
                 case GameField::GameStatus::STARTED: // Menu navigation
-                    if (this->menu.active_menu != MenuList::SETTINGS)
-                        this->menu.active_menu = MenuList::MAIN;
+                    if (this->menu.active != MenuList::SETTINGS)
+                        this->menu.active = MenuList::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::FINISHED:
-                    if (this->menu.active_menu != MenuList::SETTINGS)
-                        this->menu.active_menu = MenuList::MAIN;
+                    if (this->menu.active != MenuList::SETTINGS)
+                        this->menu.active = MenuList::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::PAUSE:
-                    if (this->menu.active_menu != MenuList::SETTINGS)
-                        this->menu.active_menu = MenuList::PAUSE;
+                    if (this->menu.active != MenuList::SETTINGS)
+                        this->menu.active = MenuList::PAUSE;
                     this->handling_menu_navigation(event);
                     break;
             }
@@ -78,6 +78,7 @@ void MainWindow::redraw() {
         this->display();
         break;
     case GameField::GameStatus::FINISHED:
+        this->menu.active = MenuList::MAIN;
         this->draw_screen();
         this->draw(this->game_over_text);
         this->display();
@@ -202,7 +203,7 @@ void MainWindow::handling_control(const sf::Event& event) {
         this->game_field.insert_command(Snake::Directions::LEFT);
         break;
     case sf::Keyboard::Escape:
-        this->menu.active_menu = MenuList::PAUSE;
+        this->menu.active = MenuList::PAUSE;
         this->game_field.pause();
     }
 }
@@ -224,12 +225,13 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
     case sf::Keyboard::Escape:
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
             this->game_field.unpause();
+            this->menu.active = MenuList::NONE;
         }
     }
 }
 
 void MainWindow::MenuList::draw(MainWindow& window) {
-    switch (this->active_menu) {
+    switch (this->active) {
     case MenuList::MAIN:
         this->main_menu.draw(window);
         break;
@@ -243,7 +245,7 @@ void MainWindow::MenuList::draw(MainWindow& window) {
 }
 
 void MainWindow::MenuList::operations(MainWindow& window) {
-    switch (this->active_menu) {
+    switch (this->active) {
     case ActiveMenu::MAIN:
         this->main_menu_operations(window);
         break;
@@ -266,7 +268,7 @@ void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
         window.game_field.unpause();     
         break;
     case 1: // Second item
-        this->active_menu = ActiveMenu::SETTINGS;
+        this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
         window.close();
@@ -280,7 +282,7 @@ void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
         window.game_field.unpause();
         break;
     case 1: // Second item
-        this->active_menu = ActiveMenu::SETTINGS;
+        this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
         window.close();
@@ -300,7 +302,7 @@ void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
 }
 
 void MainWindow::MenuList::next_item() {
-    switch (this->active_menu) {
+    switch (this->active) {
     case ActiveMenu::MAIN:
         this->main_menu.next_item();
         break;
@@ -317,7 +319,7 @@ void MainWindow::MenuList::next_item() {
 }
 
 void MainWindow::MenuList::previous_item() {
-    switch (this->active_menu) {
+    switch (this->active) {
     case ActiveMenu::MAIN:
         this->main_menu.previous_item();
         break;

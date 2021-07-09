@@ -54,12 +54,13 @@ private:
     public:
 
         enum ActiveMenu {
+            NONE,
             MAIN,
             PAUSE,
             SETTINGS
         };
 
-        int active_menu = MAIN;
+        int active = MAIN;
 
         Menu main_menu;
         Menu pause_menu;
