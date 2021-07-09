@@ -12,14 +12,24 @@ class GameField {
 public:
 
     enum class GameStatus {
-        ON,
-        OFF
+        STARTED,
+        ACTIVE,
+        PAUSE,
+        FINISHED
     };
 
     enum class CellTypes {
         NONE,
         APPLE,
-        SNAKE
+        SNAKE,
+        WALL
+    };
+
+    enum class Collisions {
+        APPLE,
+        BODY,
+        WALL,
+        NONE
     };
 
     GameField(const Size& size); // Constructor with settable size
@@ -32,7 +42,15 @@ public:
 
     void insert_command(int direction); // Processing new changing direction command 
 
-    void finish_game(); // Exit frome game (game over)
+    void start();
+
+    void finish(); // Exit frome game (game over)
+
+    void pause();
+
+    void unpause();
+
+    int get_score() const; // Getter for score
 
     Size get_size() const; // Getter for game_field size
 
@@ -40,16 +58,24 @@ public:
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
     
+    Collisions get_collision() const;
+
+    void clear_collision();
+
 private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
+    static const int FIELD_CELL_TYPE_WALL = -2;
 
     enum class Symbols { // Symbols for console display
         SNAKE = '#', // Cell with snake
         NONE = '-', // Empty cell
-        APPLE = '*' // Cell with apple
+        APPLE = '*', // Cell with apple
+        WALL = '$' // Cell with wall
     };
+
+    int score = 0;
 
     Size size; // Size of game field
     std::vector<std::vector<int>> field; // Raw field
@@ -61,6 +87,8 @@ private:
     int last_snake_direction;
 
     GameStatus game_status; // Is player in gameplay
+
+    Collisions collision = Collisions::NONE;
 
     void resize_matrix(); // Change sizes of field vectors
 
@@ -75,6 +103,8 @@ private:
     void grow_snake(); // Grow snake, if it eat apple
 
     void decrease_snake_cells(); // Decrease values of all snake's cells
+
+    void set_walls(); // Add walls to field
 
     void render_snake(); // Fill snake's cells
 
