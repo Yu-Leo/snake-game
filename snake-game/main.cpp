@@ -1,16 +1,15 @@
 #include <SFML/Graphics.hpp>
 
-#include <iostream>
 #include <ctime>
 
 #include "MainWindow.h"
 
-#define RANDOM_GENERATING false // (true/false)
+#define RANDOM_GENERATING true // (true/false)
 
 int main() {
 
 #if RANDOM_GENERATING
-    srand(std::time(NULL)); // Set current time as seed for png
+    srand(int(std::time(NULL))); // Set current time as seed for png
 #else
     srand(0); // Set seed for pseudorandom number generator
 #endif
@@ -21,7 +20,7 @@ int main() {
         window.event_handling();
         window.one_iteration();
         window.redraw();
-        sf::sleep(sf::milliseconds(100));
+        window.delay();
     }
 
     return 0;
