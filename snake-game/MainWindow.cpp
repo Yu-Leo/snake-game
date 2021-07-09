@@ -5,8 +5,10 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     "Snake game",
     sf::Style::Close) {
 
-    this->size.width = size.width * CELL_SIZE;
-    this->size.height = size.height * CELL_SIZE + TOP_PADDING;
+    this->game_field_size = size;
+
+    this->window_size.width = size.width * CELL_SIZE;
+    this->window_size.height = size.height * CELL_SIZE + TOP_PADDING;
 
     this->game_field = GameField(size);
 
@@ -24,11 +26,13 @@ void MainWindow::event_handling() {
             this->close();
         if (event.type == sf::Event::KeyPressed) { 
             switch (this->game_field.get_game_status()) {
-                case GameField::GameStatus::ON: // Controlling
+                case GameField::GameStatus::ACTIVE: // Controlling
                     this->handling_control(event);
                     break;
 
-                case GameField::GameStatus::PAUSE: // Menu navigation
+                case GameField::GameStatus::STARTED: // Menu navigation
+                case GameField::GameStatus::FINISHED: 
+                case GameField::GameStatus::PAUSE:
                     this->handling_menu_navigation(event);
                     break;
             }
@@ -69,13 +73,14 @@ void MainWindow::handling_menu_navigation(const sf::Event &event) {
             this->main_menu_operations();
             break;
         case sf::Keyboard::Escape:
-            this->game_field.unpause();
-
+            if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
+                this->game_field.unpause();
+            }
     }
 }
 
 void MainWindow::one_iteration() {
-    if (game_field.get_game_status() == GameField::GameStatus::ON) {
+    if (game_field.get_game_status() == GameField::GameStatus::ACTIVE) {
         this->game_field.one_iteration();
         this->play_sounds();
     }
@@ -83,23 +88,27 @@ void MainWindow::one_iteration() {
 
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
-    if (game_status == GameField::GameStatus::ON) {
-        this->draw_screen();
-        this->display();
-    } else if (game_status == GameField::GameStatus::PAUSE) {
-        this->draw_screen();
-        this->menu.draw_main_menu(*this);
-        this->display();
-    } else if (game_status == GameField::GameStatus::OFF) {
-        this->draw_screen();
-        this->draw(this->game_over_text);
-        this->display();
-        sf::sleep(sf::seconds(1));
-
-        this->game_field.pause();
-        this->menu.draw_main_menu(*this);
-        
-        //this->close();
+    switch (game_status) {
+        case GameField::GameStatus::STARTED:
+            this->draw_screen();
+            this->menu.draw_main_menu(*this);
+            this->display();
+            break;
+        case GameField::GameStatus::ACTIVE:
+            this->draw_screen();
+            this->display();
+            break;
+        case GameField::GameStatus::PAUSE:
+            this->draw_screen();
+            this->menu.draw_main_menu(*this);
+            this->display();
+            break;
+        case GameField::GameStatus::FINISHED:
+            this->draw_screen();
+            this->draw(this->game_over_text);
+            this->display();
+            sf::sleep(sf::seconds(1));
+            this->game_field.start();
     }
 }
 
@@ -134,8 +143,8 @@ void MainWindow::set_text_settings() {
     this->game_over_text.setCharacterSize(120);
     this->game_over_text.setFillColor(sf::Color::White);
     this->game_over_text.setPosition(
-        (this->size.width - this->game_over_text.getLocalBounds().width) / 2,
-        (this->size.height - this->game_over_text.getLocalBounds().height) / 2);
+        (this->window_size.width - this->game_over_text.getLocalBounds().width) / 2,
+        (this->window_size.height - this->game_over_text.getLocalBounds().height) / 2);
 }
 
 void MainWindow::play_sounds() {
@@ -192,7 +201,7 @@ void MainWindow::draw_field() {
 void MainWindow::draw_score_bar() {
     this->score_text.setString("Score: " + std::to_string(this->game_field.get_score()));
     this->score_text.setPosition(
-        this->size.width - this->score_text.getLocalBounds().width - 20, 7);
+        this->window_size.width - this->score_text.getLocalBounds().width - 20, 7);
     this->draw(this->score_text);
 }
 
@@ -203,8 +212,11 @@ void MainWindow::draw_screen() {
 }
 
 void MainWindow::main_menu_operations() {
+
     switch (this->menu.get_active_item_index()) {
         case 0: // First item
+            //Size game_field_size = this->game_field.get_size();
+            this->game_field = GameField(game_field_size);
             this->game_field.unpause();
             break;
         case 1: // Second item

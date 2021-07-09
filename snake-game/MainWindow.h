@@ -30,9 +30,10 @@ public:
 private:
     int speed = 2; // 0 - low, 4 - fast
 
-    Size size;
+    Size window_size;
 
     GameField game_field;
+    Size game_field_size;
 
     struct Textures {
         sf::Texture none, apple, snake, wall;
