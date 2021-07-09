@@ -100,7 +100,7 @@ void MainWindow::redraw() {
             break;
         case GameField::GameStatus::PAUSE:
             this->draw_screen();
-            this->menu.draw_main_menu(*this);
+            this->menu.draw_pause_menu(*this);
             this->display();
             break;
         case GameField::GameStatus::FINISHED:
@@ -215,9 +215,9 @@ void MainWindow::main_menu_operations() {
 
     switch (this->menu.get_active_item_index()) {
         case 0: // First item
-            //Size game_field_size = this->game_field.get_size();
-            this->game_field = GameField(game_field_size);
-            this->game_field.unpause();
+            if (this->game_field.get_game_status() != GameField::GameStatus::PAUSE)
+                this->game_field = GameField(game_field_size);
+            this->game_field.unpause();     
             break;
         case 1: // Second item
             break;
