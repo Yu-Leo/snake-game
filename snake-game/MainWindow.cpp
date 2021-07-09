@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 
+#include <iostream>
+
 MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE + TOP_PADDING),
     "Snake game",
@@ -29,15 +31,18 @@ void MainWindow::event_handling() {
                     this->handling_control(event);
                     break;
                 case GameField::GameStatus::STARTED: // Menu navigation
-                    this->active_menu = ActiveMenu::MAIN;
+                    if (this->active_menu != ActiveMenu::SETTINGS)
+                        this->active_menu = ActiveMenu::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::FINISHED:
-                    this->active_menu = ActiveMenu::MAIN;
+                    if (this->active_menu != ActiveMenu::SETTINGS)
+                        this->active_menu = ActiveMenu::MAIN;
                     this->handling_menu_navigation(event);
                     break;
                 case GameField::GameStatus::PAUSE:
-                    this->active_menu = ActiveMenu::PAUSE;
+                    if (this->active_menu != ActiveMenu::SETTINGS)
+                        this->active_menu = ActiveMenu::PAUSE;
                     this->handling_menu_navigation(event);
                     break;
             }
@@ -56,26 +61,50 @@ void MainWindow::one_iteration() {
 void MainWindow::redraw() {
     GameField::GameStatus game_status = this->game_field.get_game_status();
     switch (game_status) {
-        case GameField::GameStatus::STARTED:
-            this->draw_screen();
+    case GameField::GameStatus::STARTED:
+        this->draw_screen();
+
+        switch (this->active_menu) {
+        case ActiveMenu::MAIN:
             this->main_menu.draw(*this);
-            this->display();
             break;
-        case GameField::GameStatus::ACTIVE:
-            this->draw_screen();
-            this->display();
-            break;
-        case GameField::GameStatus::PAUSE:
-            this->draw_screen();
+        case ActiveMenu::PAUSE:
             this->pause_menu.draw(*this);
-            this->display();
             break;
-        case GameField::GameStatus::FINISHED:
-            this->draw_screen();
-            this->draw(this->game_over_text);
-            this->display();
-            sf::sleep(sf::seconds(1));
-            this->game_field.start();
+        case ActiveMenu::SETTINGS:
+            this->settings_menu.draw(*this);
+            break;
+        }
+
+        this->display();
+        break;
+    case GameField::GameStatus::ACTIVE:
+        this->draw_screen();
+        this->display();
+        break;
+    case GameField::GameStatus::PAUSE:
+        this->draw_screen();
+
+        switch (this->active_menu) {
+        case ActiveMenu::MAIN:
+            this->main_menu.draw(*this);
+            break;
+        case ActiveMenu::PAUSE:
+            this->pause_menu.draw(*this);
+            break;
+        case ActiveMenu::SETTINGS:
+            this->settings_menu.draw(*this);
+            break;
+        }
+
+        this->display();
+        break;
+    case GameField::GameStatus::FINISHED:
+        this->draw_screen();
+        this->draw(this->game_over_text);
+        this->display();
+        sf::sleep(sf::seconds(1));
+        this->game_field.start();
     }
 }
 
@@ -194,6 +223,7 @@ void MainWindow::handling_control(const sf::Event& event) {
         this->game_field.insert_command(Snake::Directions::LEFT);
         break;
     case sf::Keyboard::Escape:
+        this->active_menu = ActiveMenu::PAUSE;
         this->game_field.pause();
     }
 }
@@ -230,6 +260,7 @@ void MainWindow::menu_operations() {
         break;
 
     case ActiveMenu::SETTINGS:
+        this->settings_menu_operations();
         break;
     }
 }
@@ -241,6 +272,7 @@ void MainWindow::main_menu_operations() {
         this->game_field.unpause();     
         break;
     case 1: // Second item
+        this->active_menu = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
         this->close();
@@ -254,9 +286,21 @@ void MainWindow::pause_menu_operations() {
         this->game_field.unpause();
         break;
     case 1: // Second item
+        this->active_menu = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
         this->close();
+        break;
+    }
+}
+
+void MainWindow::settings_menu_operations() {
+    switch (this->settings_menu.get_active_item_index()) {
+    case 0: // First item
+        std::cout << "BACK\n";
+        break;
+    case 1: // Second item
+        std::cout << "volume\n";
         break;
     }
 }
@@ -272,6 +316,7 @@ void MainWindow::next_menu_item() {
         break;
 
     case ActiveMenu::SETTINGS:
+        this->settings_menu.next_item();
         break;
     }
 
@@ -285,8 +330,8 @@ void MainWindow::previous_menu_item() {
     case ActiveMenu::PAUSE:
         this->pause_menu.previous_item();
         break;
-
     case ActiveMenu::SETTINGS:
+        this->settings_menu.previous_item();
         break;
     }
 }
