@@ -17,8 +17,6 @@ public:
 
     void event_handling(); // Processing window's events 
 
-    
-
     void one_iteration(); // One game iteration
 
     void redraw(); // Redraw game window
@@ -64,6 +62,9 @@ private:
     std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
     Menu pause_menu = Menu(this->pause_menu_items);
 
+    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume" };
+    Menu settings_menu = Menu(this->settings_menu_items);
+
     ActiveMenu active_menu = ActiveMenu::MAIN;
 
     const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0);
@@ -93,6 +94,8 @@ private:
     void main_menu_operations();
 
     void pause_menu_operations();
+
+    void settings_menu_operations();
 
     void next_menu_item();
 
