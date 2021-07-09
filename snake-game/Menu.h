@@ -1,31 +1,32 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <string>
 
 #include "Size.h"
 
-class Menu {
+class Menu { // Class of game menu
 public:
 
 	Menu();
 
-	void set_text_to_items(const std::vector<std::string>& items);
+	void set_text_to_items(const std::vector<std::string>& items); // Set title of menu items
 
-	void set_text_to_item(int index, const std::string& text);
+	void set_text_to_item(int index, const std::string& text); // Set title of menu item
 
-	void draw(sf::RenderWindow &window);
+	void draw(sf::RenderWindow &window); // Display menu
 
-	void next_item();
+	void next_item(); // Switch to next item in items list
 	
-	void previous_item();
+	void previous_item(); // Switch to previous item in items list
 
-	int get_active_item_index();
+	int get_active_item_index(); // Getter for active item index
 
 private:
 
-	struct Position {
+	struct Position { // Position of any menu elements
 		float x = 0;
 		float y = 0;
 
@@ -52,15 +53,16 @@ private:
 	
 	int active_item_index = 0;
 
-	void load_font();
+	void load_font(); // Load font from file
 
-	void set_font_settings();
+	void set_font_settings(); // Set font settings to menu items
 
-	void set_texts();
+	void set_texts(); // Set titles to menu items
 
-	Size get_background_size();
+	Size get_background_size(); // Calculate size of background rectangle
 
-	void draw_background(sf::RenderWindow& window, const Size& size, const Position& pos);
+	void draw_background(sf::RenderWindow& window, const Size& size,
+		const Position& pos);
 
 	void draw_items(sf::RenderWindow& window, const Position& bg_pos);
 };
