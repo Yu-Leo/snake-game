@@ -16,6 +16,8 @@ public:
 	
 	void previous_item();
 
+	int get_active_item_index();
+
 private:
 
 	struct Position {

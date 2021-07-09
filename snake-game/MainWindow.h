@@ -71,5 +71,7 @@ private:
     void draw_score_bar();
 
     void draw_screen();
+
+    void main_menu_operations();
 };
 
