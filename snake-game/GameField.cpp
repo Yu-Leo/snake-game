@@ -14,7 +14,7 @@ GameField::GameField(const Size& size) {
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 
-    this->game_status = GameField::GameStatus::ON;
+    this->game_status = GameField::GameStatus::PAUSE;
 }
 
 GameField::GameField() : GameField(Size(20, 20)) {}

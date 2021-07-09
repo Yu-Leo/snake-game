@@ -22,6 +22,10 @@ void Menu::previous_item() {
     }
 }
 
+int Menu::get_active_item_index() {
+    return this->active_item_index;
+}
+
 void Menu::set_font_settings() {
     this->font.loadFromFile("./fonts/menu_font.ttf");
 

@@ -65,6 +65,9 @@ void MainWindow::handling_menu_navigation(const sf::Event &event) {
         case sf::Keyboard::Down:
             this->menu.next_item();
             break;
+        case sf::Keyboard::Enter:
+            this->main_menu_operations();
+            break;
         case sf::Keyboard::Escape:
             this->game_field.unpause();
 
@@ -92,8 +95,11 @@ void MainWindow::redraw() {
         this->draw(this->game_over_text);
         this->display();
         sf::sleep(sf::seconds(1));
+
+        this->game_field.pause();
+        this->menu.draw_main_menu(*this);
         
-        this->close();
+        //this->close();
     }
 }
 
@@ -134,17 +140,17 @@ void MainWindow::set_text_settings() {
 
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
-    case GameField::Collisions::APPLE:
-        this->sounds.play(Sounds::ATE_APPLE);
-        break;
-    case GameField::Collisions::BODY:
-        this->sounds.play(Sounds::COLLISION_WITH_BODY);
-        break;
-    case GameField::Collisions::WALL:
-        this->sounds.play(Sounds::COLLISION_WITH_WALL);
-        break;
-    default:
-        break;
+        case GameField::Collisions::APPLE:
+            this->sounds.play(Sounds::ATE_APPLE);
+            break;
+        case GameField::Collisions::BODY:
+            this->sounds.play(Sounds::COLLISION_WITH_BODY);
+            break;
+        case GameField::Collisions::WALL:
+            this->sounds.play(Sounds::COLLISION_WITH_WALL);
+            break;
+        default:
+            break;
     }
     this->game_field.clear_collision();
 }
@@ -153,25 +159,25 @@ void MainWindow::draw_cell(const Point& point) {
     float x_pos = float(point.x * CELL_SIZE);
     float y_pos = float(point.y * CELL_SIZE + TOP_PADDING);
     switch (this->game_field.get_cell_type(point)) {
-    case GameField::CellTypes::NONE:
-        this->sprites.none.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.none);
-        break;
+        case GameField::CellTypes::NONE:
+            this->sprites.none.setPosition(x_pos, y_pos);
+            this->draw(this->sprites.none);
+            break;
 
-    case GameField::CellTypes::APPLE:
-        this->sprites.apple.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.apple);
-        break;
+        case GameField::CellTypes::APPLE:
+            this->sprites.apple.setPosition(x_pos, y_pos);
+            this->draw(this->sprites.apple);
+            break;
 
-    case GameField::CellTypes::SNAKE:
-        this->sprites.snake.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.snake);
-        break;
+        case GameField::CellTypes::SNAKE:
+            this->sprites.snake.setPosition(x_pos, y_pos);
+            this->draw(this->sprites.snake);
+            break;
 
-    case GameField::CellTypes::WALL:
-        this->sprites.wall.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.wall);
-        break;
+        case GameField::CellTypes::WALL:
+            this->sprites.wall.setPosition(x_pos, y_pos);
+            this->draw(this->sprites.wall);
+            break;
     }
 }
 
@@ -194,4 +200,17 @@ void MainWindow::draw_screen() {
     this->clear(this->BACKGROUND_COLOR);
     this->draw_score_bar();
     this->draw_field();
+}
+
+void MainWindow::main_menu_operations() {
+    switch (this->menu.get_active_item_index()) {
+        case 0: // First item
+            this->game_field.unpause();
+            break;
+        case 1: // Second item
+            break;
+        case 2: // Third item
+            this->close();
+            break;
+    }
 }
