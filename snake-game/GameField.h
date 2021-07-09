@@ -12,9 +12,10 @@ class GameField {
 public:
 
     enum class GameStatus {
-        ON,
-        OFF,
-        PAUSE
+        STARTED,
+        ACTIVE,
+        PAUSE,
+        FINISHED
     };
 
     enum class CellTypes {
@@ -41,7 +42,9 @@ public:
 
     void insert_command(int direction); // Processing new changing direction command 
 
-    void finish_game(); // Exit frome game (game over)
+    void start();
+
+    void finish(); // Exit frome game (game over)
 
     void pause();
 

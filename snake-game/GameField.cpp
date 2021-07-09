@@ -14,7 +14,7 @@ GameField::GameField(const Size& size) {
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 
-    this->game_status = GameField::GameStatus::PAUSE;
+    this->game_status = GameField::GameStatus::STARTED;
 }
 
 GameField::GameField() : GameField(Size(20, 20)) {}
@@ -64,8 +64,12 @@ void GameField::insert_command(int direction) {
     }
 }
 
-void GameField::finish_game() {
-    this->game_status = GameStatus::OFF;
+void GameField::start() {
+    this->game_status = GameStatus::STARTED;
+}
+
+void GameField::finish() {
+    this->game_status = GameStatus::FINISHED;
 }
 
 void GameField::pause() {
@@ -73,7 +77,7 @@ void GameField::pause() {
 }
 
 void GameField::unpause() {
-    this->game_status = GameStatus::ON;
+    this->game_status = GameStatus::ACTIVE;
 }
 
 int GameField::get_score() const {
@@ -130,7 +134,7 @@ void GameField::move_snake() {
     this->snake.move_head();
 
     this->check_collisions();
-    if (this->game_status == GameStatus::OFF)
+    if (this->game_status == GameStatus::FINISHED)
         return;
 
     this->decrease_snake_cells();
@@ -159,11 +163,11 @@ void GameField::check_collisions() {
             this->collision = Collisions::APPLE;
             break;
         case FIELD_CELL_TYPE_WALL:
-            this->finish_game();
+            this->finish();
             this->collision = Collisions::WALL;
         default:
             if (this->field[hp.y][hp.x] > 1) {
-                this->finish_game();
+                this->finish();
                 this->collision = Collisions::BODY;
             }
             break;
