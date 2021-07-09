@@ -29,24 +29,24 @@ void MainWindow::event_handling() {
             this->close();
         if (event.type == sf::Event::KeyPressed) { 
             switch (this->game_field.get_game_status()) {
-                case GameField::GameStatus::ACTIVE: // Controlling
-                    this->handling_control(event);
-                    break;
-                case GameField::GameStatus::STARTED: // Menu navigation
-                    if (this->menu.active != MenuList::SETTINGS)
-                        this->menu.active = MenuList::MAIN;
-                    this->handling_menu_navigation(event);
-                    break;
-                case GameField::GameStatus::FINISHED:
-                    if (this->menu.active != MenuList::SETTINGS)
-                        this->menu.active = MenuList::MAIN;
-                    this->handling_menu_navigation(event);
-                    break;
-                case GameField::GameStatus::PAUSE:
-                    if (this->menu.active != MenuList::SETTINGS)
-                        this->menu.active = MenuList::PAUSE;
-                    this->handling_menu_navigation(event);
-                    break;
+            case GameField::GameStatus::ACTIVE: // Controlling
+                this->handling_control(event);
+                break;
+            case GameField::GameStatus::STARTED: // Menu navigation
+                if (this->menu.active != MenuList::SETTINGS)
+                    this->menu.active = MenuList::MAIN;
+                this->handling_menu_navigation(event);
+                break;
+            case GameField::GameStatus::FINISHED:
+                if (this->menu.active != MenuList::SETTINGS)
+                    this->menu.active = MenuList::MAIN;
+                this->handling_menu_navigation(event);
+                break;
+            case GameField::GameStatus::PAUSE:
+                if (this->menu.active != MenuList::SETTINGS)
+                    this->menu.active = MenuList::PAUSE;
+                this->handling_menu_navigation(event);
+                break;
             }
         }
 
@@ -93,6 +93,7 @@ void MainWindow::delay() {
     sf::sleep(sf::milliseconds(ms[this->speed]));
 }
 
+
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");
@@ -125,17 +126,15 @@ void MainWindow::set_text_settings() {
 
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
-        case GameField::Collisions::APPLE:
-            this->sounds.play(Sounds::ATE_APPLE);
-            break;
-        case GameField::Collisions::BODY:
-            this->sounds.play(Sounds::COLLISION_WITH_BODY);
-            break;
-        case GameField::Collisions::WALL:
-            this->sounds.play(Sounds::COLLISION_WITH_WALL);
-            break;
-        default:
-            break;
+    case GameField::Collisions::APPLE:
+        this->sounds.play(Sounds::ATE_APPLE);
+        break;
+    case GameField::Collisions::BODY:
+        this->sounds.play(Sounds::COLLISION_WITH_BODY);
+        break;
+    case GameField::Collisions::WALL:
+        this->sounds.play(Sounds::COLLISION_WITH_WALL);
+        break;
     }
     this->game_field.clear_collision();
 }
@@ -144,25 +143,25 @@ void MainWindow::draw_cell(const Point& point) {
     float x_pos = float(point.x * CELL_SIZE);
     float y_pos = float(point.y * CELL_SIZE + TOP_PADDING);
     switch (this->game_field.get_cell_type(point)) {
-        case GameField::CellTypes::NONE:
-            this->sprites.none.setPosition(x_pos, y_pos);
-            this->draw(this->sprites.none);
-            break;
+    case GameField::CellTypes::NONE:
+        this->sprites.none.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.none);
+        break;
 
-        case GameField::CellTypes::APPLE:
-            this->sprites.apple.setPosition(x_pos, y_pos);
-            this->draw(this->sprites.apple);
-            break;
+    case GameField::CellTypes::APPLE:
+        this->sprites.apple.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.apple);
+        break;
 
-        case GameField::CellTypes::SNAKE:
-            this->sprites.snake.setPosition(x_pos, y_pos);
-            this->draw(this->sprites.snake);
-            break;
+    case GameField::CellTypes::SNAKE:
+        this->sprites.snake.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.snake);
+        break;
 
-        case GameField::CellTypes::WALL:
-            this->sprites.wall.setPosition(x_pos, y_pos);
-            this->draw(this->sprites.wall);
-            break;
+    case GameField::CellTypes::WALL:
+        this->sprites.wall.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.wall);
+        break;
     }
 }
 
@@ -209,18 +208,31 @@ void MainWindow::handling_control(const sf::Event& event) {
 }
 
 void MainWindow::handling_menu_navigation(const sf::Event& event) {
+    this->sounds.play(Sounds::MENU_NAVIGATE);
     switch (event.key.code) {
     case sf::Keyboard::Up:
         this->menu.previous_item();
-        this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Down:
         this->menu.next_item();
-        this->sounds.play(Sounds::MENU_NAVIGATE);
+        //this->sounds.play(Sounds::MENU_NAVIGATE);
+        break;
+    case sf::Keyboard::Left:
+        if (this->menu.active == MenuList::SETTINGS &&
+            this->menu.settings.get_active_item_index() == 1) {
+
+            this->sounds.turn_down_volume();
+        }
+        break;
+    case sf::Keyboard::Right:
+        if (this->menu.active == MenuList::SETTINGS &&
+            this->menu.settings.get_active_item_index() == 1) {
+            this->sounds.turn_up_volume();
+        }
         break;
     case sf::Keyboard::Enter:
         this->menu.operations(*this);
-        this->sounds.play(Sounds::MENU_NAVIGATE);
+        //this->sounds.play(Sounds::MENU_NAVIGATE);
         break;
     case sf::Keyboard::Escape:
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
@@ -230,16 +242,28 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
     }
 }
 
+MainWindow::MenuList::MenuList() {
+    std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
+    std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
+    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: " };
+
+    this->main.set_text_to_items(main_menu_items);
+    this->pause.set_text_to_items(pause_menu_items);
+    this->settings.set_text_to_items(settings_menu_items);
+}
+
 void MainWindow::MenuList::draw(MainWindow& window) {
     switch (this->active) {
     case MenuList::MAIN:
-        this->main_menu.draw(window);
+        this->main.draw(window);
         break;
     case MenuList::PAUSE:
-        this->pause_menu.draw(window);
+        this->pause.draw(window);
         break;
     case MenuList::SETTINGS:
-        this->settings_menu.draw(window);
+        int volume = window.sounds.get_volume();
+        this->settings.set_text_to_item(1, "Volume: " + std::to_string(volume));
+        this->settings.draw(window);
         break;
     }
 }
@@ -260,9 +284,8 @@ void MainWindow::MenuList::operations(MainWindow& window) {
     }
 }
 
-
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
-    switch (this->main_menu.get_active_item_index()) {
+    switch (this->main.get_active_item_index()) {
     case 0: // First item
         window.game_field = GameField(window.game_field_size);
         window.game_field.unpause();     
@@ -277,7 +300,7 @@ void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
 }
 
 void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
-    switch (this->pause_menu.get_active_item_index()) {
+    switch (this->pause.get_active_item_index()) {
     case 0: // First item
         window.game_field.unpause();
         break;
@@ -291,16 +314,12 @@ void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
 }
 
 void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
-    switch (this->settings_menu.get_active_item_index()) {
+    switch (this->settings.get_active_item_index()) {
     case 0: // First item
         if (window.game_field.get_game_status() == GameField::GameStatus::PAUSE)
             this->active = PAUSE;
         else
             this->active = MAIN;
-        //std::cout << "BACK\n";
-        break;
-    case 1: // Second item
-        std::cout << "volume\n";
         break;
     }
 }
@@ -308,15 +327,15 @@ void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
 void MainWindow::MenuList::next_item() {
     switch (this->active) {
     case ActiveMenu::MAIN:
-        this->main_menu.next_item();
+        this->main.next_item();
         break;
 
     case ActiveMenu::PAUSE:
-        this->pause_menu.next_item();
+        this->pause.next_item();
         break;
 
     case ActiveMenu::SETTINGS:
-        this->settings_menu.next_item();
+        this->settings.next_item();
         break;
     }
 
@@ -325,13 +344,13 @@ void MainWindow::MenuList::next_item() {
 void MainWindow::MenuList::previous_item() {
     switch (this->active) {
     case ActiveMenu::MAIN:
-        this->main_menu.previous_item();
+        this->main.previous_item();
         break;
     case ActiveMenu::PAUSE:
-        this->pause_menu.previous_item();
+        this->pause.previous_item();
         break;
     case ActiveMenu::SETTINGS:
-        this->settings_menu.previous_item();
+        this->settings.previous_item();
         break;
     }
 }

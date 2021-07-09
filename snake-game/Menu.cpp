@@ -1,8 +1,18 @@
 #include "Menu.h"
 
+Menu::Menu() {
+    this->load_font();
+}
+
 void Menu::set_text_to_items(const std::vector<std::string>& items) {
     this->menu_items_text = items;
     this->set_font_settings();
+    this->set_texts();
+}
+
+void Menu::set_text_to_item(int index, const std::string& text) {
+    this->menu_items_text[index] = text;
+    this->menu_items[index].setString(text);
 }
 
 void Menu::draw(sf::RenderWindow& window) {
@@ -31,15 +41,22 @@ int Menu::get_active_item_index() {
     return this->active_item_index;
 }
 
-void Menu::set_font_settings() {
+void Menu::load_font() {
     this->font.loadFromFile("./fonts/menu_font.ttf");
+}
 
+void Menu::set_font_settings() {
     for (int i = 0; i < this->menu_items_text.size(); i++) {
         this->menu_items.push_back(sf::Text());
-        this->menu_items.back().setString(this->menu_items_text[i]);
         this->menu_items.back().setFont(this->font);
         this->menu_items.back().setCharacterSize(40);
         this->menu_items.back().setFillColor(this->INACTIVE_TEXT_COLOR);
+    }
+}
+
+void Menu::set_texts() {
+    for (int i = 0; i < this->menu_items_text.size(); i++) {
+        this->menu_items[i].setString(this->menu_items_text[i]);
     }
 }
 

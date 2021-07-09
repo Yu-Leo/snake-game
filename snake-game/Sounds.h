@@ -16,8 +16,19 @@ public:
 
     void play(int sound_name); // Play sound by it's name
     
+    int get_volume();
+
+    void turn_up_volume();
+
+    void turn_down_volume();
 
 private:
+
+    const int MAX_VOLUME = 100;
+    const int MIN_VOLUME = 0;
+
+    int volume = 10;
+
     struct SoundBuffers {
         sf::SoundBuffer ate_apple;
         sf::SoundBuffer collision_with_wall;

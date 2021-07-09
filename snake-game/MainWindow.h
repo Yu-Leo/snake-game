@@ -62,19 +62,11 @@ private:
 
         int active = MAIN;
 
-        Menu main_menu;
-        Menu pause_menu;
-        Menu settings_menu;
+        Menu main;
+        Menu pause;
+        Menu settings;
 
-        MenuList() {
-            std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
-            std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
-            std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume" };
-
-            this->main_menu.set_text_to_items(main_menu_items);
-            this->pause_menu.set_text_to_items(pause_menu_items);
-            this->settings_menu.set_text_to_items(settings_menu_items);
-        }
+        MenuList();
         
         void draw(MainWindow& window);
 

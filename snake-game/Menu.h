@@ -9,9 +9,11 @@
 class Menu {
 public:
 
-	Menu() {}
+	Menu();
 
 	void set_text_to_items(const std::vector<std::string>& items);
+
+	void set_text_to_item(int index, const std::string& text);
 
 	void draw(sf::RenderWindow &window);
 
@@ -50,7 +52,11 @@ private:
 	
 	int active_item_index = 0;
 
+	void load_font();
+
 	void set_font_settings();
+
+	void set_texts();
 
 	Size get_background_size();
 
