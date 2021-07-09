@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-Menu::Menu(const std::vector<std::string>& items) {
+void Menu::set_text_to_items(const std::vector<std::string>& items) {
     this->menu_items_text = items;
     this->set_font_settings();
 }
