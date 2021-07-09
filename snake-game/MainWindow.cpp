@@ -65,19 +65,7 @@ void MainWindow::redraw() {
     switch (game_status) {
     case GameField::GameStatus::STARTED:
         this->draw_screen();
-
-        switch (this->menu.active_menu) {
-        case MenuList::MAIN:
-            this->menu.main_menu.draw(*this);
-            break;
-        case MenuList::PAUSE:
-            this->menu.pause_menu.draw(*this);
-            break;
-        case MenuList::SETTINGS:
-            this->menu.settings_menu.draw(*this);
-            break;
-        }
-
+        this->menu.draw(*this);
         this->display();
         break;
     case GameField::GameStatus::ACTIVE:
@@ -86,19 +74,7 @@ void MainWindow::redraw() {
         break;
     case GameField::GameStatus::PAUSE:
         this->draw_screen();
-
-        switch (this->menu.active_menu) {
-        case MenuList::MAIN:
-            this->menu.main_menu.draw(*this);
-            break;
-        case MenuList::PAUSE:
-            this->menu.pause_menu.draw(*this);
-            break;
-        case MenuList::SETTINGS:
-            this->menu.settings_menu.draw(*this);
-            break;
-        }
-
+        this->menu.draw(*this);
         this->display();
         break;
     case GameField::GameStatus::FINISHED:
@@ -107,6 +83,7 @@ void MainWindow::redraw() {
         this->display();
         sf::sleep(sf::seconds(1));
         this->game_field.start();
+        break;
     }
 }
 
@@ -248,6 +225,20 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
             this->game_field.unpause();
         }
+    }
+}
+
+void MainWindow::MenuList::draw(MainWindow& window) {
+    switch (this->active_menu) {
+    case MenuList::MAIN:
+        this->main_menu.draw(window);
+        break;
+    case MenuList::PAUSE:
+        this->pause_menu.draw(window);
+        break;
+    case MenuList::SETTINGS:
+        this->settings_menu.draw(window);
+        break;
     }
 }
 
