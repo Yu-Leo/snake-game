@@ -12,7 +12,7 @@ public:
 
 	Menu();
 
-	void set_text_to_items(const std::vector<std::string>& items); // Set title of menu items
+	void set_text_to_items(const std::vector<std::string>& titles); // Set title of menu items
 
 	void set_text_to_item(int index, const std::string& text); // Set title of menu item
 
@@ -49,7 +49,6 @@ private:
 	const sf::Color ACTIVE_TEXT_COLOR = sf::Color::Black;
 
 	std::vector<sf::Text> menu_items;
-	std::vector<std::string> menu_items_text;
 	
 	int active_item_index = 0;
 
@@ -57,7 +56,7 @@ private:
 
 	void set_font_settings(); // Set font settings to menu items
 
-	void set_texts(); // Set titles to menu items
+	void set_titles(const std::vector<std::string>& titles); // Set titles to menu items
 
 	Size get_background_size(); // Calculate size of background rectangle
 
