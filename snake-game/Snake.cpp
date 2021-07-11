@@ -33,6 +33,14 @@ void Snake::set_field_size(Size field_size) {
     this->field_size = field_size;
 }
 
+void Snake::increase_length() {
+    this->length++;
+}
+
+void Snake::change_direction(int new_direction) {
+    this->direction = new_direction;
+}
+
 Point Snake::get_head_pos() const {
     return this->head_position;
 }
@@ -43,12 +51,4 @@ int Snake::get_length() const {
 
 int Snake::get_direction() const {
     return this->direction;
-}
-
-void Snake::increase_length() {
-    this->length++;
-}
-
-void Snake::change_direction(int new_direction) {
-    this->direction = new_direction;
 }

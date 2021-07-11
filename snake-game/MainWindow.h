@@ -25,7 +25,8 @@ public:
 
 private:
 
-    int speed = 2; // 0 - low, 4 - fast
+    int speed = 0; // 0 - low, 5 - fast
+    std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
 
     bool field_regeneration = false; // Should the field be regenerated
 
@@ -35,11 +36,11 @@ private:
     Size game_field_size; // Size of game field in cells
 
     struct Textures {
-        sf::Texture none, apple, snake, wall;
+        sf::Texture none, apple, snake_head, snake_body, wall;
     };
 
     struct Sprites {
-        sf::Sprite none, apple, snake, wall;
+        sf::Sprite none, apple, snake_head, snake_body, wall;
     };
 
     Textures textures;
@@ -97,17 +98,23 @@ private:
 
     void set_text_settings(); // Set settings of text
 
-    void play_sounds(); // Check snake head collisions and play sounds 
-
-    void draw_cell(const Point& point);
-
-    void draw_field(); // Draw game field
-
-    void draw_score_bar(); // Draw title with score
-
-    void draw_screen(); // Draw game field and title with score
+    void set_score_text_color();
 
     void handling_control(const sf::Event& event); // Processing controlling snake
 
     void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
+
+    void play_sounds(); // Check snake head collisions and play sounds 
+
+    void update_speed(); // Changing the speed depending on the score 
+
+    void draw_screen(); // Draw game field and title with score
+
+    void draw_field(); // Draw game field
+
+    void draw_cell(const Point& point);
+
+    void rotate_snake_head_sprite();
+
+    void draw_score_bar(); // Draw title with score
 };

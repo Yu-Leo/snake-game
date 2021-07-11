@@ -21,7 +21,8 @@ public:
     enum class CellTypes {
         NONE,
         APPLE,
-        SNAKE,
+        SNAKE_HEAD,
+        SNAKE_BODY,
         WALL
     };
 
@@ -50,17 +51,21 @@ public:
 
     void unpause();
 
+    void clear_collision();
+
+    Collisions get_collision() const;
+
     int get_score() const; // Getter for score
 
     Size get_size() const; // Getter for game_field size
 
+    int get_cells_without_walls() const;
+
+    int get_snake_direction() const;
+
     GameStatus get_game_status() const; // Getter for game status
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
-    
-    Collisions get_collision() const;
-
-    void clear_collision();
 
 private:
 
@@ -77,6 +82,8 @@ private:
 
     int score = 0;
 
+    int cells_without_walls;
+
     Size size; // Size of game field
     std::vector<std::vector<int>> field; // Raw field
 
@@ -90,9 +97,17 @@ private:
 
     Collisions collision = Collisions::NONE;
 
+    void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
+
     void resize_matrix(); // Change sizes of field vectors
 
-    void init_field(); // Fill the matrix with FIELD_CELL_TYPE_NONE
+    void set_walls(); // Add walls to field
+
+    void render_snake(); // Fill snake's cells
+
+    void render_apple(); // Fill apple's cell
+
+    int count_cells_without_walls();
 
     void move_snake(); // Move the snake by one cell
 
@@ -103,12 +118,6 @@ private:
     void grow_snake(); // Grow snake, if it eat apple
 
     void decrease_snake_cells(); // Decrease values of all snake's cells
-
-    void set_walls(); // Add walls to field
-
-    void render_snake(); // Fill snake's cells
-
-    void render_apple(); // Fill apple's cell
 
     bool is_cell_empty(const Point& cell); // Is cell is empty
 

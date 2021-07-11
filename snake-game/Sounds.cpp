@@ -41,6 +41,8 @@ void Sounds::turn_down_volume() {
     this->set_volume();
 }
 
+
+
 void Sounds::load_sound_buffers() {
     this->sound_buffers.ate_apple.loadFromFile("./sounds/ate_apple.wav");
     this->sound_buffers.collision_with_wall.loadFromFile("./sounds/collision_with_wall.wav");
