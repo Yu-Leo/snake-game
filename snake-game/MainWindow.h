@@ -36,11 +36,11 @@ private:
     Size game_field_size; // Size of game field in cells
 
     struct Textures {
-        sf::Texture none, apple, snake, wall;
+        sf::Texture none, apple, snake_head, snake_body, wall;
     };
 
     struct Sprites {
-        sf::Sprite none, apple, snake, wall;
+        sf::Sprite none, apple, snake_head, snake_body, wall;
     };
 
     Textures textures;
@@ -101,6 +101,8 @@ private:
     void play_sounds(); // Check snake head collisions and play sounds 
 
     void draw_cell(const Point& point);
+
+    void rotate_snake_head_sprite();
 
     void draw_field(); // Draw game field
 

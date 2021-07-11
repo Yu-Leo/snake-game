@@ -94,6 +94,10 @@ int GameField::get_cells_without_walls() const{
     return this->cells_without_walls;
 }
 
+int GameField::get_snake_direction() const {
+    return this->snake.get_direction();
+}
+
 GameField::GameStatus GameField::get_game_status() const{
     return this->game_status;
 }
@@ -107,7 +111,10 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
     case this->FIELD_CELL_TYPE_WALL:
         return CellTypes::WALL;
     default:
-        return CellTypes::SNAKE;
+        if (this->field[point.y][point.x] == this->snake.get_length())
+            return CellTypes::SNAKE_HEAD;
+        else
+            return CellTypes::SNAKE_BODY;
     }
 }
 
@@ -284,7 +291,8 @@ void print_cell(std::ostream& out, const GameField& game_field, const Point &cel
         case GameField::CellTypes::WALL:
             out << (char)GameField::Symbols::WALL;
             break;
-        case GameField::CellTypes::SNAKE:
+        case GameField::CellTypes::SNAKE_HEAD: // SNAKE_HEAD == SNAKE_BODY in this case
+        case GameField::CellTypes::SNAKE_BODY:
             out << (char)GameField::Symbols::SNAKE;
             break;
     }
