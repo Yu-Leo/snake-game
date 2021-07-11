@@ -54,6 +54,8 @@ public:
 
     Size get_size() const; // Getter for game_field size
 
+    int get_cells_without_walls() const;
+
     GameStatus get_game_status() const; // Getter for game status
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
@@ -76,6 +78,8 @@ private:
     };
 
     int score = 0;
+
+    int cells_without_walls;
 
     Size size; // Size of game field
     std::vector<std::vector<int>> field; // Raw field
@@ -115,6 +119,8 @@ private:
     int count_empty_cells();
 
     Point get_random_empty_cell();
+
+    int count_cells_without_walls();
 
     friend void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
 

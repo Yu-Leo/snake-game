@@ -57,6 +57,7 @@ void MainWindow::one_iteration() {
     if (game_field.get_game_status() == GameField::GameStatus::ACTIVE) {
         this->game_field.one_iteration();
         this->play_sounds();
+        this->update_speed();
     }
 }
 
@@ -89,10 +90,8 @@ void MainWindow::redraw() {
 }
 
 void MainWindow::delay() {
-    int ms[] = { 150, 130, 110, 90, 70 };
-    sf::sleep(sf::milliseconds(ms[this->speed]));
+    sf::sleep(sf::milliseconds(this->delays[this->speed]));
 }
-
 
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
@@ -237,6 +236,32 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
             this->game_field.unpause();
             this->menu.active = MenuList::NONE;
         }
+    }
+}
+
+void MainWindow::update_speed() {
+    int delays = this->delays.size();
+    std::vector<double> borders = {
+        0 * (1.0 / delays),
+        1 * (1.0 / delays),
+        2 * (1.0 / delays),
+        3 * (1.0 / delays),
+        4 * (1.0 / delays),
+        5 * (1.0 / delays),
+        6 * (1.0 / delays) };
+      
+    double k = 4 * double(this->game_field.get_score()) / this->game_field.get_cells_without_walls();    if (borders[0] <= k && k < borders[1]) {
+        this->speed = 0;
+    } else if (borders[1] <= k && k < borders[2]) {
+        this->speed = 1;
+    } else if (borders[2] <= k && k < borders[3]) {
+        this->speed = 2;
+    } else if (borders[3] <= k && k < borders[4]) {
+        this->speed = 3;
+    } else if (borders[4] <= k && k < borders[5]) {
+        this->speed = 4;
+    } else if (borders[5] <= k) {
+        this->speed = 5;
     }
 }
 
