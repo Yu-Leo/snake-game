@@ -13,7 +13,7 @@ namespace tests {
             Snake s;
             Assert::IsTrue(s.get_length() == 3);
             Assert::IsTrue(s.get_direction() == Snake::Directions::RIGHT);
-            Assert::IsTrue(s.get_head_pos() == Point(s.get_length() - 1, 0));
+            Assert::IsTrue(s.get_head_pos() == Point(s.get_length() - 1 + 3, 3));
         }
 
         TEST_METHOD(TestChangeOfDirection) {
@@ -61,5 +61,14 @@ namespace tests {
             Assert::IsTrue(new_pos.x == old_pos.x);
             Assert::IsTrue(new_pos.y == old_pos.y - 1);
         }
+
+        TEST_METHOD(TestIncreaseLength) {
+            Snake s;
+            int old_length = s.get_length();
+            s.increase_length();
+            int new_length = s.get_length();
+            Assert::IsTrue(new_length = old_length + 1);
+        }
+
     };
 }

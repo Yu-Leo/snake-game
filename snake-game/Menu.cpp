@@ -4,14 +4,12 @@ Menu::Menu() {
     this->load_font();
 }
 
-void Menu::set_text_to_items(const std::vector<std::string>& items) {
-    this->menu_items_text = items;
+void Menu::set_text_to_items(const std::vector<std::string>& titles) {
+    this->set_titles(titles);
     this->set_font_settings();
-    this->set_texts();
 }
 
 void Menu::set_text_to_item(int index, const std::string& text) {
-    this->menu_items_text[index] = text;
     this->menu_items[index].setString(text);
 }
 
@@ -27,13 +25,13 @@ void Menu::draw(sf::RenderWindow& window) {
 
 void Menu::next_item() {
     this->active_item_index += 1;
-    this->active_item_index %= this->menu_items_text.size();
+    this->active_item_index %= this->menu_items.size();
 }
 
 void Menu::previous_item() {
     this->active_item_index -= 1;
     if (this->active_item_index < 0) {
-        this->active_item_index = this->menu_items_text.size() - 1;
+        this->active_item_index = this->menu_items.size() - 1;
     }
 }
 
@@ -46,31 +44,18 @@ void Menu::load_font() {
 }
 
 void Menu::set_font_settings() {
-    for (unsigned int i = 0; i < this->menu_items_text.size(); i++) {
-        this->menu_items.push_back(sf::Text());
-        this->menu_items.back().setFont(this->font);
-        this->menu_items.back().setCharacterSize(40);
-        this->menu_items.back().setFillColor(this->INACTIVE_TEXT_COLOR);
-    }
-}
-
-void Menu::set_texts() {
-    for (unsigned int i = 0; i < this->menu_items_text.size(); i++) {
-        this->menu_items[i].setString(this->menu_items_text[i]);
-    }
-}
-
-Size Menu::get_background_size() {
-    float current_menu_item_y = 0;
-    float menu_item_max_width = 0;
-
     for (unsigned int i = 0; i < this->menu_items.size(); i++) {
-        current_menu_item_y += this->menu_items[i].getLocalBounds().height + this->ITEM_PADDING;
-        menu_item_max_width = std::max(menu_item_max_width, this->menu_items[i].getLocalBounds().width);
+        this->menu_items[i].setFont(this->font);
+        this->menu_items[i].setCharacterSize(40);
+        this->menu_items[i].setFillColor(this->INACTIVE_TEXT_COLOR);
     }
+}
 
-    return Size(menu_item_max_width + this->HORIZONTAL_PADDING * 2,
-        current_menu_item_y - this->ITEM_PADDING + this->VERTICAL_PADDING * 2);
+void Menu::set_titles(const std::vector<std::string>& titles) {
+    for (unsigned int i = 0; i < titles.size(); i++) {
+        this->menu_items.push_back(sf::Text());
+        this->menu_items.back().setString(titles[i]);
+    }
 }
 
 void Menu::draw_background(sf::RenderWindow& window, const Size& size, const Position& pos) {
@@ -96,4 +81,17 @@ void Menu::draw_items(sf::RenderWindow& window, const Position& bg_pos) {
 
         window.draw(this->menu_items[i]);
     }
+}
+
+Size Menu::get_background_size() {
+    float current_menu_item_y = 0;
+    float menu_item_max_width = 0;
+
+    for (unsigned int i = 0; i < this->menu_items.size(); i++) {
+        current_menu_item_y += this->menu_items[i].getLocalBounds().height + this->ITEM_PADDING;
+        menu_item_max_width = std::max(menu_item_max_width, this->menu_items[i].getLocalBounds().width);
+    }
+
+    return Size(menu_item_max_width + this->HORIZONTAL_PADDING * 2,
+        current_menu_item_y - this->ITEM_PADDING + this->VERTICAL_PADDING * 2);
 }
