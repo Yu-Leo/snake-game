@@ -125,6 +125,33 @@ void MainWindow::set_text_settings() {
         (this->window_size.height - this->game_over_text.getLocalBounds().height) / 2);
 }
 
+void MainWindow::set_score_text_color() {
+    sf::Color text_color;
+    switch (this->speed) {
+    case 0:
+        text_color = sf::Color::White;
+        break;
+    case 1:
+        text_color = sf::Color(27, 245, 83); // Green
+        break;
+    case 2:
+        text_color = sf::Color(215, 245, 81); // Yellow
+        break;
+    case 3:
+        text_color = sf::Color(245, 81, 81); // Red
+        break;
+    case 4:
+        text_color = sf::Color(77, 245, 225); // Blue
+        break;
+    case 5:
+        text_color = sf::Color(245, 77, 214); // Purple
+        break;
+    default:
+        break;
+    }
+    this->score_text.setFillColor(text_color);
+}
+
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
     case GameField::Collisions::APPLE:
@@ -204,6 +231,7 @@ void MainWindow::draw_field() {
 }
 
 void MainWindow::draw_score_bar() {
+    this->set_score_text_color();
     this->score_text.setString("Score: " + std::to_string(this->game_field.get_score()));
     this->score_text.setPosition(
         this->window_size.width - this->score_text.getLocalBounds().width - 20, 7);

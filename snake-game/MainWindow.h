@@ -98,6 +98,8 @@ private:
 
     void set_text_settings(); // Set settings of text
 
+    void set_score_text_color();
+
     void play_sounds(); // Check snake head collisions and play sounds 
 
     void draw_cell(const Point& point);
