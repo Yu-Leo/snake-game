@@ -171,12 +171,12 @@ void MainWindow::draw_cell(const Point& point) {
     float x_pos = float(point.x * CELL_SIZE);
     float y_pos = float(point.y * CELL_SIZE + TOP_PADDING);
     float offset_x, offset_y;
-    switch (this->game_field.get_cell_type(point)) {
-    case GameField::CellTypes::NONE:
-        this->sprites.none.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.none);
-        break;
 
+    // Draw background dots
+    this->sprites.none.setPosition(x_pos, y_pos);
+    this->draw(this->sprites.none);
+
+    switch (this->game_field.get_cell_type(point)) {
     case GameField::CellTypes::APPLE:
         this->sprites.apple.setPosition(x_pos, y_pos);
         this->draw(this->sprites.apple);
