@@ -100,21 +100,21 @@ private:
 
     void set_score_text_color();
 
+    void handling_control(const sf::Event& event); // Processing controlling snake
+
+    void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
+
     void play_sounds(); // Check snake head collisions and play sounds 
+
+    void update_speed(); // Changing the speed depending on the score 
+
+    void draw_screen(); // Draw game field and title with score
+
+    void draw_field(); // Draw game field
 
     void draw_cell(const Point& point);
 
     void rotate_snake_head_sprite();
 
-    void draw_field(); // Draw game field
-
     void draw_score_bar(); // Draw title with score
-
-    void draw_screen(); // Draw game field and title with score
-
-    void handling_control(const sf::Event& event); // Processing controlling snake
-
-    void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
-
-    void update_speed();
 };

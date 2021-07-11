@@ -152,6 +152,60 @@ void MainWindow::set_score_text_color() {
     this->score_text.setFillColor(text_color);
 }
 
+void MainWindow::handling_control(const sf::Event& event) {
+    this->game_field.key_pressed();
+    switch (event.key.code) {
+    case sf::Keyboard::Up:
+        this->game_field.insert_command(Snake::Directions::UP);
+        break;
+    case sf::Keyboard::Right:
+        this->game_field.insert_command(Snake::Directions::RIGHT);
+        break;
+    case sf::Keyboard::Down:
+        this->game_field.insert_command(Snake::Directions::DOWN);
+        break;
+    case sf::Keyboard::Left:
+        this->game_field.insert_command(Snake::Directions::LEFT);
+        break;
+    case sf::Keyboard::Escape:
+        this->menu.active = MenuList::PAUSE;
+        this->game_field.pause();
+    }
+}
+
+void MainWindow::handling_menu_navigation(const sf::Event& event) {
+    this->sounds.play(Sounds::MENU_NAVIGATE);
+    switch (event.key.code) {
+    case sf::Keyboard::Up:
+        this->menu.previous_item();
+        break;
+    case sf::Keyboard::Down:
+        this->menu.next_item();
+        break;
+    case sf::Keyboard::Left:
+        if (this->menu.active == MenuList::SETTINGS &&
+            this->menu.settings.get_active_item_index() == 1) {
+
+            this->sounds.turn_down_volume();
+        }
+        break;
+    case sf::Keyboard::Right:
+        if (this->menu.active == MenuList::SETTINGS &&
+            this->menu.settings.get_active_item_index() == 1) {
+            this->sounds.turn_up_volume();
+        }
+        break;
+    case sf::Keyboard::Enter:
+        this->menu.operations(*this);
+        break;
+    case sf::Keyboard::Escape:
+        if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
+            this->game_field.unpause();
+            this->menu.active = MenuList::NONE;
+        }
+    }
+}
+
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
     case GameField::Collisions::APPLE:
@@ -165,6 +219,47 @@ void MainWindow::play_sounds() {
         break;
     }
     this->game_field.clear_collision();
+}
+
+void MainWindow::update_speed() {
+    int delays = this->delays.size();
+    std::vector<double> borders = {
+        0 * (1.0 / delays),
+        1 * (1.0 / delays),
+        2 * (1.0 / delays),
+        3 * (1.0 / delays),
+        4 * (1.0 / delays),
+        5 * (1.0 / delays),
+        6 * (1.0 / delays) };
+
+    double k = 4 * double(this->game_field.get_score()) / this->game_field.get_cells_without_walls();
+    if (borders[0] <= k && k < borders[1]) {
+        this->speed = 0;
+    } else if (borders[1] <= k && k < borders[2]) {
+        this->speed = 1;
+    } else if (borders[2] <= k && k < borders[3]) {
+        this->speed = 2;
+    } else if (borders[3] <= k && k < borders[4]) {
+        this->speed = 3;
+    } else if (borders[4] <= k && k < borders[5]) {
+        this->speed = 4;
+    } else if (borders[5] <= k) {
+        this->speed = 5;
+    }
+}
+
+void MainWindow::draw_screen() {
+    this->clear(this->BACKGROUND_COLOR);
+    this->draw_score_bar();
+    this->draw_field();
+}
+
+void MainWindow::draw_field() {
+    for (int i = 0; i < this->game_field.get_size().height; i++) {
+        for (int j = 0; j < this->game_field.get_size().width; j++) {
+            this->draw_cell(Point(j, i));
+        }
+    }
 }
 
 void MainWindow::draw_cell(const Point& point) {
@@ -222,14 +317,6 @@ void MainWindow::rotate_snake_head_sprite() {
     this->sprites.snake_head.setRotation(angle);
 }
 
-void MainWindow::draw_field() {
-    for (int i = 0; i < this->game_field.get_size().height; i++) {
-        for (int j = 0; j < this->game_field.get_size().width; j++) {
-            this->draw_cell(Point(j, i));
-        }
-    }
-}
-
 void MainWindow::draw_score_bar() {
     this->set_score_text_color();
     this->score_text.setString("Score: " + std::to_string(this->game_field.get_score()));
@@ -238,91 +325,7 @@ void MainWindow::draw_score_bar() {
     this->draw(this->score_text);
 }
 
-void MainWindow::draw_screen() {
-    this->clear(this->BACKGROUND_COLOR);
-    this->draw_score_bar();
-    this->draw_field();
-}
 
-void MainWindow::handling_control(const sf::Event& event) {
-    this->game_field.key_pressed();
-    switch (event.key.code) {
-    case sf::Keyboard::Up:
-        this->game_field.insert_command(Snake::Directions::UP);
-        break;
-    case sf::Keyboard::Right:
-        this->game_field.insert_command(Snake::Directions::RIGHT);
-        break;
-    case sf::Keyboard::Down:
-        this->game_field.insert_command(Snake::Directions::DOWN);
-        break;
-    case sf::Keyboard::Left:
-        this->game_field.insert_command(Snake::Directions::LEFT);
-        break;
-    case sf::Keyboard::Escape:
-        this->menu.active = MenuList::PAUSE;
-        this->game_field.pause();
-    }
-}
-
-void MainWindow::handling_menu_navigation(const sf::Event& event) {
-    this->sounds.play(Sounds::MENU_NAVIGATE);
-    switch (event.key.code) {
-    case sf::Keyboard::Up:
-        this->menu.previous_item();
-        break;
-    case sf::Keyboard::Down:
-        this->menu.next_item();
-        break;
-    case sf::Keyboard::Left:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-
-            this->sounds.turn_down_volume();
-        }
-        break;
-    case sf::Keyboard::Right:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-            this->sounds.turn_up_volume();
-        }
-        break;
-    case sf::Keyboard::Enter:
-        this->menu.operations(*this);
-        break;
-    case sf::Keyboard::Escape:
-        if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
-            this->game_field.unpause();
-            this->menu.active = MenuList::NONE;
-        }
-    }
-}
-
-void MainWindow::update_speed() {
-    int delays = this->delays.size();
-    std::vector<double> borders = {
-        0 * (1.0 / delays),
-        1 * (1.0 / delays),
-        2 * (1.0 / delays),
-        3 * (1.0 / delays),
-        4 * (1.0 / delays),
-        5 * (1.0 / delays),
-        6 * (1.0 / delays) };
-      
-    double k = 4 * double(this->game_field.get_score()) / this->game_field.get_cells_without_walls();    if (borders[0] <= k && k < borders[1]) {
-        this->speed = 0;
-    } else if (borders[1] <= k && k < borders[2]) {
-        this->speed = 1;
-    } else if (borders[2] <= k && k < borders[3]) {
-        this->speed = 2;
-    } else if (borders[3] <= k && k < borders[4]) {
-        this->speed = 3;
-    } else if (borders[4] <= k && k < borders[5]) {
-        this->speed = 4;
-    } else if (borders[5] <= k) {
-        this->speed = 5;
-    }
-}
 
 MainWindow::MenuList::MenuList() {
     std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
@@ -366,6 +369,38 @@ void MainWindow::MenuList::operations(MainWindow& window) {
     }
 }
 
+void MainWindow::MenuList::next_item() {
+    switch (this->active) {
+    case ActiveMenu::MAIN:
+        this->main.next_item();
+        break;
+
+    case ActiveMenu::PAUSE:
+        this->pause.next_item();
+        break;
+
+    case ActiveMenu::SETTINGS:
+        this->settings.next_item();
+        break;
+    }
+
+}
+
+void MainWindow::MenuList::previous_item() {
+    switch (this->active) {
+    case ActiveMenu::MAIN:
+        this->main.previous_item();
+        break;
+    case ActiveMenu::PAUSE:
+        this->pause.previous_item();
+        break;
+    case ActiveMenu::SETTINGS:
+        this->settings.previous_item();
+        break;
+    }
+}
+
+
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
     case 0: // First item
@@ -373,8 +408,8 @@ void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
             window.game_field = GameField(window.game_field_size);
         }
         window.field_regeneration = true;
-        
-        window.game_field.unpause();     
+
+        window.game_field.unpause();
         break;
     case 1: // Second item
         this->active = ActiveMenu::SETTINGS;
@@ -410,33 +445,3 @@ void MainWindow::MenuList::settings_menu_operations(MainWindow& window) {
     }
 }
 
-void MainWindow::MenuList::next_item() {
-    switch (this->active) {
-    case ActiveMenu::MAIN:
-        this->main.next_item();
-        break;
-
-    case ActiveMenu::PAUSE:
-        this->pause.next_item();
-        break;
-
-    case ActiveMenu::SETTINGS:
-        this->settings.next_item();
-        break;
-    }
-
-}
-
-void MainWindow::MenuList::previous_item() {
-    switch (this->active) {
-    case ActiveMenu::MAIN:
-        this->main.previous_item();
-        break;
-    case ActiveMenu::PAUSE:
-        this->pause.previous_item();
-        break;
-    case ActiveMenu::SETTINGS:
-        this->settings.previous_item();
-        break;
-    }
-}

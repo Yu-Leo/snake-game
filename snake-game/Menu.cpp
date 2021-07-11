@@ -58,19 +58,6 @@ void Menu::set_titles(const std::vector<std::string>& titles) {
     }
 }
 
-Size Menu::get_background_size() {
-    float current_menu_item_y = 0;
-    float menu_item_max_width = 0;
-
-    for (unsigned int i = 0; i < this->menu_items.size(); i++) {
-        current_menu_item_y += this->menu_items[i].getLocalBounds().height + this->ITEM_PADDING;
-        menu_item_max_width = std::max(menu_item_max_width, this->menu_items[i].getLocalBounds().width);
-    }
-
-    return Size(menu_item_max_width + this->HORIZONTAL_PADDING * 2,
-        current_menu_item_y - this->ITEM_PADDING + this->VERTICAL_PADDING * 2);
-}
-
 void Menu::draw_background(sf::RenderWindow& window, const Size& size, const Position& pos) {
     sf::RectangleShape menu_rect(sf::Vector2f(size.width, size.height));
     menu_rect.setPosition(pos.x, pos.y);
@@ -94,4 +81,17 @@ void Menu::draw_items(sf::RenderWindow& window, const Position& bg_pos) {
 
         window.draw(this->menu_items[i]);
     }
+}
+
+Size Menu::get_background_size() {
+    float current_menu_item_y = 0;
+    float menu_item_max_width = 0;
+
+    for (unsigned int i = 0; i < this->menu_items.size(); i++) {
+        current_menu_item_y += this->menu_items[i].getLocalBounds().height + this->ITEM_PADDING;
+        menu_item_max_width = std::max(menu_item_max_width, this->menu_items[i].getLocalBounds().width);
+    }
+
+    return Size(menu_item_max_width + this->HORIZONTAL_PADDING * 2,
+        current_menu_item_y - this->ITEM_PADDING + this->VERTICAL_PADDING * 2);
 }
