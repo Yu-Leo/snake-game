@@ -14,6 +14,8 @@ GameField::GameField(const Size& size) {
     this->apple = Apple(this->get_random_empty_cell());
     this->render_apple();
 
+    this->cells_without_walls = this->count_cells_without_walls();
+
     this->game_status = GameField::GameStatus::STARTED;
 }
 
@@ -86,6 +88,10 @@ int GameField::get_score() const {
 
 Size GameField::get_size() const {
     return this->size;
+}
+
+int GameField::get_cells_without_walls() const{
+    return this->cells_without_walls;
 }
 
 GameField::GameStatus GameField::get_game_status() const{
@@ -254,6 +260,17 @@ Point GameField::get_random_empty_cell() {
         }
     }
     throw std::exception("No empty cells");
+}
+
+int GameField::count_cells_without_walls() {
+    int walls = 0;
+    for (int i = 0; i < this->size.height; i++) {
+        for (int j = 0; j < this->size.width; j++) {
+            if (this->field[i][j] == this->FIELD_CELL_TYPE_WALL)
+                walls++;
+        }
+    }
+    return this->size.height * this->size.width - walls;
 }
 
 void print_cell(std::ostream& out, const GameField& game_field, const Point &cell) {

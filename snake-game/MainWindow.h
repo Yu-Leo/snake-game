@@ -25,7 +25,8 @@ public:
 
 private:
 
-    int speed = 2; // 0 - low, 4 - fast
+    int speed = 0; // 0 - low, 5 - fast
+    std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
 
     bool field_regeneration = false; // Should the field be regenerated
 
@@ -110,4 +111,6 @@ private:
     void handling_control(const sf::Event& event); // Processing controlling snake
 
     void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
+
+    void update_speed();
 };
