@@ -96,14 +96,16 @@ void MainWindow::delay() {
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");
-    this->textures.snake.loadFromFile("./img/textures/snake.png");
+    this->textures.snake_body.loadFromFile("./img/textures/snake_body.png");
+    this->textures.snake_head.loadFromFile("./img/textures/snake_head.png");
     this->textures.wall.loadFromFile("./img/textures/wall.png");
 }
 
 void MainWindow::set_textures() {
     this->sprites.none.setTexture(this->textures.none);
     this->sprites.apple.setTexture(this->textures.apple);
-    this->sprites.snake.setTexture(this->textures.snake);
+    this->sprites.snake_body.setTexture(this->textures.snake_body);
+    this->sprites.snake_head.setTexture(this->textures.snake_head);
     this->sprites.wall.setTexture(this->textures.wall);
 }
 
@@ -141,6 +143,7 @@ void MainWindow::play_sounds() {
 void MainWindow::draw_cell(const Point& point) {
     float x_pos = float(point.x * CELL_SIZE);
     float y_pos = float(point.y * CELL_SIZE + TOP_PADDING);
+    float offset_x, offset_y;
     switch (this->game_field.get_cell_type(point)) {
     case GameField::CellTypes::NONE:
         this->sprites.none.setPosition(x_pos, y_pos);
@@ -152,9 +155,18 @@ void MainWindow::draw_cell(const Point& point) {
         this->draw(this->sprites.apple);
         break;
 
-    case GameField::CellTypes::SNAKE:
-        this->sprites.snake.setPosition(x_pos, y_pos);
-        this->draw(this->sprites.snake);
+    case GameField::CellTypes::SNAKE_BODY:
+        this->sprites.snake_body.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.snake_body);
+        break;
+
+    case GameField::CellTypes::SNAKE_HEAD:
+        offset_x = this->sprites.snake_head.getLocalBounds().width / 2;
+        offset_y = this->sprites.snake_head.getLocalBounds().height / 2;
+        this->sprites.snake_head.setPosition(x_pos + offset_x, y_pos + offset_y);
+        this->sprites.snake_head.setOrigin(offset_x, offset_y);
+        this->rotate_snake_head_sprite();
+        this->draw(this->sprites.snake_head);
         break;
 
     case GameField::CellTypes::WALL:
@@ -162,6 +174,25 @@ void MainWindow::draw_cell(const Point& point) {
         this->draw(this->sprites.wall);
         break;
     }
+}
+
+void MainWindow::rotate_snake_head_sprite() {
+    int angle = 0;
+    switch (this->game_field.get_snake_direction()) {
+    case Snake::Directions::RIGHT:
+        angle = 0;
+        break;
+    case Snake::Directions::DOWN:
+        angle = 90;
+        break;
+    case Snake::Directions::LEFT:
+        angle = 180;
+        break;
+    case Snake::Directions::UP:
+        angle = -90;
+        break;
+    }
+    this->sprites.snake_head.setRotation(angle);
 }
 
 void MainWindow::draw_field() {

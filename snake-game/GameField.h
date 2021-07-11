@@ -21,7 +21,8 @@ public:
     enum class CellTypes {
         NONE,
         APPLE,
-        SNAKE,
+        SNAKE_HEAD,
+        SNAKE_BODY,
         WALL
     };
 
@@ -56,6 +57,8 @@ public:
 
     int get_cells_without_walls() const;
 
+    int get_snake_direction() const;
+
     GameStatus get_game_status() const; // Getter for game status
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
@@ -63,6 +66,8 @@ public:
     Collisions get_collision() const;
 
     void clear_collision();
+
+    
 
 private:
 
