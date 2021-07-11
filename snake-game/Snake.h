@@ -21,15 +21,15 @@ public:
 
     void set_field_size(Size field_size); // Init field size
 
+    void increase_length(); // Increase snake length by one cell
+
+    void change_direction(int new_direction);
+
     Point get_head_pos() const;
 
     int get_length() const;
 
     int get_direction() const;
-
-    void increase_length(); // Increase snake length by one cell
-
-    void change_direction(int new_direction);
 
 private:
 
@@ -40,4 +40,3 @@ private:
     // Size of fields on which it is used snake. Needs initialization real value!
     Size field_size;
 };
-

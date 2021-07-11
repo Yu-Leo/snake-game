@@ -58,11 +58,11 @@ private:
 
 	void set_titles(const std::vector<std::string>& titles); // Set titles to menu items
 
-	Size get_background_size(); // Calculate size of background rectangle
-
 	void draw_background(sf::RenderWindow& window, const Size& size,
 		const Position& pos);
 
 	void draw_items(sf::RenderWindow& window, const Position& bg_pos);
+
+	Size get_background_size(); // Calculate size of background rectangle
 };
 
