@@ -23,13 +23,16 @@ namespace maps {
 
     const Map MAP0 = Map(DEFAULT_SIZE);
     const Map MAP1 = Map(DEFAULT_SIZE, borders(DEFAULT_SIZE));
+
+    std::vector<Map> maps = { MAP0, MAP1 };   
 }
+
 
 GameField::GameField(const Size& size) {
     this->size = size;
     this->init_field();
 
-    this->set_map(maps::MAP1);
+    this->set_map(maps::maps[this->map_number]);
 
     // Create snake
     this->snake.set_field_size(this->size);
@@ -107,6 +110,16 @@ void GameField::unpause() {
     this->game_status = GameStatus::ACTIVE;
 }
 
+void GameField::change_map(int map_num) {
+    if (map_num > maps::maps.size()) {
+        map_num = 0;
+    } else if (map_num < 0) {
+        map_num = maps::maps.size() - 1;
+    }
+    this->map_number = map_num;
+    this->set_map(maps::maps[this->map_number]);
+}
+
 void GameField::clear_collision() {
     this->collision = Collisions::NONE;
 }
@@ -151,6 +164,10 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
     }
 }
 
+int GameField::get_map_number() const {
+    return this->map_number;
+}
+
 
 
 void GameField::init_field() {
@@ -177,7 +194,7 @@ void GameField::set_map(const Map& map) {
         for (int j = 0; j < map.size.width; j++) {
             if (map.map[i][j])
                 this->field[i][j] = FIELD_CELL_TYPE_WALL;
-            else
+            else if (this->field[i][j] == FIELD_CELL_TYPE_WALL)
                 this->field[i][j] = FIELD_CELL_TYPE_NONE;
         }
     }
