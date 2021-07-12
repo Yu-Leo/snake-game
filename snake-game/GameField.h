@@ -7,6 +7,9 @@
 #include "Apple.h"
 #include "Snake.h"
 #include "Size.h"
+#include "Map.h"
+
+static Size DEFAULT_SIZE = Size(35, 20);
 
 class GameField {
 public:
@@ -101,7 +104,7 @@ private:
 
     void resize_matrix(); // Change sizes of field vectors
 
-    void set_walls(); // Add walls to field
+    void set_map(const Map& map); // Add walls to field
 
     void render_snake(); // Fill snake's cells
 

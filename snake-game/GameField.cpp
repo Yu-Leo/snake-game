@@ -1,10 +1,35 @@
 #include "GameField.h"
 
+namespace maps {
+    std::vector<std::vector<int>> borders(const Size& size) {
+        std::vector<std::vector<int>> map(size.height, std::vector<int>(size.width));
+        for (int i = 0; i < size.width; i++) {
+            map[size.height - 1][i] = Map::WALL;
+        }
+
+        for (int i = 0; i < size.width; i++) {
+            map[0][i] = Map::WALL;
+        }
+
+        for (int i = 0; i < size.height; i++) {
+            map[i][0] = Map::WALL;
+        }
+
+        for (int i = 0; i < size.height; i++) {
+            map[i][size.width - 1] = Map::WALL;
+        }
+        return map;
+    }
+
+    const Map MAP0 = Map(DEFAULT_SIZE);
+    const Map MAP1 = Map(DEFAULT_SIZE, borders(DEFAULT_SIZE));
+}
+
 GameField::GameField(const Size& size) {
     this->size = size;
     this->init_field();
 
-    this->set_walls();
+    this->set_map(maps::MAP1);
 
     // Create snake
     this->snake.set_field_size(this->size);
@@ -19,7 +44,7 @@ GameField::GameField(const Size& size) {
     this->game_status = GameField::GameStatus::STARTED;
 }
 
-GameField::GameField() : GameField(Size(20, 20)) {}
+GameField::GameField() : GameField(DEFAULT_SIZE) {}
 
 void GameField::one_iteration() {
     this->turn_snake(); // Analyze queue of controlling commands
@@ -144,21 +169,17 @@ void GameField::resize_matrix() {
     }
 }
 
-void GameField::set_walls() {
-    for (int i = 0; i < this->size.width; i++) {
-        this->field[this->size.height - 1][i] = FIELD_CELL_TYPE_WALL;
-    }
-
-    for (int i = 0; i < this->size.width; i++) {
-        this->field[0][i] = FIELD_CELL_TYPE_WALL;
-    }
-
-    for (int i = 0; i < this->size.height; i++) {
-        this->field[i][0] = FIELD_CELL_TYPE_WALL;
-    }
-
-    for (int i = 0; i < this->size.height; i++) {
-        this->field[i][this->size.width - 1] = FIELD_CELL_TYPE_WALL;
+void GameField::set_map(const Map& map) {
+    if (map.size != this->size)
+        throw false;
+    
+    for (int i = 0; i < map.size.height; i++) {
+        for (int j = 0; j < map.size.width; j++) {
+            if (map.map[i][j])
+                this->field[i][j] = FIELD_CELL_TYPE_WALL;
+            else
+                this->field[i][j] = FIELD_CELL_TYPE_NONE;
+        }
     }
 }
 

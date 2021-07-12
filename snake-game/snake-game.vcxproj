@@ -163,6 +163,7 @@
     <ClInclude Include="Apple.h" />
     <ClInclude Include="GameField.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Size.h" />
