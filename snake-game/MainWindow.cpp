@@ -258,6 +258,9 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
             case 2:
                 this->speed.reduce_speed();
                 break;
+            case 3:
+                this->game_field.change_map(this->game_field.get_map_number() - 1);
+                break;
             }
         }
         break;
@@ -269,6 +272,9 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
                 break;
             case 2:
                 this->speed.increase_speed();
+                break;
+            case 3:
+                this->game_field.change_map(this->game_field.get_map_number() + 1);
                 break;
             }
         }
@@ -381,7 +387,7 @@ void MainWindow::draw_score_bar() {
 MainWindow::MenuList::MenuList() {
     std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
     std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
-    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: ", "Speed: " };
+    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: ", "Speed: ", "Map: " };
 
     this->main.set_text_to_items(main_menu_items);
     this->pause.set_text_to_items(pause_menu_items);
@@ -398,8 +404,10 @@ void MainWindow::MenuList::draw(MainWindow& window) {
         break;
     case MenuList::SETTINGS:
         int volume = window.sounds.get_volume();
+        int map_num = window.game_field.get_map_number();
         this->settings.set_text_to_item(1, "Volume: " + std::to_string(volume));
         this->settings.set_text_to_item(2, "Speed: " + window.speed.get_active_item());
+        this->settings.set_text_to_item(3, "Map: " + std::to_string(map_num));
         this->settings.draw(window);
         break;
     }

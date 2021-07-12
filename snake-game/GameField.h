@@ -54,6 +54,8 @@ public:
 
     void unpause();
 
+    void change_map(int map_num);
+
     void clear_collision();
 
     Collisions get_collision() const;
@@ -70,6 +72,8 @@ public:
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
 
+    int get_map_number() const;
+
 private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
@@ -83,8 +87,8 @@ private:
         WALL = '$' // Cell with wall
     };
 
+    int map_number = 1;
     int score = 0;
-
     int cells_without_walls;
 
     Size size; // Size of game field
