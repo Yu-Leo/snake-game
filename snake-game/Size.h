@@ -11,7 +11,11 @@ struct Size {
 
     Size() : Size(0, 0) {};
 
-    bool operator==(const Size& other) {
+    bool operator==(const Size& other) const {
         return this->width == other.width && this->height == other.height;
+    }
+
+    bool operator!=(const Size& other) const {
+        return !(*this == other);
     }
 };
