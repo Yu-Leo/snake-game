@@ -24,7 +24,10 @@ public:
     void delay(); // Delay after one game iteration
 
 private:
+    std::vector<std::string> speed_items = { "Auto", "1", "2", "3", "4", "5" };
+    int active_speed_item = 0;
 
+    bool auto_speed = true;
     int speed = 0; // 0 - low, 5 - fast
     std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
 
