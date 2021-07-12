@@ -15,7 +15,7 @@ int main() {
 #endif
 
     MainWindow window(Size(35, 20));
-    
+
     while (window.isOpen()) {
         window.event_handling();
         window.one_iteration();

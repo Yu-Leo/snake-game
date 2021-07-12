@@ -183,16 +183,31 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         this->menu.next_item();
         break;
     case sf::Keyboard::Left:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-
-            this->sounds.turn_down_volume();
+        if (this->menu.active == MenuList::SETTINGS) {
+            switch (this->menu.settings.get_active_item_index()) {
+            case 1:
+                this->sounds.turn_down_volume();
+                break;
+            case 2:
+                this->active_speed_item--;
+                if (this->active_speed_item < 0)
+                    this->active_speed_item = this->speed_items.size() - 1;
+                break;
+            }
         }
         break;
     case sf::Keyboard::Right:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-            this->sounds.turn_up_volume();
+        if (this->menu.active == MenuList::SETTINGS) {
+            switch (this->menu.settings.get_active_item_index()) {
+            case 1:
+                this->sounds.turn_up_volume();
+                break;
+            case 2:
+                this->active_speed_item++;
+                if (this->active_speed_item >= this->speed_items.size())
+                    this->active_speed_item = 0;
+                break;
+            }
         }
         break;
     case sf::Keyboard::Enter:
@@ -222,6 +237,16 @@ void MainWindow::play_sounds() {
 }
 
 void MainWindow::update_speed() {
+    if (this->active_speed_item == 0) {
+        this->auto_speed = true;
+    } else {
+        this->auto_speed = false;
+        this->speed = this->active_speed_item - 1;
+    }
+
+    if (!this->auto_speed)
+        return;
+
     int delays = this->delays.size();
     std::vector<double> borders = {
         0 * (1.0 / delays),
@@ -330,7 +355,7 @@ void MainWindow::draw_score_bar() {
 MainWindow::MenuList::MenuList() {
     std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
     std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
-    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: " };
+    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: ", "Speed: " };
 
     this->main.set_text_to_items(main_menu_items);
     this->pause.set_text_to_items(pause_menu_items);
@@ -348,6 +373,7 @@ void MainWindow::MenuList::draw(MainWindow& window) {
     case MenuList::SETTINGS:
         int volume = window.sounds.get_volume();
         this->settings.set_text_to_item(1, "Volume: " + std::to_string(volume));
+        this->settings.set_text_to_item(2, "Speed: " + window.speed_items[window.active_speed_item]);
         this->settings.draw(window);
         break;
     }
