@@ -24,12 +24,34 @@ public:
     void delay(); // Delay after one game iteration
 
 private:
-    std::vector<std::string> speed_items = { "Auto", "1", "2", "3", "4", "5" };
-    int active_speed_item = 0;
 
-    bool auto_speed = true;
-    int speed = 0; // 0 - low, 5 - fast
-    std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
+    class Speed {
+    public:
+
+        void delay();
+
+        int get_num() const;
+        
+        std::string get_active_item() const;
+
+        void update(const MainWindow& window);
+
+        void increase_speed();
+        
+        void reduce_speed();
+
+    private:
+        std::vector<std::string> speed_items = { "Auto", "1", "2", "3", "4", "5", "6" };
+
+        int active_speed_item = 0;
+
+        std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
+        bool auto_speed = true;
+        int speed = 0; // 0 - low, 5 - fast
+        
+    };
+    
+    Speed speed;
 
     bool field_regeneration = false; // Should the field be regenerated
 
