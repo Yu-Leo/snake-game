@@ -8,8 +8,11 @@
 #include "Snake.h"
 #include "Size.h"
 #include "Map.h"
+#include "MapsList.h"
 
 static Size DEFAULT_SIZE = Size(35, 20);
+
+const MapsList MAPS(DEFAULT_SIZE);
 
 class GameField {
 public:
@@ -53,8 +56,6 @@ public:
     void pause();
 
     void unpause();
-
-    void change_map(int map_num);
 
     void clear_collision();
 
