@@ -28,19 +28,21 @@ namespace maps {
 }
 
 
-GameField::GameField(const Size& size) {
+GameField::GameField(const Size& size, int map_number, bool only_walls) {
     this->size = size;
     this->init_field();
 
-    this->set_map(maps::maps[this->map_number]);
+    this->set_map(maps::maps[map_number]);
 
-    // Create snake
-    this->snake.set_field_size(this->size);
-    this->render_snake();
+    if (!only_walls) {
+        // Create snake
+        this->snake.set_field_size(this->size);
+        this->render_snake();
 
-    // Create apple
-    this->apple = Apple(this->get_random_empty_cell());
-    this->render_apple();
+        // Create apple
+        this->apple = Apple(this->get_random_empty_cell());
+        this->render_apple();
+    }
 
     this->cells_without_walls = this->count_cells_without_walls();
 
@@ -110,16 +112,6 @@ void GameField::unpause() {
     this->game_status = GameStatus::ACTIVE;
 }
 
-void GameField::change_map(int map_num) {
-    if (map_num > maps::maps.size()) {
-        map_num = 0;
-    } else if (map_num < 0) {
-        map_num = maps::maps.size() - 1;
-    }
-    this->map_number = map_num;
-    this->set_map(maps::maps[this->map_number]);
-}
-
 void GameField::clear_collision() {
     this->collision = Collisions::NONE;
 }
@@ -164,9 +156,6 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
     }
 }
 
-int GameField::get_map_number() const {
-    return this->map_number;
-}
 
 
 

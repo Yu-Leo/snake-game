@@ -36,7 +36,7 @@ public:
         NONE
     };
 
-    GameField(const Size& size); // Constructor with settable size
+    GameField(const Size& size, int map_number=0, bool only_walls=false); // Constructor with settable size
 
     GameField(); // Constructor with default size
 
@@ -72,8 +72,6 @@ public:
 
     CellTypes get_cell_type(const Point& point) const; // Get type of specified cell
 
-    int get_map_number() const;
-
 private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
@@ -87,7 +85,6 @@ private:
         WALL = '$' // Cell with wall
     };
 
-    int map_number = 1;
     int score = 0;
     int cells_without_walls;
 

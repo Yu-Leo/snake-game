@@ -53,7 +53,7 @@ private:
     
     Speed speed;
 
-    bool field_regeneration = false; // Should the field be regenerated
+    int map_number = 0;
 
     Size window_size; // Size in ptx
 
@@ -128,6 +128,8 @@ private:
     void handling_control(const sf::Event& event); // Processing controlling snake
 
     void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
+
+    void change_map(int new_map_num);
 
     void play_sounds(); // Check snake head collisions and play sounds 
 
