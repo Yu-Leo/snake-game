@@ -48,7 +48,7 @@
     <ClCompile Include="gui\Sounds.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="mechanics\MapsList.cpp">
+    <ClCompile Include="mechanics\Map.cpp">
       <Filter>Source Files\mechanics</Filter>
     </ClCompile>
   </ItemGroup>
