@@ -157,7 +157,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mechanics\Apple.cpp" />
     <ClCompile Include="mechanics\GameField.cpp" />
-    <ClCompile Include="mechanics\MapsList.cpp" />
+    <ClCompile Include="mechanics\Map.cpp" />
     <ClCompile Include="mechanics\Snake.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "Size.h"
 
@@ -21,4 +22,6 @@ struct Map {
             this->map = map;
         }
     }
+
+    static Map read_from_file(const std::string& file_name);
 };
