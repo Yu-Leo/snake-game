@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "GameField.h"
+#include "../mechanics/GameField.h"
 #include "Sounds.h"
 #include "Menu.h"
 
