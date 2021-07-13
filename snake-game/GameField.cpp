@@ -1,38 +1,10 @@
 #include "GameField.h"
 
-namespace maps {
-    std::vector<std::vector<int>> borders(const Size& size) {
-        std::vector<std::vector<int>> map(size.height, std::vector<int>(size.width));
-        for (int i = 0; i < size.width; i++) {
-            map[size.height - 1][i] = Map::WALL;
-        }
-
-        for (int i = 0; i < size.width; i++) {
-            map[0][i] = Map::WALL;
-        }
-
-        for (int i = 0; i < size.height; i++) {
-            map[i][0] = Map::WALL;
-        }
-
-        for (int i = 0; i < size.height; i++) {
-            map[i][size.width - 1] = Map::WALL;
-        }
-        return map;
-    }
-
-    const Map MAP0 = Map(DEFAULT_SIZE);
-    const Map MAP1 = Map(DEFAULT_SIZE, borders(DEFAULT_SIZE));
-
-    std::vector<Map> maps = { MAP0, MAP1 };   
-}
-
-
 GameField::GameField(const Size& size, int map_number, bool only_walls) {
     this->size = size;
     this->init_field();
 
-    this->set_map(maps::maps[map_number]);
+    this->set_map(MAPS.get_map(map_number));
 
     if (!only_walls) {
         // Create snake

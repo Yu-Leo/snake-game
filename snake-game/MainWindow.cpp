@@ -260,7 +260,6 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
                 break;
             case 3:
                 this->change_map(this->map_number - 1);
-                //this->game_field.change_map(this->game_field.get_map_number() - 1);
                 break;
             }
         }
@@ -276,7 +275,6 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
                 break;
             case 3:
                 this->change_map(this->map_number + 1);
-                //this->game_field.change_map(this->game_field.get_map_number() + 1);
                 break;
             }
         }
@@ -293,6 +291,11 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
 }
 
 void MainWindow::change_map(int new_map_num) {
+    if (new_map_num < 0)
+        new_map_num = MAPS.NUMBER_OF_MAPS - 1;
+    else if (new_map_num > MAPS.NUMBER_OF_MAPS - 1)
+        new_map_num = 0;
+
     this->map_number = new_map_num;
     this->game_field = GameField(game_field_size, new_map_num, true);
 }
@@ -467,7 +470,6 @@ void MainWindow::MenuList::previous_item() {
         break;
     }
 }
-
 
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
