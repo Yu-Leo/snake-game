@@ -12,7 +12,7 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     this->window_size.width = size.width * CELL_SIZE;
     this->window_size.height = size.height * CELL_SIZE + TOP_PADDING;
 
-    this->game_field = GameField(size);
+    this->game_field = GameField(size, map_number, true);
 
     this->load_textures();
     this->set_textures();
@@ -259,7 +259,8 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
                 this->speed.reduce_speed();
                 break;
             case 3:
-                this->game_field.change_map(this->game_field.get_map_number() - 1);
+                this->change_map(this->map_number - 1);
+                //this->game_field.change_map(this->game_field.get_map_number() - 1);
                 break;
             }
         }
@@ -274,7 +275,8 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
                 this->speed.increase_speed();
                 break;
             case 3:
-                this->game_field.change_map(this->game_field.get_map_number() + 1);
+                this->change_map(this->map_number + 1);
+                //this->game_field.change_map(this->game_field.get_map_number() + 1);
                 break;
             }
         }
@@ -289,6 +291,12 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         }
     }
 }
+
+void MainWindow::change_map(int new_map_num) {
+    this->map_number = new_map_num;
+    this->game_field = GameField(game_field_size, new_map_num, true);
+}
+
 
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
@@ -404,7 +412,7 @@ void MainWindow::MenuList::draw(MainWindow& window) {
         break;
     case MenuList::SETTINGS:
         int volume = window.sounds.get_volume();
-        int map_num = window.game_field.get_map_number();
+        int map_num = window.map_number;
         this->settings.set_text_to_item(1, "Volume: " + std::to_string(volume));
         this->settings.set_text_to_item(2, "Speed: " + window.speed.get_active_item());
         this->settings.set_text_to_item(3, "Map: " + std::to_string(map_num));
@@ -464,11 +472,7 @@ void MainWindow::MenuList::previous_item() {
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
     case 0: // First item
-        if (window.field_regeneration) {
-            window.game_field = GameField(window.game_field_size);
-        }
-        window.field_regeneration = true;
-
+        window.game_field = GameField(window.game_field_size, window.map_number);
         window.game_field.unpause();
         break;
     case 1: // Second item
