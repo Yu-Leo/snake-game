@@ -2,7 +2,7 @@
 
 #include <ctime>
 
-#include "MainWindow.h"
+#include "./gui/MainWindow.h"
 
 #define RANDOM_GENERATING true // (true/false)
 

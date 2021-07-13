@@ -151,26 +151,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Apple.cpp" />
-    <ClCompile Include="GameField.cpp" />
+    <ClCompile Include="gui\MainWindow.cpp" />
+    <ClCompile Include="gui\Menu.cpp" />
+    <ClCompile Include="gui\Sounds.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MapsList.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="Sounds.cpp" />
+    <ClCompile Include="mechanics\Apple.cpp" />
+    <ClCompile Include="mechanics\GameField.cpp" />
+    <ClCompile Include="mechanics\MapsList.cpp" />
+    <ClCompile Include="mechanics\Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Apple.h" />
-    <ClInclude Include="GameField.h" />
-    <ClInclude Include="MainWindow.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="MapsList.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Size.h" />
-    <ClInclude Include="Snake.h" />
-    <ClInclude Include="Sounds.h" />
+    <ClInclude Include="gui\MainWindow.h" />
+    <ClInclude Include="gui\Menu.h" />
+    <ClInclude Include="gui\Sounds.h" />
+    <ClInclude Include="mechanics\Apple.h" />
+    <ClInclude Include="mechanics\GameField.h" />
+    <ClInclude Include="mechanics\Map.h" />
+    <ClInclude Include="mechanics\MapsList.h" />
+    <ClInclude Include="mechanics\Point.h" />
+    <ClInclude Include="mechanics\Size.h" />
+    <ClInclude Include="mechanics\Snake.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

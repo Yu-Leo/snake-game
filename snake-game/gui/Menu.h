@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "Size.h"
+#include "../mechanics/Size.h"
 
 class Menu { // Class of game menu
 public:
