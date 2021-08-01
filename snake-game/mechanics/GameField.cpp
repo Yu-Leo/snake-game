@@ -148,7 +148,7 @@ void GameField::resize_matrix() {
 
 void GameField::set_map(const Map& map) {
     if (map.size != this->size)
-        throw false;
+        throw std::exception("Incorrect map size");
     
     for (int i = 0; i < map.size.height; i++) {
         for (int j = 0; j < map.size.width; j++) {

@@ -16,7 +16,7 @@ public:
 
     Map operator[](int index) const {
         if (index < 0 || index >= NUMBER_OF_MAPS)
-            throw false;
+            throw std::exception("Incorrect map index");
         return this->maps[index];
     }
 

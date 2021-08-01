@@ -16,6 +16,4 @@ struct SettingsKit {
 	void save_to_file();
 
 	static SettingsKit load_from_file();
-
-
 };
