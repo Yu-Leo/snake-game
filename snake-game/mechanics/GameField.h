@@ -11,6 +11,8 @@
 #include "Map.h"
 #include "MapsList.h"
 
+#define CHANCE_OF_GENERATING_SUPER_APPLE 15 // in %
+
 static Size DEFAULT_SIZE = Size(35, 20);
 
 const MapsList MAPS(DEFAULT_SIZE);
@@ -82,8 +84,6 @@ private:
     static const int FIELD_CELL_TYPE_APPLE = -1;
     static const int FIELD_CELL_TYPE_SUPER_APPLE = -2;
     static const int FIELD_CELL_TYPE_WALL = -3;
-
-    static const int CHANCE_OF_GENERATING_SUPER_APPLE = 15; // in %
 
     int score = 0;
     int cells_without_walls;
