@@ -36,6 +36,8 @@ private:
 
         void update(const MainWindow& window);
 
+        void set_speed(std::string speed_item);
+
         void increase_speed();
         
         void reduce_speed();
@@ -48,6 +50,8 @@ private:
         std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
         bool auto_speed = true;
         int speed = 0; // 0 - low, 5 - fast
+
+        bool is_correct_speed_item(std::string speed_item);
         
     };
     

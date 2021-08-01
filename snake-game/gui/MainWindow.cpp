@@ -2,10 +2,21 @@
 
 #include <iostream>
 
+#include "../mechanics/SettingsKit.h"
+
 MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE + TOP_PADDING),
     "Snake game",
     sf::Style::Close) {
+
+    try {
+        SettingsKit settings = SettingsKit::load_from_file();
+        this->sounds.set_volume(settings.volume);
+        this->speed.set_speed(settings.speed_item);
+        this->map_number = settings.map_number;
+    } catch (const bool&) {
+        std::cout << "error\n";
+    }
 
     this->game_field_size = size;
 
@@ -20,6 +31,8 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     this->set_text_settings();
 
     MenuList menu = MainWindow::MenuList();
+
+    
 }
 
 void MainWindow::event_handling() {
@@ -129,21 +142,31 @@ void MainWindow::Speed::update(const MainWindow &window) {
     double k = 4 * double(window.game_field.get_score()) / window.game_field.get_cells_without_walls();
     if (borders[0] <= k && k < borders[1]) {
         this->speed = 0;
-    }
-    else if (borders[1] <= k && k < borders[2]) {
+    } else if (borders[1] <= k && k < borders[2]) {
         this->speed = 1;
-    }
-    else if (borders[2] <= k && k < borders[3]) {
+    } else if (borders[2] <= k && k < borders[3]) {
         this->speed = 2;
-    }
-    else if (borders[3] <= k && k < borders[4]) {
+    } else if (borders[3] <= k && k < borders[4]) {
         this->speed = 3;
-    }
-    else if (borders[4] <= k && k < borders[5]) {
+    } else if (borders[4] <= k && k < borders[5]) {
         this->speed = 4;
-    }
-    else if (borders[5] <= k) {
+    } else if (borders[5] <= k) {
         this->speed = 5;
+    }
+}
+
+void MainWindow::Speed::set_speed(std::string speed_item) {
+    if (!this->is_correct_speed_item(speed_item))
+        throw false;
+
+    if (speed_item == this->speed_items[0]) {
+        this->auto_speed = true;
+        this->speed = 0;
+        this->active_speed_item = 0;
+    } else {
+        this->auto_speed = false;
+        this->speed = std::stoi(speed_item) - 1;
+        this->active_speed_item = std::stoi(speed_item);
     }
 }
 
@@ -158,6 +181,14 @@ void MainWindow::Speed::reduce_speed() {
     if (this->active_speed_item < 0)
         this->active_speed_item = this->speed_items.size() - 1;
 }
+
+bool MainWindow::Speed::is_correct_speed_item(std::string speed_item) {
+    bool correct = false;
+    for (auto item : this->speed_items)
+        correct = correct || speed_item == item;
+    return correct;
+}
+
 
 
 void MainWindow::load_textures() {
@@ -496,6 +527,11 @@ void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
         this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
+        SettingsKit current_settings(
+            window.sounds.get_volume(),
+            window.speed.get_active_item(),
+            window.map_number);
+        current_settings.save_to_file();
         window.close();
         break;
     }
@@ -510,6 +546,11 @@ void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
         this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
+        SettingsKit current_settings(
+            window.sounds.get_volume(),
+            window.speed.get_active_item(),
+            window.map_number);
+        current_settings.save_to_file();
         window.close();
         break;
     }

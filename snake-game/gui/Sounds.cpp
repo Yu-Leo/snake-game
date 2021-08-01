@@ -23,6 +23,12 @@ void Sounds::play(int sound_name) {
     }
 }
 
+void Sounds::set_volume(int volume) {
+    if (volume < this->MIN_VOLUME || volume > this->MAX_VOLUME)
+        throw false;
+    this->volume = volume;
+}
+
 int Sounds::get_volume() {
     return this->volume;
 }

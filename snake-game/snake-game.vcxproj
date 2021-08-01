@@ -158,6 +158,7 @@
     <ClCompile Include="mechanics\Apple.cpp" />
     <ClCompile Include="mechanics\GameField.cpp" />
     <ClCompile Include="mechanics\Map.cpp" />
+    <ClCompile Include="mechanics\SettingsKit.cpp" />
     <ClCompile Include="mechanics\Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="mechanics\Map.h" />
     <ClInclude Include="mechanics\MapsList.h" />
     <ClInclude Include="mechanics\Point.h" />
+    <ClInclude Include="mechanics\SettingsKit.h" />
     <ClInclude Include="mechanics\Size.h" />
     <ClInclude Include="mechanics\Snake.h" />
     <ClInclude Include="mechanics\SuperApple.h" />
