@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 
-#include "../snake-game/Apple.h"
+#include "../snake-game/mechanics/Apple.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
