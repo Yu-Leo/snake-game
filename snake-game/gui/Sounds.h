@@ -16,6 +16,8 @@ public:
 
     void play(int sound_name); // Play sound by it's name
     
+    void set_volume(int volume); // Setter for volume
+
     int get_volume(); // Getter for volume
 
     void turn_up_volume();

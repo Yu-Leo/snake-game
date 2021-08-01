@@ -51,6 +51,9 @@
     <ClCompile Include="mechanics\Map.cpp">
       <Filter>Source Files\mechanics</Filter>
     </ClCompile>
+    <ClCompile Include="mechanics\SettingsKit.cpp">
+      <Filter>Source Files\mechanics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mechanics\Point.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files\mechanics</Filter>
     </ClInclude>
     <ClInclude Include="mechanics\SuperApple.h">
+      <Filter>Header Files\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanics\SettingsKit.h">
       <Filter>Header Files\mechanics</Filter>
     </ClInclude>
   </ItemGroup>
