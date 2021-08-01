@@ -14,8 +14,8 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
         this->sounds.set_volume(settings.volume);
         this->speed.set_speed(settings.speed_item);
         this->map_number = settings.map_number;
-    } catch (const bool&) {
-        std::cout << "error\n";
+    } catch (const std::exception& e) {
+        // Settings file opening error. Do nothing
     }
 
     this->game_field_size = size;
@@ -30,9 +30,7 @@ MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
 
     this->set_text_settings();
 
-    MenuList menu = MainWindow::MenuList();
-
-    
+    MenuList menu = MainWindow::MenuList();   
 }
 
 void MainWindow::event_handling() {
@@ -157,7 +155,7 @@ void MainWindow::Speed::update(const MainWindow &window) {
 
 void MainWindow::Speed::set_speed(std::string speed_item) {
     if (!this->is_correct_speed_item(speed_item))
-        throw false;
+        throw std::exception("Incorrect speed item");
 
     if (speed_item == this->speed_items[0]) {
         this->auto_speed = true;

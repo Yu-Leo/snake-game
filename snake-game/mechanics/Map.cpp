@@ -17,7 +17,7 @@ Map Map::read_from_file(const std::string& file_name) {
 			if (cell == Map::NONE || cell == Map::WALL) {
 				map.map[i][j] = cell;
 			} else {
-				throw false;
+				throw std::exception("Incorrect cell type");
 			}
 		}
 	}

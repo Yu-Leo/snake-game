@@ -25,7 +25,7 @@ void Sounds::play(int sound_name) {
 
 void Sounds::set_volume(int volume) {
     if (volume < this->MIN_VOLUME || volume > this->MAX_VOLUME)
-        throw false;
+        throw std::exception("Incorrect volume value");
     this->volume = volume;
 }
 
