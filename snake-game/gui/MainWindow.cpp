@@ -307,6 +307,7 @@ void MainWindow::change_map(int new_map_num) {
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
     case GameField::Collisions::APPLE:
+    case GameField::Collisions::SUPER_APPLE:
         this->sounds.play(Sounds::ATE_APPLE);
         break;
     case GameField::Collisions::BODY:
