@@ -104,6 +104,8 @@ private:
 
         void previous_item(); // Switch to previous item in items list
 
+        void reset_active_item();
+
     private:
 
         void main_menu_operations(MainWindow& window);
