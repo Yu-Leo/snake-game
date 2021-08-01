@@ -83,5 +83,8 @@
     <ClInclude Include="mechanics\MapsList.h">
       <Filter>Header Files\mechanics</Filter>
     </ClInclude>
+    <ClInclude Include="mechanics\SuperApple.h">
+      <Filter>Header Files\mechanics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

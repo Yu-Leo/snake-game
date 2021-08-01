@@ -61,11 +61,11 @@ private:
     Size game_field_size; // Size of game field in cells
 
     struct Textures {
-        sf::Texture none, apple, snake_head, snake_body, wall;
+        sf::Texture none, apple, super_apple, snake_head, snake_body, wall;
     };
 
     struct Sprites {
-        sf::Sprite none, apple, snake_head, snake_body, wall;
+        sf::Sprite none, apple, super_apple, snake_head, snake_body, wall;
     };
 
     Textures textures;
@@ -134,8 +134,6 @@ private:
     void change_map(int new_map_num);
 
     void play_sounds(); // Check snake head collisions and play sounds 
-
-    void update_speed(); // Changing the speed depending on the score 
 
     void draw_screen(); // Draw game field and title with score
 
