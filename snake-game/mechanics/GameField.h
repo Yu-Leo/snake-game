@@ -5,6 +5,7 @@
 #include <queue>
 
 #include "Apple.h"
+#include "SuperApple.h"
 #include "Snake.h"
 #include "Size.h"
 #include "Map.h"
@@ -27,6 +28,7 @@ public:
     enum class CellTypes {
         NONE,
         APPLE,
+        SUPER_APPLE,
         SNAKE_HEAD,
         SNAKE_BODY,
         WALL
@@ -34,6 +36,7 @@ public:
 
     enum class Collisions {
         APPLE,
+        SUPER_APPLE,
         BODY,
         WALL,
         NONE
@@ -77,14 +80,10 @@ private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
-    static const int FIELD_CELL_TYPE_WALL = -2;
+    static const int FIELD_CELL_TYPE_SUPER_APPLE = -2;
+    static const int FIELD_CELL_TYPE_WALL = -3;
 
-    enum class Symbols { // Symbols for console display
-        SNAKE = '#', // Cell with snake
-        NONE = '-', // Empty cell
-        APPLE = '*', // Cell with apple
-        WALL = '$' // Cell with wall
-    };
+    static const int CHANCE_OF_GENERATING_SUPER_APPLE = 15; // in %
 
     int score = 0;
     int cells_without_walls;
@@ -110,8 +109,6 @@ private:
 
     void render_snake(); // Fill snake's cells
 
-    void render_apple(); // Fill apple's cell
-
     int count_cells_without_walls();
 
     void move_snake(); // Move the snake by one cell
@@ -119,6 +116,10 @@ private:
     void turn_snake(); // Change snake direction
 
     void check_collisions(); // Check collisions snake head with other cells
+
+    void increase_length();
+
+    void generate_new_apple();
 
     void grow_snake(); // Grow snake, if it eat apple
 
@@ -129,12 +130,4 @@ private:
     int count_empty_cells();
 
     Point get_random_empty_cell();
-
-    friend void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
-
-    friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
-
-void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
-
-std::ostream& operator<< (std::ostream& out, const GameField& game_field);

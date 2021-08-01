@@ -11,9 +11,7 @@ GameField::GameField(const Size& size, int map_number, bool only_walls) {
         this->snake.set_field_size(this->size);
         this->render_snake();
 
-        // Create apple
-        this->apple = Apple(this->get_random_empty_cell());
-        this->render_apple();
+        this->generate_new_apple();
     }
 
     this->cells_without_walls = this->count_cells_without_walls();
@@ -118,6 +116,8 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
         return CellTypes::NONE;
     case this->FIELD_CELL_TYPE_APPLE:
         return CellTypes::APPLE;
+    case this->FIELD_CELL_TYPE_SUPER_APPLE:
+        return CellTypes::SUPER_APPLE;
     case this->FIELD_CELL_TYPE_WALL:
         return CellTypes::WALL;
     default:
@@ -127,7 +127,6 @@ GameField::CellTypes GameField::get_cell_type(const Point& point) const {
             return CellTypes::SNAKE_BODY;
     }
 }
-
 
 
 
@@ -169,11 +168,6 @@ void GameField::render_snake() {
     }
 }
 
-void GameField::render_apple() {
-    Point dot = this->apple.get_coordinates();
-    this->field[dot.y][dot.x] = this->FIELD_CELL_TYPE_APPLE;
-}
-
 int GameField::count_cells_without_walls() {
     int walls = 0;
     for (int i = 0; i < this->size.height; i++) {
@@ -209,23 +203,45 @@ void GameField::check_collisions() {
     if (this->field[hp.y][hp.x] == this->FIELD_CELL_TYPE_NONE)
         return;
     switch (this->field[hp.y][hp.x]) {
-        case FIELD_CELL_TYPE_APPLE:
-            this->score++;
-            this->snake.increase_length();
-            this->grow_snake();
-            this->apple = Apple(this->get_random_empty_cell());
-            this->render_apple();
-            this->collision = Collisions::APPLE;
-            break;
-        case FIELD_CELL_TYPE_WALL:
+    case FIELD_CELL_TYPE_APPLE:
+        this->increase_length();
+        this->generate_new_apple();
+        this->collision = Collisions::APPLE;
+        break;
+    case FIELD_CELL_TYPE_SUPER_APPLE:
+        this->increase_length();
+        this->increase_length();
+        this->generate_new_apple();
+        this->collision = Collisions::SUPER_APPLE;
+        break;
+    case FIELD_CELL_TYPE_WALL:
+        this->finish();
+        this->collision = Collisions::WALL;
+    default:
+        if (this->field[hp.y][hp.x] > 1) {
             this->finish();
-            this->collision = Collisions::WALL;
-        default:
-            if (this->field[hp.y][hp.x] > 1) {
-                this->finish();
-                this->collision = Collisions::BODY;
-            }
-            break;
+            this->collision = Collisions::BODY;
+        }
+        break;
+    }
+}
+
+void GameField::increase_length() {
+    this->score++;
+    this->snake.increase_length();
+    this->grow_snake();
+}
+
+void GameField::generate_new_apple() {
+    Point apple_cell = this->get_random_empty_cell();
+
+    double r = (std::rand() % 100) / (100.0); // Random float number in range (0, 1)
+    if (0 <= r && r <= CHANCE_OF_GENERATING_SUPER_APPLE / 100.0) {
+        this->apple = SuperApple(apple_cell);
+        this->field[apple_cell.y][apple_cell.x] = this->FIELD_CELL_TYPE_SUPER_APPLE;
+    } else {
+        this->apple = Apple(apple_cell);
+        this->field[apple_cell.y][apple_cell.x] = this->FIELD_CELL_TYPE_APPLE;
     }
 }
 
@@ -278,33 +294,4 @@ Point GameField::get_random_empty_cell() {
         }
     }
     throw std::exception("No empty cells");
-}
-
-void print_cell(std::ostream& out, const GameField& game_field, const Point &cell) {
-    switch (game_field.get_cell_type(cell)) {
-        case GameField::CellTypes::NONE:
-            out << (char)GameField::Symbols::NONE;
-            break;
-        case GameField::CellTypes::APPLE:
-            out << (char)GameField::Symbols::APPLE;
-            break;
-        case GameField::CellTypes::WALL:
-            out << (char)GameField::Symbols::WALL;
-            break;
-        case GameField::CellTypes::SNAKE_HEAD: // SNAKE_HEAD == SNAKE_BODY in this case
-        case GameField::CellTypes::SNAKE_BODY:
-            out << (char)GameField::Symbols::SNAKE;
-            break;
-    }
-}
-
-std::ostream& operator<<(std::ostream& out, const GameField& game_field) {
-    for (int i = 0; i < game_field.size.height; i++) {
-        for (int j = 0; j < game_field.size.width; j++) {
-            print_cell(out, game_field, Point(j, i));
-            out << ' ';
-        }
-        out << '\n';
-    }
-    return out;
 }

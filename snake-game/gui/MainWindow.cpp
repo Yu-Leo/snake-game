@@ -163,6 +163,7 @@ void MainWindow::Speed::reduce_speed() {
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");
+    this->textures.super_apple.loadFromFile("./img/textures/super_apple.png");
     this->textures.snake_body.loadFromFile("./img/textures/snake_body.png");
     this->textures.snake_head.loadFromFile("./img/textures/snake_head.png");
     this->textures.wall.loadFromFile("./img/textures/wall.png");
@@ -171,6 +172,7 @@ void MainWindow::load_textures() {
 void MainWindow::set_textures() {
     this->sprites.none.setTexture(this->textures.none);
     this->sprites.apple.setTexture(this->textures.apple);
+    this->sprites.super_apple.setTexture(this->textures.super_apple);
     this->sprites.snake_body.setTexture(this->textures.snake_body);
     this->sprites.snake_head.setTexture(this->textures.snake_head);
     this->sprites.wall.setTexture(this->textures.wall);
@@ -344,6 +346,11 @@ void MainWindow::draw_cell(const Point& point) {
     case GameField::CellTypes::APPLE:
         this->sprites.apple.setPosition(x_pos, y_pos);
         this->draw(this->sprites.apple);
+        break;
+
+    case GameField::CellTypes::SUPER_APPLE:
+        this->sprites.super_apple.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.super_apple);
         break;
 
     case GameField::CellTypes::SNAKE_BODY:

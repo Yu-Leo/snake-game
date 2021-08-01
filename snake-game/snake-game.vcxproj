@@ -171,6 +171,7 @@
     <ClInclude Include="mechanics\Point.h" />
     <ClInclude Include="mechanics\Size.h" />
     <ClInclude Include="mechanics\Snake.h" />
+    <ClInclude Include="mechanics\SuperApple.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
