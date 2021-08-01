@@ -15,8 +15,10 @@ public:
         for (int i = 0; i < NUMBER_OF_MAPS; i++)
             this->maps[i] = Map::read_from_file("map" + std::to_string(i) + ".txt");
     }
-    
-    Map get_map(int index) const {
+
+    Map operator[](int index) const {
+        if (index < 0 || index >= NUMBER_OF_MAPS)
+            throw false;
         return this->maps[index];
     }
 

@@ -4,7 +4,7 @@ GameField::GameField(const Size& size, int map_number, bool only_walls) {
     this->size = size;
     this->init_field();
 
-    this->set_map(MAPS.get_map(map_number));
+    this->set_map(MAPS[map_number]);
 
     if (!only_walls) {
         // Create snake
