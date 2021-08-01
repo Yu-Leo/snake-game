@@ -3,8 +3,6 @@
 #include <vector>
 #include "Map.h"
 
-#include <iostream>
-
 class MapsList {
 public:
     const int NUMBER_OF_MAPS = 5;

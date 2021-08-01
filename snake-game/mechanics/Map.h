@@ -12,6 +12,8 @@ struct Map {
     std::vector<std::vector<int>> map;
     Size size;
 
+    static Map read_from_file(const std::string& file_name);
+
     Map(const Size& size = Size(), const std::vector<std::vector<int>>& map = {}) {
         this->size = size;
         if (map.size() == 0) {
@@ -22,6 +24,4 @@ struct Map {
             this->map = map;
         }
     }
-
-    static Map read_from_file(const std::string& file_name);
 };
