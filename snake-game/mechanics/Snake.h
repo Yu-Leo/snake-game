@@ -19,7 +19,7 @@ public:
 
     void move_head();
 
-    void set_field_size(Size field_size); // Init field size
+    void set_field_size(Size field_size); // Init size of field where snake is used
 
     void increase_length(); // Increase snake length by one cell
 
