@@ -22,6 +22,8 @@ public:
 	
 	void previous_item(); // Switch to previous item in items list
 
+	void reset_active_item(); // Set active item number = 0 (first item in list)
+
 	int get_active_item_index(); // Getter for active item index
 
 private:

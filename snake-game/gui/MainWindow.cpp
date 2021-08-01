@@ -286,6 +286,7 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
             this->game_field.unpause();
             this->menu.active = MenuList::NONE;
+            this->menu.reset_active_item();
         }
     }
 }
@@ -469,6 +470,12 @@ void MainWindow::MenuList::previous_item() {
         this->settings.previous_item();
         break;
     }
+}
+
+void MainWindow::MenuList::reset_active_item() {
+    this->main.reset_active_item();
+    this->pause.reset_active_item();
+    this->settings.reset_active_item();
 }
 
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
