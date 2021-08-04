@@ -1,10 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
-#include "../mechanics/GameField.h"
-#include "Sounds.h"
 #include "Menu.h"
+#include "Sounds.h"
+#include "../mechanics/GameField.h"
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 

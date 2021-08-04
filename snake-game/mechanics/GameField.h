@@ -4,11 +4,9 @@
 #include <vector>
 #include <queue>
 
-#include "Apple.h"
 #include "SuperApple.h"
 #include "Snake.h"
 #include "Size.h"
-#include "Map.h"
 #include "MapsList.h"
 
 #define CHANCE_OF_GENERATING_SUPER_APPLE 15 // in %
