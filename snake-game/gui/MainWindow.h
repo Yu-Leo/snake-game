@@ -1,10 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
-#include "GameField.h"
-#include "Sounds.h"
 #include "Menu.h"
+#include "Sounds.h"
+#include "../mechanics/GameField.h"
 
 #define CELL_SIZE 32 // Size of one cell in ptx
 
@@ -25,10 +23,39 @@ public:
 
 private:
 
-    int speed = 0; // 0 - low, 5 - fast
-    std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
+    class Speed {
+    public:
 
-    bool field_regeneration = false; // Should the field be regenerated
+        void delay();
+
+        int get_num() const;
+        
+        std::string get_active_item() const;
+
+        void update(const MainWindow& window);
+
+        void set_speed(std::string speed_item);
+
+        void increase_speed();
+        
+        void reduce_speed();
+
+    private:
+        std::vector<std::string> speed_items = { "Auto", "1", "2", "3", "4", "5", "6" };
+
+        int active_speed_item = 0;
+
+        std::vector<int> delays = { 130, 110, 100, 90, 80, 65 };
+        bool auto_speed = true;
+        int speed = 0; // 0 - low, 5 - fast
+
+        bool is_correct_speed_item(std::string speed_item);
+        
+    };
+    
+    Speed speed;
+
+    int map_number = 0;
 
     Size window_size; // Size in ptx
 
@@ -36,11 +63,11 @@ private:
     Size game_field_size; // Size of game field in cells
 
     struct Textures {
-        sf::Texture none, apple, snake_head, snake_body, wall;
+        sf::Texture none, apple, super_apple, snake_head, snake_body, wall;
     };
 
     struct Sprites {
-        sf::Sprite none, apple, snake_head, snake_body, wall;
+        sf::Sprite none, apple, super_apple, snake_head, snake_body, wall;
     };
 
     Textures textures;
@@ -79,6 +106,8 @@ private:
 
         void previous_item(); // Switch to previous item in items list
 
+        void reset_active_item();
+
     private:
 
         void main_menu_operations(MainWindow& window);
@@ -104,9 +133,9 @@ private:
 
     void handling_menu_navigation(const sf::Event& event); // Menu navigation processing
 
-    void play_sounds(); // Check snake head collisions and play sounds 
+    void change_map(int new_map_num);
 
-    void update_speed(); // Changing the speed depending on the score 
+    void play_sounds(); // Check snake head collisions and play sounds 
 
     void draw_screen(); // Draw game field and title with score
 

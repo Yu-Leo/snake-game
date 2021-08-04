@@ -3,7 +3,7 @@
 Sounds::Sounds() {
     this->load_sound_buffers();
     this->set_sound_buffers();
-    this->set_volume();
+    this->set_volume_to_sounds();
 }
 
 void Sounds::play(int sound_name) {
@@ -23,6 +23,13 @@ void Sounds::play(int sound_name) {
     }
 }
 
+void Sounds::set_volume(int volume) {
+    if (volume < this->MIN_VOLUME || volume > this->MAX_VOLUME)
+        throw std::exception("Incorrect volume value");
+    this->volume = volume;
+    this->set_volume_to_sounds();
+}
+
 int Sounds::get_volume() {
     return this->volume;
 }
@@ -31,14 +38,14 @@ void Sounds::turn_up_volume() {
     this->volume += 5;
     if (this->volume > this->MAX_VOLUME)
         this->volume = this->MAX_VOLUME;
-    this->set_volume();
+    this->set_volume_to_sounds();
 }
 
 void Sounds::turn_down_volume() {
     this->volume -= 5;
     if (this->volume < this->MIN_VOLUME)
         this->volume = this->MIN_VOLUME;
-    this->set_volume();
+    this->set_volume_to_sounds();
 }
 
 
@@ -58,7 +65,7 @@ void Sounds::set_sound_buffers() {
     this->menu_navigate.setBuffer(this->sound_buffers.menu_navigate);
 }
 
-void Sounds::set_volume() {
+void Sounds::set_volume_to_sounds() {
     this->ate_apple.setVolume(this->volume);
     this->collision_with_wall.setVolume(this->volume);
     this->collision_with_body.setVolume(this->volume);

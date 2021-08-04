@@ -1,8 +1,6 @@
-#include <SFML/Graphics.hpp>
-
 #include <ctime>
 
-#include "MainWindow.h"
+#include "./gui/MainWindow.h"
 
 #define RANDOM_GENERATING true // (true/false)
 
@@ -15,7 +13,7 @@ int main() {
 #endif
 
     MainWindow window(Size(35, 20));
-    
+
     while (window.isOpen()) {
         window.event_handling();
         window.one_iteration();

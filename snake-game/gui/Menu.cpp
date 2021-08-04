@@ -35,6 +35,10 @@ void Menu::previous_item() {
     }
 }
 
+void Menu::reset_active_item() {
+    this->active_item_index = 0;
+}
+
 int Menu::get_active_item_index() {
     return this->active_item_index;
 }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "Size.h"
+#include "../mechanics/Size.h"
 
 class Menu { // Class of game menu
 public:
@@ -21,6 +21,8 @@ public:
 	void next_item(); // Switch to next item in items list
 	
 	void previous_item(); // Switch to previous item in items list
+
+	void reset_active_item(); // Set active item number = 0 (first item in list)
 
 	int get_active_item_index(); // Getter for active item index
 
@@ -44,8 +46,8 @@ private:
 
 	sf::Font font;
 
-	const sf::Color BACKGROUND_COLOR = sf::Color(220, 220, 220);
-	const sf::Color INACTIVE_TEXT_COLOR = sf::Color(128, 128, 128);
+	const sf::Color BACKGROUND_COLOR = sf::Color(240, 240, 240, 220);
+	const sf::Color INACTIVE_TEXT_COLOR = sf::Color(110, 110, 110);
 	const sf::Color ACTIVE_TEXT_COLOR = sf::Color::Black;
 
 	std::vector<sf::Text> menu_items;

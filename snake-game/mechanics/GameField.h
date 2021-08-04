@@ -4,9 +4,16 @@
 #include <vector>
 #include <queue>
 
-#include "Apple.h"
+#include "SuperApple.h"
 #include "Snake.h"
 #include "Size.h"
+#include "MapsList.h"
+
+#define CHANCE_OF_GENERATING_SUPER_APPLE 15 // in %
+
+static Size DEFAULT_SIZE = Size(35, 20);
+
+const MapsList MAPS(DEFAULT_SIZE);
 
 class GameField {
 public:
@@ -21,6 +28,7 @@ public:
     enum class CellTypes {
         NONE,
         APPLE,
+        SUPER_APPLE,
         SNAKE_HEAD,
         SNAKE_BODY,
         WALL
@@ -28,12 +36,13 @@ public:
 
     enum class Collisions {
         APPLE,
+        SUPER_APPLE,
         BODY,
         WALL,
         NONE
     };
 
-    GameField(const Size& size); // Constructor with settable size
+    GameField(const Size& size, int map_number=0, bool only_walls=false); // Constructor with settable size
 
     GameField(); // Constructor with default size
 
@@ -71,17 +80,10 @@ private:
 
     static const int FIELD_CELL_TYPE_NONE = 0;
     static const int FIELD_CELL_TYPE_APPLE = -1;
-    static const int FIELD_CELL_TYPE_WALL = -2;
-
-    enum class Symbols { // Symbols for console display
-        SNAKE = '#', // Cell with snake
-        NONE = '-', // Empty cell
-        APPLE = '*', // Cell with apple
-        WALL = '$' // Cell with wall
-    };
+    static const int FIELD_CELL_TYPE_SUPER_APPLE = -2;
+    static const int FIELD_CELL_TYPE_WALL = -3;
 
     int score = 0;
-
     int cells_without_walls;
 
     Size size; // Size of game field
@@ -101,11 +103,9 @@ private:
 
     void resize_matrix(); // Change sizes of field vectors
 
-    void set_walls(); // Add walls to field
+    void set_map(const Map& map); // Add walls to field
 
     void render_snake(); // Fill snake's cells
-
-    void render_apple(); // Fill apple's cell
 
     int count_cells_without_walls();
 
@@ -114,6 +114,10 @@ private:
     void turn_snake(); // Change snake direction
 
     void check_collisions(); // Check collisions snake head with other cells
+
+    void increase_length();
+
+    void generate_new_apple();
 
     void grow_snake(); // Grow snake, if it eat apple
 
@@ -124,12 +128,4 @@ private:
     int count_empty_cells();
 
     Point get_random_empty_cell();
-
-    friend void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
-
-    friend std::ostream& operator<< (std::ostream& out, const GameField& game_field);
 };
-
-void print_cell(std::ostream& out, const GameField& game_field, const Point& cell);
-
-std::ostream& operator<< (std::ostream& out, const GameField& game_field);

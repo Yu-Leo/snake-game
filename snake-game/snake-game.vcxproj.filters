@@ -13,54 +13,84 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\mechanics">
+      <UniqueIdentifier>{20d6a493-9b90-4734-a4bd-af1832ebd20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mechanics">
+      <UniqueIdentifier>{58edf2f9-8a3f-489c-a6ae-bbbac1146057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui">
+      <UniqueIdentifier>{acd1343a-81ab-4886-838e-d940784272ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{c01d118e-ad12-4d4c-85b0-55111e8a960c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Apple.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mechanics\Apple.cpp">
+      <Filter>Source Files\mechanics</Filter>
     </ClCompile>
-    <ClCompile Include="Snake.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mechanics\Snake.cpp">
+      <Filter>Source Files\mechanics</Filter>
     </ClCompile>
-    <ClCompile Include="GameField.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mechanics\GameField.cpp">
+      <Filter>Source Files\mechanics</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="gui\MainWindow.cpp">
+      <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="Sounds.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="gui\Menu.cpp">
+      <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="gui\Sounds.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="mechanics\Map.cpp">
+      <Filter>Source Files\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="mechanics\SettingsKit.cpp">
+      <Filter>Source Files\mechanics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Apple.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="mechanics\Point.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="mechanics\Apple.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="Snake.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="mechanics\Snake.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="GameField.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="mechanics\Size.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="Size.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="mechanics\GameField.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="MainWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="gui\MainWindow.h">
+      <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="Sounds.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="gui\Menu.h">
+      <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="gui\Sounds.h">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanics\Map.h">
+      <Filter>Header Files\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanics\MapsList.h">
+      <Filter>Header Files\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanics\SuperApple.h">
+      <Filter>Header Files\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanics\SettingsKit.h">
+      <Filter>Header Files\mechanics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
