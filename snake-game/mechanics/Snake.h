@@ -19,7 +19,7 @@ public:
 
     void move_head();
 
-    void set_field_size(Size field_size); // Init field size
+    void set_field_size(Size field_size); // Init size of field where snake is used
 
     void increase_length(); // Increase snake length by one cell
 
@@ -34,7 +34,7 @@ public:
 private:
 
     int length = 3;
-    Point head_position = Point(this->length - 1 + 3, 3);
+    Point head_position = Point(this->length - 1 + 3, 2);
     int direction = Directions::RIGHT;
 
     // Size of fields on which it is used snake. Needs initialization real value!

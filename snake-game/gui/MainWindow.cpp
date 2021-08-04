@@ -2,24 +2,35 @@
 
 #include <iostream>
 
+#include "../mechanics/SettingsKit.h"
+
 MainWindow::MainWindow(const Size& size) : sf::RenderWindow(
     sf::VideoMode(size.width * CELL_SIZE, size.height * CELL_SIZE + TOP_PADDING),
     "Snake game",
     sf::Style::Close) {
+
+    try {
+        SettingsKit settings = SettingsKit::load_from_file();
+        this->sounds.set_volume(settings.volume);
+        this->speed.set_speed(settings.speed_item);
+        this->map_number = settings.map_number;
+    } catch (const std::exception& e) {
+        // Settings file opening error. Do nothing
+    }
 
     this->game_field_size = size;
 
     this->window_size.width = size.width * CELL_SIZE;
     this->window_size.height = size.height * CELL_SIZE + TOP_PADDING;
 
-    this->game_field = GameField(size);
+    this->game_field = GameField(size, map_number, true);
 
     this->load_textures();
     this->set_textures();
 
     this->set_text_settings();
 
-    MenuList menu = MainWindow::MenuList();
+    MenuList menu = MainWindow::MenuList();   
 }
 
 void MainWindow::event_handling() {
@@ -57,7 +68,7 @@ void MainWindow::one_iteration() {
     if (game_field.get_game_status() == GameField::GameStatus::ACTIVE) {
         this->game_field.one_iteration();
         this->play_sounds();
-        this->update_speed();
+        this->speed.update(*this);
     }
 }
 
@@ -90,12 +101,98 @@ void MainWindow::redraw() {
 }
 
 void MainWindow::delay() {
+    this->speed.delay();
+}
+
+void MainWindow::Speed::delay() {
     sf::sleep(sf::milliseconds(this->delays[this->speed]));
 }
+
+int MainWindow::Speed::get_num() const {
+    return this->speed;
+}
+
+std::string MainWindow::Speed::get_active_item() const {
+    return this->speed_items[this->active_speed_item];
+}
+
+void MainWindow::Speed::update(const MainWindow &window) {
+    if (this->active_speed_item == 0) {
+        this->auto_speed = true;
+    } else {
+        this->auto_speed = false;
+        this->speed = this->active_speed_item - 1;
+    }
+
+    if (!this->auto_speed)
+        return;
+
+    int delays = this->delays.size();
+    std::vector<double> borders = {
+        0 * (1.0 / delays),
+        1 * (1.0 / delays),
+        2 * (1.0 / delays),
+        3 * (1.0 / delays),
+        4 * (1.0 / delays),
+        5 * (1.0 / delays),
+        6 * (1.0 / delays) };
+
+    double k = 4 * double(window.game_field.get_score()) / window.game_field.get_cells_without_walls();
+    if (borders[0] <= k && k < borders[1]) {
+        this->speed = 0;
+    } else if (borders[1] <= k && k < borders[2]) {
+        this->speed = 1;
+    } else if (borders[2] <= k && k < borders[3]) {
+        this->speed = 2;
+    } else if (borders[3] <= k && k < borders[4]) {
+        this->speed = 3;
+    } else if (borders[4] <= k && k < borders[5]) {
+        this->speed = 4;
+    } else if (borders[5] <= k) {
+        this->speed = 5;
+    }
+}
+
+void MainWindow::Speed::set_speed(std::string speed_item) {
+    if (!this->is_correct_speed_item(speed_item))
+        throw std::exception("Incorrect speed item");
+
+    if (speed_item == this->speed_items[0]) {
+        this->auto_speed = true;
+        this->speed = 0;
+        this->active_speed_item = 0;
+    } else {
+        this->auto_speed = false;
+        this->speed = std::stoi(speed_item) - 1;
+        this->active_speed_item = std::stoi(speed_item);
+    }
+}
+
+void MainWindow::Speed::increase_speed() {
+    this->active_speed_item++;
+    if (this->active_speed_item >= this->speed_items.size())
+        this->active_speed_item = 0;
+}
+
+void MainWindow::Speed::reduce_speed() {
+    this->active_speed_item--;
+    if (this->active_speed_item < 0)
+        this->active_speed_item = this->speed_items.size() - 1;
+}
+
+bool MainWindow::Speed::is_correct_speed_item(std::string speed_item) {
+    bool correct = false;
+    for (auto item : this->speed_items)
+        correct = correct || speed_item == item;
+    return correct;
+}
+
+
 
 void MainWindow::load_textures() {
     this->textures.none.loadFromFile("./img/textures/none.png");
     this->textures.apple.loadFromFile("./img/textures/apple.png");
+    this->textures.super_apple.loadFromFile("./img/textures/super_apple.png");
     this->textures.snake_body.loadFromFile("./img/textures/snake_body.png");
     this->textures.snake_head.loadFromFile("./img/textures/snake_head.png");
     this->textures.wall.loadFromFile("./img/textures/wall.png");
@@ -104,6 +201,7 @@ void MainWindow::load_textures() {
 void MainWindow::set_textures() {
     this->sprites.none.setTexture(this->textures.none);
     this->sprites.apple.setTexture(this->textures.apple);
+    this->sprites.super_apple.setTexture(this->textures.super_apple);
     this->sprites.snake_body.setTexture(this->textures.snake_body);
     this->sprites.snake_head.setTexture(this->textures.snake_head);
     this->sprites.wall.setTexture(this->textures.wall);
@@ -127,7 +225,7 @@ void MainWindow::set_text_settings() {
 
 void MainWindow::set_score_text_color() {
     sf::Color text_color;
-    switch (this->speed) {
+    switch (this->speed.get_num()) {
     case 0:
         text_color = sf::Color::White;
         break;
@@ -183,16 +281,33 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         this->menu.next_item();
         break;
     case sf::Keyboard::Left:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-
-            this->sounds.turn_down_volume();
+        if (this->menu.active == MenuList::SETTINGS) {
+            switch (this->menu.settings.get_active_item_index()) {
+            case 1:
+                this->sounds.turn_down_volume();
+                break;
+            case 2:
+                this->speed.reduce_speed();
+                break;
+            case 3:
+                this->change_map(this->map_number - 1);
+                break;
+            }
         }
         break;
     case sf::Keyboard::Right:
-        if (this->menu.active == MenuList::SETTINGS &&
-            this->menu.settings.get_active_item_index() == 1) {
-            this->sounds.turn_up_volume();
+        if (this->menu.active == MenuList::SETTINGS) {
+            switch (this->menu.settings.get_active_item_index()) {
+            case 1:
+                this->sounds.turn_up_volume();
+                break;
+            case 2:
+                this->speed.increase_speed();
+                break;
+            case 3:
+                this->change_map(this->map_number + 1);
+                break;
+            }
         }
         break;
     case sf::Keyboard::Enter:
@@ -202,13 +317,26 @@ void MainWindow::handling_menu_navigation(const sf::Event& event) {
         if (this->game_field.get_game_status() == GameField::GameStatus::PAUSE) {
             this->game_field.unpause();
             this->menu.active = MenuList::NONE;
+            this->menu.reset_active_item();
         }
     }
 }
 
+void MainWindow::change_map(int new_map_num) {
+    if (new_map_num < 0)
+        new_map_num = MAPS.NUMBER_OF_MAPS - 1;
+    else if (new_map_num > MAPS.NUMBER_OF_MAPS - 1)
+        new_map_num = 0;
+
+    this->map_number = new_map_num;
+    this->game_field = GameField(game_field_size, new_map_num, true);
+}
+
+
 void MainWindow::play_sounds() {
     switch (this->game_field.get_collision()) {
     case GameField::Collisions::APPLE:
+    case GameField::Collisions::SUPER_APPLE:
         this->sounds.play(Sounds::ATE_APPLE);
         break;
     case GameField::Collisions::BODY:
@@ -219,33 +347,6 @@ void MainWindow::play_sounds() {
         break;
     }
     this->game_field.clear_collision();
-}
-
-void MainWindow::update_speed() {
-    int delays = this->delays.size();
-    std::vector<double> borders = {
-        0 * (1.0 / delays),
-        1 * (1.0 / delays),
-        2 * (1.0 / delays),
-        3 * (1.0 / delays),
-        4 * (1.0 / delays),
-        5 * (1.0 / delays),
-        6 * (1.0 / delays) };
-
-    double k = 4 * double(this->game_field.get_score()) / this->game_field.get_cells_without_walls();
-    if (borders[0] <= k && k < borders[1]) {
-        this->speed = 0;
-    } else if (borders[1] <= k && k < borders[2]) {
-        this->speed = 1;
-    } else if (borders[2] <= k && k < borders[3]) {
-        this->speed = 2;
-    } else if (borders[3] <= k && k < borders[4]) {
-        this->speed = 3;
-    } else if (borders[4] <= k && k < borders[5]) {
-        this->speed = 4;
-    } else if (borders[5] <= k) {
-        this->speed = 5;
-    }
 }
 
 void MainWindow::draw_screen() {
@@ -275,6 +376,11 @@ void MainWindow::draw_cell(const Point& point) {
     case GameField::CellTypes::APPLE:
         this->sprites.apple.setPosition(x_pos, y_pos);
         this->draw(this->sprites.apple);
+        break;
+
+    case GameField::CellTypes::SUPER_APPLE:
+        this->sprites.super_apple.setPosition(x_pos, y_pos);
+        this->draw(this->sprites.super_apple);
         break;
 
     case GameField::CellTypes::SNAKE_BODY:
@@ -330,7 +436,7 @@ void MainWindow::draw_score_bar() {
 MainWindow::MenuList::MenuList() {
     std::vector<std::string> main_menu_items = { "Start new game", "Settings", "Quit" };
     std::vector<std::string> pause_menu_items = { "Resume game", "Settings", "Quit" };
-    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: " };
+    std::vector<std::string> settings_menu_items = { "Back to main menu", "Volume: ", "Speed: ", "Map: " };
 
     this->main.set_text_to_items(main_menu_items);
     this->pause.set_text_to_items(pause_menu_items);
@@ -347,7 +453,10 @@ void MainWindow::MenuList::draw(MainWindow& window) {
         break;
     case MenuList::SETTINGS:
         int volume = window.sounds.get_volume();
+        int map_num = window.map_number;
         this->settings.set_text_to_item(1, "Volume: " + std::to_string(volume));
+        this->settings.set_text_to_item(2, "Speed: " + window.speed.get_active_item());
+        this->settings.set_text_to_item(3, "Map: " + std::to_string(map_num));
         this->settings.draw(window);
         break;
     }
@@ -400,21 +509,27 @@ void MainWindow::MenuList::previous_item() {
     }
 }
 
+void MainWindow::MenuList::reset_active_item() {
+    this->main.reset_active_item();
+    this->pause.reset_active_item();
+    this->settings.reset_active_item();
+}
 
 void MainWindow::MenuList::main_menu_operations(MainWindow& window) {
     switch (this->main.get_active_item_index()) {
     case 0: // First item
-        if (window.field_regeneration) {
-            window.game_field = GameField(window.game_field_size);
-        }
-        window.field_regeneration = true;
-
+        window.game_field = GameField(window.game_field_size, window.map_number);
         window.game_field.unpause();
         break;
     case 1: // Second item
         this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
+        SettingsKit current_settings(
+            window.sounds.get_volume(),
+            window.speed.get_active_item(),
+            window.map_number);
+        current_settings.save_to_file();
         window.close();
         break;
     }
@@ -429,6 +544,11 @@ void MainWindow::MenuList::pause_menu_operations(MainWindow& window) {
         this->active = ActiveMenu::SETTINGS;
         break;
     case 2: // Third item
+        SettingsKit current_settings(
+            window.sounds.get_volume(),
+            window.speed.get_active_item(),
+            window.map_number);
+        current_settings.save_to_file();
         window.close();
         break;
     }

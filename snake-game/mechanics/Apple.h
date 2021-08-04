@@ -11,7 +11,7 @@ public:
 
     Point get_coordinates();
 
-private:
+protected:
 
     Point coordinates;
 };
