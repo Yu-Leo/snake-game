@@ -49,6 +49,6 @@ private:
 
     void set_sound_buffers(); // Set sound buffers on sounds
 
-    void set_volume(); // Set volume to sounds
+    void set_volume_to_sounds(); // Needs a call after changing the volume
 };
 
