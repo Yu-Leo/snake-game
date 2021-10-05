@@ -34,7 +34,7 @@
       git clone https://github.com/Yu-Leo/snake-game.git
       cd snake-game
       ```
-   * Вариант 2 - [Скачать ZIP](https://github.com/Yu-Leo/snake-game/archive/refs/heads/master.zip)
+   * Вариант 2 - [Скачать ZIP](https://github.com/Yu-Leo/snake-game/archive/refs/heads/main.zip)
 4. Подключить SFML к проекту ([как это сделать](https://www.sfml-dev.org/tutorials/2.5/start-vc.php))
 5. Скомпилировать и запустить `./snake-game/main.cpp`
 
