@@ -145,8 +145,11 @@
 <a id="chapter-4"></a>
 
 ## :open_hands: Лицензия
+
+Используете мой код - ставьте звёздочку ⭐️ на репозиторий
+
 Автор: [Yu-Leo](https://github.com/Yu-Leo)
 
-GNU General Public License v3.0.
+GNU General Public License v3.0
 
 Полный текст в [LICENSE](LICENSE)
