@@ -35,7 +35,7 @@
       cd snake-game
       ```
    * Вариант 2 - [Скачать ZIP](https://github.com/Yu-Leo/snake-game/archive/refs/heads/main.zip)
-4. Подключить SFML к проекту ([как это сделать](https://www.sfml-dev.org/tutorials/2.5/start-vc.php))
+4. Подключить SFML к проекту ([мой туториал](https://github.com/Yu-Leo/tutorials-and-config-files/blob/main/SFML-VisualStudio2019/README.md))
 5. Скомпилировать и запустить `./snake-game/main.cpp`
 
 <a id="chapter-2"></a>
