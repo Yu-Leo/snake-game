@@ -1,5 +1,7 @@
 # Snake game
 
+![preview](./docs/img/preview.jpg)
+
 ## Навигация
 
 * [Описание проекта](#chapter-0)
