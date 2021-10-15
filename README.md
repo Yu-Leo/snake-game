@@ -1,6 +1,13 @@
-# Snake game
+<h1 align="center"> Snake game </h1>
 
-![preview](./docs/img/preview.jpg)
+<p align="center">
+  <a href="#" target="_blank"> <img alt="license" src="https://img.shields.io/github/license/Yu-Leo/snake-game?style=for-the-badge&labelColor=090909"></a>
+  <a href="#" target="_blank"> <img alt="last release" src="https://img.shields.io/github/v/release/Yu-Leo/snake-game?style=for-the-badge&labelColor=090909"></a>
+  <a href="#" target="_blank"> <img alt="last commit" src="https://img.shields.io/github/last-commit/Yu-Leo/snake-game?style=for-the-badge&labelColor=090909"></a>
+  <a href="#" target="_blank"> <img alt="commit activity" src="https://img.shields.io/github/commit-activity/m/Yu-Leo/snake-game?style=for-the-badge&labelColor=090909"></a>
+</p>
+
+<img align="center" alt="preview" src="./docs/img/preview.jpg">
 
 ## Навигация
 
