@@ -1,4 +1,7 @@
-*.cpp linguist-language=cpp
-*.h linguist-language=cpp
+*.cpp linguist-detectable
+*.cpp linguist-language=c++
+
+*.h linguist-detectable
+*.h linguist-language=c++
 
 docs/** linguist-documentation
